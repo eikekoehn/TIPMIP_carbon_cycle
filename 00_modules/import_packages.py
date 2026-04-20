@@ -74,6 +74,7 @@ class PackageGetter:
         from set_params import ModelRuns as pmodruns
 
         # import the classes for getting model data
+        from model_grabber_ALL import MODELgrabber
         from model_grabber_IPSL import IPSLgrabber
 
         # import the class for getting miscellaneous functions
