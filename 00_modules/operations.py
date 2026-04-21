@@ -1,6 +1,6 @@
 import xarray as xr
 import numpy as np
-
+import matplotlib.pyplot as plt
 
 class Operator:
 
@@ -30,11 +30,27 @@ class Operator:
         if dims is None:
             dims = area_weights.dims
 
+        # make sure that the coordinates area the same
+        for coord in area_weights.coords:
+            diff_coord = da[coord].values - area_weights[coord].values
+            sum_diff_coord = np.sum(np.abs(diff_coord))
+            unique_diffs = np.unique(diff_coord)
+            if sum_diff_coord > 0:
+                print(f'There is a total coordinate difference of: {sum_diff_coord}')
+                if np.sum(np.abs((da[coord].values - area_weights[coord].values))) < 1e-8:
+                    print(f'... this is small enough (smaller than 1e-8), so we just set the area_weights.coord to da.coord.')
+                    area_weights = area_weights.assign_coords({coord: da[coord]})
+                elif np.all(np.isin(unique_diffs, [-360, 0, 360])):
+                    print(f'... all of the differences are just caused by 360° longitude wrapping. So we just set the area_weights.coord to da.coord.')
+                    area_weights = area_weights.assign_coords({coord: da[coord]})        
+                else:
+                    raise Exception('Coordinates do not match')
+
         # Apply mask if provided
         if mask is not None:
             da = da.where(mask)
             area_weights = area_weights.where(mask)
-
+        
         # Weighted sum (numerator)
         numerator = (da * area_weights).sum(dim=dims)
 
@@ -70,11 +86,27 @@ class Operator:
         if dims is None:
             dims = area_weights.dims
 
+        # make sure that the coordinates area the same
+        for coord in area_weights.coords:
+            diff_coord = da[coord].values - area_weights[coord].values
+            sum_diff_coord = np.sum(np.abs(diff_coord))
+            unique_diffs = np.unique(diff_coord)
+            if sum_diff_coord > 0:
+                print(f'There is a total coordinate difference of: {sum_diff_coord}')
+                if np.sum(np.abs((da[coord].values - area_weights[coord].values))) < 1e-8:
+                    print(f'... this is small enough (smaller than 1e-8), so we just set the area_weights.coord to da.coord.')
+                    area_weights = area_weights.assign_coords({coord: da[coord]})
+                elif np.all(np.isin(unique_diffs, [-360, 0, 360])):
+                    print(f'... all of the differences are just caused by 360° longitude wrapping. So we just set the area_weights.coord to da.coord.')
+                    area_weights = area_weights.assign_coords({coord: da[coord]})        
+                else:
+                    raise Exception('Coordinates do not match')
+    
         # Apply mask if provided
         if mask is not None:
             da = da.where(mask)
             area_weights = area_weights.where(mask)
-
+            
         # Integral = sum(x * dA)
         integral = (da * area_weights).sum(dim=dims)
 

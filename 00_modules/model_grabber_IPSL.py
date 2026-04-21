@@ -17,22 +17,14 @@ from misc_functions import MISCgrabber
 
 class IPSLgrabber:
 
-    def get_runs(which_runs='all'):
-        if which_runs == 'all':
-            runs = ['esm-hist',
-                    'esm-piControl',
-                    'esm-up2p0',
-                    'esm-up2p0-gwl2p0', 
-                    'esm-up2p0-gwl4p0',
-                    'esm-up2p0-gwl2p0-50y-dn2p0',
-                    'esm-up2p0-gwl4p0-50y-dn2p0',
-                    'esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0',
-                   ]
-        return runs
-
-    def get_rootdir(server='spirit'):
+    def get_rootdir(run,server='spirit'):
         if server == 'spirit':
-            rootdir = '/projets/TipESM/IPSL/IPSL-CM6-ESMCO2'
+            if run == 'esm-piControl':
+                rootdir = '/thredds/tgcc/work/kohneike/TipESM_CMIP6Plus_RUNS/CMIP6Plus/CMIP/IPSL/IPSL-CM6-ESMCO2'
+            elif run == 'esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0':
+                rootdir = '/thredds/tgcc/work/kohneike/TipESM_CMIP6Plus_RUNS/CMIP6Plus/TIPMIP/IPSL/IPSL-CM6-ESMCO2'
+            else:
+                rootdir = '/projets/TipESM/IPSL/IPSL-CM6-ESMCO2'
         elif server == 'levante':
             rootdir = '/work/bm1448/upload/tipesm/IPSL-CM6-ESMCO2'
         elif rootdir == 'cineca':
@@ -76,7 +68,7 @@ class IPSLgrabber:
 
     def get_grid(varia,freq_input): 
         domain = IPSLgrabber.get_domain(varia,freq_input)
-        if domain in ['L','E','A']:
+        if domain in ['L','E','A','']:
             grid = 'gr'
         elif domain in ['O','SI']:
             grid = 'gn' 
@@ -96,7 +88,9 @@ class IPSLgrabber:
             area_ds = xr.open_dataset(area_file)
             area = area_ds['areacello'].fillna(0).compute()
             area = area.rename({'y':'j','x':'i'})
-            area_ds.close()        
+            area = area.rename({'nav_lat':'latitude','nav_lon':'longitude'})
+
+            area_ds.close()       
         else:
             raise Exception('Variable not in known domain.')
         return area
@@ -105,7 +99,7 @@ class IPSLgrabber:
      
         member = IPSLgrabber.get_member()
         exercise = IPSLgrabber.get_exercise(run)
-        rootdir = IPSLgrabber.get_rootdir()
+        rootdir = IPSLgrabber.get_rootdir(run)
         freq = IPSLgrabber.get_frequency(freq_input) 
         domain = IPSLgrabber.get_domain(varia,freq_input)
         grid = IPSLgrabber.get_grid(varia,freq_input)

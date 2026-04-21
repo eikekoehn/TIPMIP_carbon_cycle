@@ -76,6 +76,8 @@ class PackageGetter:
         # import the classes for getting model data
         from model_grabber_ALL import MODELgrabber
         from model_grabber_IPSL import IPSLgrabber
+        from model_grabber_UBERN import UBERNgrabber
+        from model_grabber_NorESM import NorESMgrabber
 
         # import the class for getting miscellaneous functions
         from misc_functions import DataFuncs as DFuncs
