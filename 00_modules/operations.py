@@ -136,9 +136,9 @@ class Operator:
         # total length
         n = len(t)
     
-        # --- detect annual ---
+        # --- detect yearly ---
         if n_months == 1 and n_days == 1:
-            return "annual"
+            return "yearly"
     
         # --- detect monthly ---
         # typical: one value per month, varying day (15/16 etc.)
@@ -156,7 +156,7 @@ class Operator:
     def calc_temporal_mean_weighted(
         da,
         dim="time",
-        freq_output=None,          # None, "monthly", "annual", "climatology"
+        freq_output=None,          # None, "monthly", "yearly", "climatology"
         weights=None,
         skip_if_native=True,
         verbosity=1):
@@ -171,7 +171,7 @@ class Operator:
         freq_output : str or None
             - None: mean over full time period
             - "monthly": monthly means (year-month resolution)
-            - "annual": annual means (one per year)
+            - "yearly": yearly means (one per year)
             - "climatology": multi-year monthly climatology (12 months)
         weights : xr.DataArray, optional
             Custom weights
@@ -209,17 +209,17 @@ class Operator:
                 return da
             return da.resample({dim: "1MS"}).map(_weighted_mean)
 
-        # --- annual ---
-        elif freq_output == "annual":
-            if skip_if_native and resolution == "annual":
+        # --- yearly ---
+        elif freq_output == "yearly":
+            if skip_if_native and resolution == "yearly":
                 return da                
-            return da.groupby(f"{dim}.year").map(_weighted_mean)
+            return da.resample({dim: "1YS"}).map(_weighted_mean)
 
         # --- climatology (12-month seasonal cycle) ---
         elif freq_output == "climatology":
             return da.groupby(f"{dim}.month").map(_weighted_mean)
 
         else:
-            raise ValueError("freq_output must be None, 'monthly', 'annual', or 'climatology'")
+            raise ValueError("freq_output must be None, 'monthly', 'yearly', or 'climatology'")
 
 

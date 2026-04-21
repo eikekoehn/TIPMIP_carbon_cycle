@@ -87,6 +87,8 @@ class NorESMgrabber:
             grid = 'gr'
         elif varia in ['co2mass', 'sosga', 'tosga', 'volo', 'masso', 'soga', 'zostoga', 'cfc12global', 'cfc11global', 'thetaoga', 'ch4global', 'n2oglobal']:
             grid = 'gm'
+        elif varia in ['msftmz']:
+            grid = 'grz'
         return grid
 
     def get_area(varia,freq_input):
