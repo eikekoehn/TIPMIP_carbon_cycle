@@ -83,7 +83,8 @@ class PackageGetter:
         from misc_functions import DataFuncs as DFuncs
 
         # import operators for calculations
-        from operations import Operator 
+        from operations_space import SpaceOperator 
+        from operations_time import TimeOperator 
         
         # Local dictionary for return
         return locals()
