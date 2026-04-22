@@ -176,6 +176,27 @@ class TimeOperator:
         #print(ds)
         
         return ds
+
+
+    def shift_time_axis_by_n_years(ds,n=0):
+
+        time_axis = ds.time.values
+
+        new_time_axis = np.array([
+            cftime.DatetimeProlepticGregorian(
+                dt.year + n,  # move microsecond → year
+                dt.month,
+                dt.day,
+                dt.hour,
+                dt.minute,
+                dt.second,
+                dt.microsecond,               # reset microsecond
+                has_year_zero=True
+            )
+            for dt in time_axis], dtype=object)
+
+        ds['time'] = new_time_axis
         
+        return ds
 
 

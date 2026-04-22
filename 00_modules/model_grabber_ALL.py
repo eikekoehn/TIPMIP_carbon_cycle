@@ -3,6 +3,7 @@ from model_grabber_UBERN import UBERNgrabber
 from model_grabber_NorESM import NorESMgrabber
 from model_grabber_NASA import NASAgrabber
 from model_grabber_UKESM import UKESMgrabber
+from model_grabber_ECEARTH import ECEARTHgrabber
 
 class MODELgrabber:
 
@@ -18,5 +19,7 @@ class MODELgrabber:
             grabber = NASAgrabber
         elif model == 'UKESM1-2':
             grabber = UKESMgrabber
+        elif model == 'EC-Earth3-ESM-1':
+            grabber = ECEARTHgrabber
         return grabber
 

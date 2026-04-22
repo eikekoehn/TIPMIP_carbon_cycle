@@ -12,6 +12,7 @@ import glob
 # custom mdoules
 from misc_functions import DataFuncs
 from misc_functions import MISCgrabber
+from operations_time import TimeOperator
 
 
 class UKESMgrabber:
@@ -157,6 +158,10 @@ class UKESMgrabber:
         da = ds[varia]
         if verbose_level > 0:
             print(da) 
+
+        # if run is esm-piControl, shift the time by n years
+        if run == 'esm-piControl':
+            da = TimeOperator.shift_time_axis_by_n_years(da,n=-250)
         
         return da
  
