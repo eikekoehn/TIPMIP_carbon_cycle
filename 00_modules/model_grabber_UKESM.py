@@ -16,12 +16,12 @@ from misc_functions import MISCgrabber
 
 class UKESMgrabber:
 
-    def get_rootdir(run,server='spirit'):
+    def get_rootdir(run,server='cineca'):
         if server == 'spirit':
             raise Exception('No data for UKESM1-2 on SPIRIT.') 
         elif server == 'levante':
             rootdir = '/work/bm1448/upload/tipesm/UKESM1-2'
-        elif rootdir == 'cineca':
+        elif server == 'cineca':
             rootdir = '/g100_store/DRES_OptimESM/ESGF/prepub/mohc'
         return rootdir
 
@@ -108,7 +108,7 @@ class UKESMgrabber:
         domain = UKESMgrabber.get_domain(varia,freq_input)
         grid = UKESMgrabber.get_grid(varia,freq_input)
 
-        data_path = f'{rootdir}/2*/CMIP6/{exercise}/MOHC/UKESM1-2/{run}/{member}/{domain}{freq}/{varia}/{grid}/v*' 
+        data_path = f'{rootdir}/2*/CMIP6/CMIP/MOHC/UKESM1-2/{run}/{member}/{domain}{freq}/{varia}/{grid}/v*' 
         pattern = f"/{varia}*_{grid}_*.nc" 
         #print(data_path+pattern)
         file_list = sorted(glob.glob(data_path+pattern,recursive=True))

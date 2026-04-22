@@ -2,6 +2,7 @@ from model_grabber_IPSL import IPSLgrabber
 from model_grabber_UBERN import UBERNgrabber
 from model_grabber_NorESM import NorESMgrabber
 from model_grabber_NASA import NASAgrabber
+from model_grabber_UKESM import UKESMgrabber
 
 class MODELgrabber:
 
@@ -15,5 +16,7 @@ class MODELgrabber:
             grabber = NorESMgrabber
         elif model == 'GISSE2.1-G-CC2':
             grabber = NASAgrabber
+        elif model == 'UKESM1-2':
+            grabber = UKESMgrabber
         return grabber
 

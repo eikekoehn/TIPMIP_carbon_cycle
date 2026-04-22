@@ -27,6 +27,7 @@ class PackageGetter:
         import time
         import cftime
         import datetime
+        import nc_time_axis
         #import time as tim
     
         # import analysis packages
