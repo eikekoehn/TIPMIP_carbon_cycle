@@ -114,3 +114,68 @@ class TimeOperator:
         else:
             raise ValueError("freq_output must be None, 'monthly', 'yearly', or 'climatology'")
 
+    
+    def needs_time_fix(time_axis):
+        years = np.array([dt.year for dt in time_axis])
+        microsecs = np.array([dt.microsecond for dt in time_axis])
+    
+        return (
+            np.all(years == 1970) and          # constant fake year
+            np.all(microsecs > 1000) and       # looks like real years
+            np.all(microsecs < 4000)           # reasonable year range
+        )
+    
+
+    def adjust_time_axis(ds):
+
+        if 'year' in ds.coords or year in ds.dims:
+            time_axis = ds.year.values
+        elif 'time' in ds.coords or year in ds.dims:
+            time_axis = ds.time.values
+            #print(time_axis)
+            #if np.all([np.isinstance(time_axis_id))
+
+        if TimeOperator.needs_time_fix(time_axis):
+
+            new_time_axis = np.array([
+                cftime.DatetimeProlepticGregorian(
+                    dt.microsecond,  # move microsecond → year
+                    dt.month,
+                    dt.day,
+                    dt.hour,
+                    dt.minute,
+                    dt.second,
+                    0,               # reset microsecond
+                    has_year_zero=True
+                )
+                for dt in time_axis], dtype=object)
+        else:
+            new_time_axis = np.array([
+                cftime.DatetimeProlepticGregorian(
+                    dt.year,  # move microsecond → year
+                    dt.month,
+                    dt.day,
+                    dt.hour,
+                    dt.minute,
+                    dt.second,
+                    dt.microsecond,               # reset microsecond
+                    has_year_zero=True
+                )
+                for dt in time_axis], dtype=object)
+
+        ds['time'] = new_time_axis
+
+        # Remove 'year' if it exists as a variable or coordinate
+        if 'year' in ds.variables:
+            ds = ds.drop_vars('year')
+        elif 'year' in ds.coords:
+            ds = ds.drop_vars('year')  # works for coords too
+
+        ds = ds.rename({'year': 'time'})
+
+        #print(ds)
+        
+        return ds
+        
+
+

@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 import glob
 
 # custom mdoules
-from time_module import Timer
 from misc_functions import DataFuncs
 from misc_functions import MISCgrabber
 
