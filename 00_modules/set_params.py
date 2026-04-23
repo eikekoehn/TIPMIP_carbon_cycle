@@ -35,31 +35,31 @@ class Models:
     @classmethod
     def get_IPSL(cls):
         return cls(name='IPSL-CM6-ESMCO2', 
-                   color_id='C0',
+                   color_id='#1F78B4',
                    linestyle_id='--',
                    marker_id='s',
                    institute='IPSL',
                    emission_rate=9.38824139, # PgC/yr
                    rampup_start_year=1850,
-                   plotting_name='IPSL-CM6-ESMCO2',
+                   plotting_name='IPSL',
                    default_member='r1i2p3f1')
 
     @classmethod
     def get_NorESM(cls):
         return cls(name='NorESM2-LM', 
-                        color_id='C1',
+                        color_id='#E6AB02',
                         linestyle_id='-.',
                         marker_id='o',
                         institute='NCC',
                         emission_rate=16.807, # GtC yr-1
-                        rampup_start_year=1850,
-                        plotting_name='NorESM2-LM',
+                        rampup_start_year=1851,
+                        plotting_name='NorESM',
                         default_member='r1i1p1f1')   
 
     @classmethod
     def get_GFDL(cls):
         return cls(name='GFDL-ESM2M', 
-                        color_id='C2',
+                        color_id='#66A61E',
                         linestyle_id=':',
                         marker_id='*',
                         institute='UBern',
@@ -71,51 +71,53 @@ class Models:
     @classmethod
     def get_ECEarth(cls):
         return cls(name='EC-Earth3-ESM-1', 
-                        color_id='C3',
+                        color_id='#FB9A99',
                         linestyle_id='--',
                         marker_id='+',
                         institute='EC-Earth-Consortium',
                         emission_rate=12.4, # GtC yr-1
                         rampup_start_year=1850,
-                        plotting_name='EC-Earth3-ESM-1',
+                        plotting_name='EC-Earth',
                         default_member='r1i1p1f1')     
 
     @classmethod
     def get_UKESM(cls):
         return cls(name='UKESM1-2', 
-                        color_id='C4',
+                        color_id='#7570B3',
                         linestyle_id='--',
                         marker_id='v',
                         institute='MOHC',
                         emission_rate=8, # GtC yr-1
-                        rampup_start_year=2100,#1850,
-                        plotting_name='UKESM1-2',
+                        rampup_start_year=1850, #2100,#1850,
+                        plotting_name='UKESM',
                         default_member='r1i1p1f1')  
 
     @classmethod
     def get_CNRM(cls):
         return cls(name='CNRM-ESM2-1', 
-                        color_id='C5',
+                        color_id='#A6761D',
                         linestyle_id='-.',
                         marker_id='^',
                         institute='CNRM',
                         emission_rate=11.378, # GtC yr-1
                         rampup_start_year=1850,
-                        plotting_name='CNRM-ESM2-1',
+                        plotting_name='CNRM',
                         default_member='r1i1p2f2')   
 
     @classmethod
     def get_NASA(cls):
-        return cls(name='NASA-GISS-E2-1-G', 
-                        color_id='C6',
+        return cls(name='GISSE2.1-G-CC2',#'NASA-GISS-E2-1-G', 
+                        color_id='#E7298A',
                         linestyle_id=':',
                         marker_id='x',
                         institute='NASA',
                         emission_rate=11.4, # GtC yr-1
                         rampup_start_year=1850,
-                        plotting_name='NASA-GISS-E2-1-G',
+                        plotting_name='NASA-GISS',
                         default_member=None)  
-        
+
+# colors remaining (for 12 total colors): #1B9E77, #D95F02, #666666, #B2DF8A, #FDBF6F
+    
         
     @classmethod
     def get_model_list(cls,selector):
@@ -132,7 +134,7 @@ class Models:
         return model_list        
 
     @classmethod
-    def get_model_dict(cls,selector):
+    def get_model_dict(cls,selector='all'):
         """Creates and returns a dictionary with requested model instances."""
         model_list = cls.get_model_list(selector)
         model_dict = dict()

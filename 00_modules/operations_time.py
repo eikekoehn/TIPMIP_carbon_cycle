@@ -3,6 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cftime
 
+from set_params import Models as pmods
+
 class TimeOperator:
 
     def _infer_time_resolution(time):
@@ -178,25 +180,55 @@ class TimeOperator:
         return ds
 
 
-    def shift_time_axis_by_n_years(ds,n=0):
+    def shift_time_axis_by_n_years(ds,n=0,set_to_start_of_months=False):
 
+        # negative n shifts backward in time
+        
         time_axis = ds.time.values
 
-        new_time_axis = np.array([
-            cftime.DatetimeProlepticGregorian(
-                dt.year + n,  # move microsecond → year
-                dt.month,
-                dt.day,
-                dt.hour,
-                dt.minute,
-                dt.second,
-                dt.microsecond,               # reset microsecond
-                has_year_zero=True
-            )
-            for dt in time_axis], dtype=object)
+        if set_to_start_of_months == False:
+            new_time_axis = np.array([
+                cftime.DatetimeProlepticGregorian(
+                    dt.year + n,  # move microsecond → year
+                    dt.month,
+                    dt.day,
+                    dt.hour,
+                    dt.minute,
+                    dt.second,
+                    dt.microsecond,               # reset microsecond
+                    has_year_zero=True
+                )
+                for dt in time_axis], dtype=object)
+        else:
+            new_time_axis = np.array([
+                cftime.DatetimeProlepticGregorian(
+                    dt.year + n,  # move microsecond → year
+                    1, #dt.month,
+                    1, #dt.day,
+                    0, #dt.hour,
+                    0, #dt.minute,
+                    0, #dt.second,
+                    0, #dt.microsecond,               # reset microsecond
+                    has_year_zero=True
+                )
+                for dt in time_axis], dtype=object)            
 
         ds['time'] = new_time_axis
         
         return ds
 
+
+    def shift_time_axis_to_ref_year(model,ds,ref_year=1850,set_to_start_of_months=False,verbosity=0):
+
+        # identify how many years i need to shift:
+        model_dict = pmods.get_model_dict('all')
+        n = ref_year - model_dict[model].rampup_start_year
+        if verbosity>0:
+            print(f'{model}: shifting by {n} years')
+        
+
+        # now shift by n years
+        ds = TimeOperator.shift_time_axis_by_n_years(ds,n,set_to_start_of_months=set_to_start_of_months)
+        
+        return ds
 
