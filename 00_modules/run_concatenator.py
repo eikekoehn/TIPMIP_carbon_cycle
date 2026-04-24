@@ -112,6 +112,7 @@ class RConcatenator:
         da = self.concat_da(das)
         # shift to reference year
         da = TimeOperator.shift_time_axis_to_ref_year(self.model, da, ref_year=ref_year)
+        #print(da)
         # enforce start
         da = da.sel(time=slice(f"{ref_year:04d}-01-01", None))
         return da
