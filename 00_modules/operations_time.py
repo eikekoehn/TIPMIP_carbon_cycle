@@ -232,3 +232,22 @@ class TimeOperator:
         
         return ds
 
+    
+    def integrate_in_time(da):
+        units = da.attrs.get("units", "")
+    
+        # time differences (length N-1)
+        dt = da.time.diff("time")
+    
+        # convert to seconds
+        seconds = dt / np.timedelta64(1, "s")
+    
+        # pad to match original length (assume first step same as second)
+        seconds = seconds.reindex(time=da.time, method="bfill")
+    
+        # integrate
+        integrated_da = (da * seconds).cumsum(dim="time")
+    
+        integrated_da.attrs["units"] = f"{units} x s"
+        return integrated_da
+

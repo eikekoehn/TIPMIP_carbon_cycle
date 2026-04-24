@@ -223,7 +223,7 @@ class Runs:
         # TIPMIP stabilizations
         run_dict['esm-up2p0-gwl1p1'] = cls(color_id='C2',     linestyle_id=':')
         run_dict['esm-up2p0-gwl1p5'] = cls(color_id='C2',     linestyle_id=':')
-        run_dict['esm-up2p0-gwl2p0'] = cls(color_id='#4C9A47',     linestyle_id=':')
+        run_dict['esm-up2p0-gwl2p0'] = cls(color_id='#66A61E',     linestyle_id=':')
         run_dict['esm-up2p0-gwl3p0'] = cls(color_id='C2',     linestyle_id=':')
         run_dict['esm-up2p0-gwl4p0'] = cls(color_id='#2E7D32',     linestyle_id=':')
         run_dict['esm-up2p0-gwl5p0'] = cls(color_id='C2',     linestyle_id=':')
@@ -312,7 +312,8 @@ class ModelRuns:
                                    'esm-up2p0-gwl3p0',
                                    'esm-up2p0-gwl4p0',
                                    'esm-up2p0-gwl2p0-50y-dn2p0',
-                                   'esm-up2p0-gwl4p0-50y-dn2p0']
+                                   'esm-up2p0-gwl4p0-50y-dn2p0',
+                                   'esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0']
 
         elif model == 'NorESM2-LM':
             list_of_simulations = ['esm-piControl',
@@ -387,35 +388,6 @@ class ModelRuns:
 
         return list_of_simulations
 
-    
-    def get_model_run_years(model,run):
-        """A function to return the start and end years of a given model run."""
-        # get the annual mean tas time series file
-        dummy_var = 'tas'
-        ts_key = 'annual_mean'
-        root_dir = '/home/ekoehn/jobs/jupyter/TipESM/carbon_cycle_reversibility/global_time_series'
-        if model == 'UKESM1-2':
-            root_dir = root_dir + '_UKESM'
-        elif model == 'EC-Earth3-ESM-1':
-            root_dir = root_dir + '_CINECA'
-        filedir = f'{root_dir}/{run}/{ts_key}/{dummy_var}/'
-        filename = f'tas_{model}_{run}_{ts_key}.nc'
-        try:
-            # open the ts file
-            with xr.open_dataset(filedir+filename,use_cftime=True) as ts:
-                # get the time vector
-                time = ts.time
-                #print(time)
-                # get years
-                years = time.dt.year.values
-                #print(years)
-                # get the first year
-                start_year = years[0]
-                end_year = years[-1]
-        except:
-            start_year = None
-            end_year = None
-        return start_year,end_year
 
     @classmethod
     def get_list_of_available_modelruns_in_cycle(cls,model,cycle):

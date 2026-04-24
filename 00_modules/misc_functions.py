@@ -91,3 +91,16 @@ class MISCgrabber:
                         break
     
         return [p['file'] for p in keep]
+
+
+class miniFuncs:
+
+    def is_available(file_string):
+        # do the check
+        from pathlib import Path
+        file_path = Path(file_string)
+        if file_path.exists():
+            available=True
+        else:
+            available=False
+        return available

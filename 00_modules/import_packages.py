@@ -17,6 +17,7 @@ class PackageGetter:
         from importlib import reload
         import glob
         from joblib import Parallel, delayed
+        from pathlib import Path 
         
         # import netcdf packages
         import netCDF4
@@ -82,10 +83,14 @@ class PackageGetter:
 
         # import the class for getting miscellaneous functions
         from misc_functions import DataFuncs as DFuncs
+        from misc_functions import miniFuncs as miniFuncs
 
         # import operators for calculations
         from operations_space import SpaceOperator 
         from operations_time import TimeOperator 
+
+        # import concatenator for concatenation of runs
+        from run_concatenator import RConcatenator
         
         # Local dictionary for return
         return locals()
