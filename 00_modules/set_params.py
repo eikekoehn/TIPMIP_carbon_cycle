@@ -231,7 +231,7 @@ class Runs:
 
         # TIPMIP rampdowns
         run_dict['esm-up2p0-gwl1p5-50y-dn2p0']  = cls(color_id='C0', linestyle_id='--')
-        run_dict['esm-up2p0-gwl2p0-50y-dn2p0']  = cls(color_id='#6BAED6', linestyle_id='--')
+        run_dict['esm-up2p0-gwl2p0-50y-dn2p0']  = cls(color_id='#3DAEFF', linestyle_id='--')
         run_dict['esm-up2p0-gwl3p0-50y-dn2p0']  = cls(color_id='C0', linestyle_id='--')
         run_dict['esm-up2p0-gwl4p0-50y-dn2p0']  = cls(color_id='#4F8FC1', linestyle_id='--')
         run_dict['esm-up2p0-gwl2p0-200y-dn2p0'] = cls(color_id='C0', linestyle_id='--')
