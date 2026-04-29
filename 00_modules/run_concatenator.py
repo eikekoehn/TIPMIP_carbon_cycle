@@ -87,7 +87,7 @@ class RConcatenator:
             # ensure consistent calendar
             da = TimeOperator.shift_time_axis_by_n_years(da, n=0)
             # slice
-            da = da.sel(time=slice(f"{y0}-01-01", f"{y1}-12-31"))
+            da = da.sel(time=slice(f"{int(y0):04d}-01-01", f"{int(y1):04d}-12-31"))
             if da.size > 0:
                 das.append(da)
 
