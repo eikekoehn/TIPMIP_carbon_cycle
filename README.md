@@ -20,7 +20,8 @@
 
 * so far, the global average/integral time series calculation does not take the land or ocean area fraction (sftlf, sftof) into account. Need to implement for the relevant models.
 * when plotting the time series color coded with the run color, i go backwards so that each run color appears. Overlaying obscures the colors somewhat.
-
+* check why for IPSL, global carbon pool changes don't add to total emitted carbon (mismatch even bigger when using integrated fluxes, than when using ocean and land stocks). Due to not using sftlf and sftof when horizontally integrating fluxes?
+  
 ## Double check:
 
 * The reference values so far are taken to be the piControl at the start year of the rampup. Should rather use the 31yr centered mean, but data is not provided by models (i.e., the 15yr leading up to 1850).
