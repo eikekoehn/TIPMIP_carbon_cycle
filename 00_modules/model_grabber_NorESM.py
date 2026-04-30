@@ -58,7 +58,7 @@ class NorESMgrabber:
             domain = 'L'
         elif freq_input == 'monthly' and varia in ['cLand', 'cSoil', 'cSoilLevels', 'cWood', 'fFireAll', 'fracLut', 'grassFracC3', 'grassFracC4', 'mrsfl', 'mrsll', 'mrsol', 'nep', 'nwdFracLut', 'orog', 'rhSoil', 'vegFrac']:
             domain = 'E'
-        elif freq_input == 'monthly' and varia in ['chlos', 'epcalc100', 'fgco2', 'friver', 'hfbasinpmadv', 'hfx', 'intpp', 'masso', 'mlotstmax', 'msftbarot', 'msftyz', 'o2os', 'pbo', 'po4os', 'sob', 'sos', 'talk', 'tauvo', 'thetaoga', 'tob', 'tosga', 'uo', 'vo', 'wfo', 'wo', 'zostoga', 'epc100', 'evs', 'fgo2', 'hfbasin', 'hfds', 'hfy', 'masscello', 'mlotst', 'mlotstmin', 'msftmz', 'no3os', 'obvfsq', 'ph', 'so', 'soga', 'sosga', 'tauuo', 'thetao', 'thkcello', 'tos', 'umo', 'vmo', 'volo', 'wmo', 'zos']:
+        elif freq_input == 'monthly' and varia in ['chlos', 'epcalc100', 'fgco2', 'friver', 'hfbasinpmadv', 'hfx', 'intpp', 'masso', 'mlotstmax', 'msftbarot', 'msftyz', 'o2os', 'pbo', 'po4os', 'sob', 'sos', 'talk', 'tauvo', 'thetaoga', 'tob', 'tosga', 'uo', 'vo', 'wfo', 'wo', 'zostoga', 'epc100', 'evs', 'fgo2', 'hfbasin', 'hfds', 'hfy', 'masscello', 'mlotst', 'mlotstmin', 'msftmz', 'no3os', 'obvfsq', 'ph', 'so', 'soga', 'sosga', 'tauuo', 'thetao', 'thkcello', 'tos', 'umo', 'vmo', 'volo', 'wmo', 'zos','dissic']:
             domain = 'O'
         elif freq_input == 'monthly' and varia in ['siconc', 'siconca', 'simass', 'sisnconc', 'sisnmass', 'sisnthick', 'sispeed', 'sitemptop', 'sithick', 'siu', 'siv', 'sivol']:
             domain = 'SI'
@@ -108,7 +108,18 @@ class NorESMgrabber:
         else:
             raise Exception('Variable not in known domain.')
         return area
-        
+
+    def get_thickness(varia,freq_input):
+        domain = NorESMgrabber.get_domain(varia,freq_input)
+        if domain in ['Si','O']:
+            thickness_file = '/projets/TipESM/UiB/NorESM2-LM/esm-up2p0/v20251010/thkcello_Ofx_NorESM2-LM_esm-up2p0_r1i1p1f1_gr.nc'
+            thickness_ds = xr.open_dataset(thickness_file)
+            thickness = thickness_ds['thkcello'].fillna(0).compute()
+            #area = area.rename({'y':'j','x':'i'})
+            thickness_ds.close()
+        else:
+            raise Exception('Variable not in known domain.')
+        return thickness
     
     def get_filelist(varia,run,freq_input):
      

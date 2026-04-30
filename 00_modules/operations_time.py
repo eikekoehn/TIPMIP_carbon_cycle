@@ -130,9 +130,9 @@ class TimeOperator:
 
     def adjust_time_axis(ds):
 
-        if 'year' in ds.coords or year in ds.dims:
+        if 'year' in ds.coords or 'year' in ds.dims:
             time_axis = ds.year.values
-        elif 'time' in ds.coords or year in ds.dims:
+        elif 'time' in ds.coords or 'time' in ds.dims:
             time_axis = ds.time.values
             #print(time_axis)
             #if np.all([np.isinstance(time_axis_id))
@@ -168,12 +168,13 @@ class TimeOperator:
         ds['time'] = new_time_axis
 
         # Remove 'year' if it exists as a variable or coordinate
-        if 'year' in ds.variables:
-            ds = ds.drop_vars('year')
-        elif 'year' in ds.coords:
+        #if 'year' in ds.variables:
+        #    ds = ds.drop_vars('year')
+        if 'year' in ds.coords:
             ds = ds.drop_vars('year')  # works for coords too
 
-        ds = ds.rename({'year': 'time'})
+        if 'year' in ds.coords or 'year' in ds.dims:
+            ds = ds.rename({'year': 'time'})
 
         #print(ds)
         

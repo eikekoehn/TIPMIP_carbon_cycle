@@ -112,4 +112,51 @@ class SpaceOperator:
         return integral
 
 
+    def calc_vertical_integral(da, thickness_weights, mask=None, dims=None):
+        import xarray as xr
+    
+        # --------------------------------------------------
+        # detect vertical dims
+        # --------------------------------------------------
+        if dims is None:
+            vertical_candidates = {"lev", "level", "levelo", "depth", "deptho"}
+            dims = [d for d in da.dims if d.lower() in vertical_candidates]
+    
+            if len(dims) == 0:
+                raise ValueError(f"No vertical dimension found in {da.dims}")
+    
+        # --------------------------------------------------
+        # ensure dask (critical for big data)
+        # --------------------------------------------------
+        #if not da.chunks:
+        #    da = da.chunk({dims[0]: -1})  # chunk vertically (fast reduction)
+    
+        #if not thickness_weights.chunks:
+        #    thickness_weights = thickness_weights.chunk({dims[0]: -1})
+    
+        # --------------------------------------------------
+        # align WITHOUT copying data
+        # --------------------------------------------------
+        #da, thickness_weights = xr.align(da, thickness_weights, join="inner", copy=False)
+        #thickness_weights = thickness_weights.broadcast_like(da)
+        # --------------------------------------------------
+        # mask (lazy)
+        # --------------------------------------------------
+        if mask is not None:
+            da = da.where(mask)
+    
+        # --------------------------------------------------
+        # vertical integral (lazy, no big temp array)
+        # --------------------------------------------------
+        #integral = xr.dot(da, thickness_weights, dims=dims)
+        integral = (da * thickness_weights).sum(dim=dims)
+    
+        # --------------------------------------------------
+        # metadata
+        # --------------------------------------------------
+        integral.attrs = da.attrs.copy()
+        integral.attrs["long_name"] = f"vertical integral of {da.name}"
+    
+        return integral
+
 

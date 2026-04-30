@@ -55,7 +55,7 @@ class UBERNgrabber:
             domain = 'L'
         elif freq_input == 'monthly' and varia in ['cLand', 'cSoil', 'cSoilLevels', 'cWood', 'fFireAll', 'fracLut', 'grassFracC3', 'grassFracC4', 'mrsfl', 'mrsll', 'mrsol', 'nep', 'nwdFracLut', 'orog', 'rhSoil', 'vegFrac']:
             domain = 'E'
-        elif freq_input == 'monthly' and varia in ['chlos', 'epcalc100', 'fgco2', 'friver', 'hfbasinpmadv', 'hfx', 'intpp', 'masso', 'mlotstmax', 'msftbarot', 'msftyz', 'o2os', 'pbo', 'po4os', 'sob', 'sos', 'talk', 'tauvo', 'thetaoga', 'tob', 'tosga', 'uo', 'vo', 'wfo', 'wo', 'zostoga', 'epc100', 'evs', 'fgo2', 'hfbasin', 'hfds', 'hfy', 'masscello', 'mlotst', 'mlotstmin', 'msftmz', 'no3os', 'obvfsq', 'ph', 'so', 'soga', 'sosga', 'tauuo', 'thetao', 'thkcello', 'tos', 'umo', 'vmo', 'volo', 'wmo', 'zos']:
+        elif freq_input == 'monthly' and varia in ['chlos', 'epcalc100', 'fgco2', 'friver', 'hfbasinpmadv', 'hfx', 'intpp', 'masso', 'mlotstmax', 'msftbarot', 'msftyz', 'o2os', 'pbo', 'po4os', 'sob', 'sos', 'talk', 'tauvo', 'thetaoga', 'tob', 'tosga', 'uo', 'vo', 'wfo', 'wo', 'zostoga', 'epc100', 'evs', 'fgo2', 'hfbasin', 'hfds', 'hfy', 'masscello', 'mlotst', 'mlotstmin', 'msftmz', 'no3os', 'obvfsq', 'ph', 'so', 'soga', 'sosga', 'tauuo', 'thetao', 'thkcello', 'tos', 'umo', 'vmo', 'volo', 'wmo', 'zos','dissic']:
             domain = 'O'
         elif freq_input == 'monthly' and varia in ['siconc', 'siconca', 'simass', 'sisnconc', 'sisnmass', 'sisnthick', 'sispeed', 'sitemptop', 'sithick', 'siu', 'siv', 'sivol']:
             domain = 'SI'
