@@ -20,7 +20,7 @@
 
 * so far, the global average/integral time series calculation does not take the land or ocean area fraction (sftlf, sftof) into account. Need to implement for the relevant models.
 * when plotting the time series color coded with the run color, i go backwards so that each run color appears. Overlaying obscures the colors somewhat.
-* NorESM2-LM co2mass in atmosphere is not well constructed. Need to update using good co2 or co2mass field. Also piControl fields don't show same start year as rampup. Shifted by one year? - Need to backcheck.
+* NorESM2-LM co2mass in atmosphere is not well constructed. Need to update using good co2 or co2mass field. Also piControl fields don't show same start year as rampup. Shifted by one year? - Need to backcheck. piControl co2 (AERmon) on spirit also seems off (mixing ratio of aroun 430ppm instead of around 285...).
   
 ## Double check:
 
