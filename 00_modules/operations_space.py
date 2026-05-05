@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 class SpaceOperator:
 
-    def calc_spatial_mean(da, area_weights, mask=None, dims=None):
+    def calc_spatial_mean(da, area_weights, mask=None, dims=None, grid_cell_fractions=None):
         """
         Compute area-weighted spatial mean of a DataArray.
         
@@ -45,6 +45,29 @@ class SpaceOperator:
                 else:
                     raise Exception('Coordinates do not match')
 
+        # take into account that coastal cells are not 100% land
+        if grid_cell_fractions is not None:
+            print('adjust area weights for coastal points')
+            assert np.max(grid_cell_fractions.values)<=1
+            assert np.min(grid_cell_fractions.values)>=0
+            # make sure that the coordinates area the same
+            for coord in area_weights.coords:
+                diff_coord = grid_cell_fractions[coord].values - area_weights[coord].values
+                sum_diff_coord = np.sum(np.abs(diff_coord))
+                unique_diffs = np.unique(diff_coord)
+                if sum_diff_coord > 0:
+                    print(f'There is a total coordinate difference of: {sum_diff_coord}')
+                    if np.sum(np.abs((grid_cell_fractions[coord].values - area_weights[coord].values))) < 1e-8:
+                        print(f'... this is small enough (smaller than 1e-8), so we just set the grid_cell_fractions.coord to area_weights.coord.')
+                        grid_cell_fractions = grid_cell_fractions.assign_coords({coord: area_weights[coord]})
+                    elif np.all(np.isin(unique_diffs, [-360, 0, 360])):
+                        print(f'... all of the differences are just caused by 360° longitude wrapping. So we just set the grid_cell_fractions.coord to area_weights.coord.')
+                        grid_cell_fractions = grid_cell_fractions.assign_coords({coord: area_weights[coord]})        
+                    else:
+                        raise Exception('Coordinates do not match')
+            # now multiply them together
+            area_weights = area_weights * grid_cell_fractions
+            
         # Apply mask if provided
         if mask is not None:
             da = da.where(mask)
@@ -60,7 +83,8 @@ class SpaceOperator:
 
         return spatial_mean
 
-    def calc_spatial_integral(da, area_weights, mask=None, dims=None):
+    
+    def calc_spatial_integral(da, area_weights, mask=None, dims=None, grid_cell_fractions=None):
         """
         Compute area-weighted spatial integral of a DataArray.
 
@@ -100,15 +124,39 @@ class SpaceOperator:
                     area_weights = area_weights.assign_coords({coord: da[coord]})        
                 else:
                     raise Exception('Coordinates do not match')
-    
+
+        # take into account that coastal cells are not 100% land
+        if grid_cell_fractions is not None:
+            print('adjust area weights for coastal points')
+            assert np.max(grid_cell_fractions.values)<=1
+            assert np.min(grid_cell_fractions.values)>=0
+            # make sure that the coordinates area the same
+            for coord in area_weights.coords:
+                diff_coord = grid_cell_fractions[coord].values - area_weights[coord].values
+                sum_diff_coord = np.sum(np.abs(diff_coord))
+                unique_diffs = np.unique(diff_coord)
+                if sum_diff_coord > 0:
+                    print(f'There is a total coordinate difference of: {sum_diff_coord}')
+                    if np.sum(np.abs((grid_cell_fractions[coord].values - area_weights[coord].values))) < 1e-8:
+                        print(f'... this is small enough (smaller than 1e-8), so we just set the grid_cell_fractions.coord to area_weights.coord.')
+                        grid_cell_fractions = grid_cell_fractions.assign_coords({coord: area_weights[coord]})
+                    elif np.all(np.isin(unique_diffs, [-360, 0, 360])):
+                        print(f'... all of the differences are just caused by 360° longitude wrapping. So we just set the grid_cell_fractions.coord to area_weights.coord.')
+                        grid_cell_fractions = grid_cell_fractions.assign_coords({coord: area_weights[coord]})        
+                    else:
+                        raise Exception('Coordinates do not match')
+            # now multiply them together
+            area_weights = area_weights * grid_cell_fractions
+            
         # Apply mask if provided
         if mask is not None:
             da = da.where(mask)
             area_weights = area_weights.where(mask)
             
         # Integral = sum(x * dA)
-        integral = (da * area_weights).sum(dim=dims)
-
+        weighted_da = da * area_weights
+        integral = weighted_da.sum(dim=dims)
+       
         return integral
 
 

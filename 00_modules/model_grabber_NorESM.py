@@ -50,7 +50,7 @@ class NorESMgrabber:
             domain = 'E'
         elif freq_input == 'daily' and varia in ['tos','tossq']:
             domain = 'O'
-        elif freq_input == 'monthly' and varia in ['cl', 'cli', 'clivi', 'clt', 'clw', 'clwvi', 'co2', 'hfls', 'hfss', 'hur', 'hurs', 'hus', 'pr', 'prc', 'prw', 'psl', 'rlds', 'rldscs', 'rlus', 'rluscs', 'rlut', 'rlutcs', 'rsds', 'rsdscs', 'rsdt', 'rsus', 'rsuscs', 'rsut', 'rsutcs', 'ta', 'tas', 'tasmax', 'tasmin', 'tauu', 'tauv', 'ua', 'uas', 'va', 'vas', 'wap', 'zg']:
+        elif freq_input == 'monthly' and varia in ['cl', 'cli', 'clivi', 'clt', 'clw', 'clwvi', 'co2', 'hfls', 'hfss', 'hur', 'hurs', 'hus', 'pr', 'prc', 'prw', 'psl', 'rlds', 'rldscs', 'rlus', 'rluscs', 'rlut', 'rlutcs', 'rsds', 'rsdscs', 'rsdt', 'rsus', 'rsuscs', 'rsut', 'rsutcs', 'ta', 'tas', 'tasmax', 'tasmin', 'tauu', 'tauv', 'ua', 'uas', 'va', 'vas', 'wap', 'zg','co2mass']:
             domain = 'A'
         elif freq_input == 'monthly' and varia in ['sftgif', 'sftgrf', 'snd', 'snm', 'snw']:
             domain = 'LI'
@@ -132,6 +132,7 @@ class NorESMgrabber:
 
         if run == 'esm-piControl':
             data_path = f'{rootdir}/{run}/{member}/{domain}{freq}/{varia}/{grid}/v*' 
+            #data_path = f'{rootdir}/{run}'
         else:
             data_path = f'{rootdir}/{run}/v*'
             
@@ -157,13 +158,20 @@ class NorESMgrabber:
             raise Exception('Variable not in known domain.')
         return dims
 
-    #def get_area_fraction(frac_type='land'):
-    #    if frac_type == 'land':
-    #        indir = '/bdd/CMIP6/CMIP/IPSL/IPSL-CM6A-LR/1pctCO2/r1i1p1f1/fx/sftlf/gr/latest'
-    #        land_area_fraction_ds = xr.open_dataset(f'{indir}/sftlf_fx_IPSL-CM6A-LR_1pctCO2_r1i1p1f1_gr.nc')
-    #        area_fraction = land_area_fraction_ds.sftlf/100. 
-    #    return area_fraction
+    def get_area_fraction(varia):
+        if varia in ['nbp','cLand']:
+            indir = '/projets/TipESM/UiB/NorESM2-LM/esm-up2p0/v20251010'
+            land_area_fraction_ds = xr.open_dataset(f'{indir}/sftlf_fx_NorESM2-LM_esm-up2p0_r1i1p1f1_gn.nc')
+            area_fraction = land_area_fraction_ds.sftlf/100. 
+        elif varia in ['fgco2','dissic']: 
+            indir = '/projets/TipESM/UiB/NorESM2-LM/esm-up2p0/v20251010'
+            ocean_area_fraction_ds = xr.open_dataset(f'{indir}/sftof_Ofx_NorESM2-LM_esm-up2p0_r1i1p1f1_gn.nc')
+            area_fraction = ocean_area_fraction_ds.sftof/100.             
+        else:
+            area_fraction = None
+        return area_fraction
 
+    
     def get_data(varia,run,freq_input='monthly',verbose_level=1):
         
         # get the list of files

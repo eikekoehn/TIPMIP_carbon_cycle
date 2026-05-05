@@ -83,18 +83,19 @@ class UBERNgrabber:
     def get_area(varia,freq_input):
         domain = UBERNgrabber.get_domain(varia,freq_input)
         if domain in ['L', 'E', 'A', '', 'CF', 'LI']:
-            area_file = '/home/ekoehn/jobs/jupyter/TipESM/carbon_cycle_reversibility/model_grids/areacella_fx_GFDL-ESM2M_historical_r0i0p0.nc'
+            #area_file = '/home/ekoehn/jobs/jupyter/TipESM/carbon_cycle_reversibility/model_grids/areacella_fx_GFDL-ESM2M_historical_r0i0p0.nc'
+            area_file = '/projets/TipESM/UBERN/TipESM/GFDL-ESM2M/esm-piControl/r1i1p1f1/fx/areacella/gn/v20250510/areacella_fx_GFDL-ESM2M_esm-piControl_r1i1p1f1_gn.nc'
             area_ds = xr.open_dataset(area_file)
             area = area_ds['areacella'].compute()
-            area = area.rename({'lat':'latitude','lon':'longitude'})
+            #area = area.rename({'lat':'latitude','lon':'longitude'})
             area_ds.close()
         elif domain in ['Si','O']:
-            area_file = '/home/ekoehn/jobs/jupyter/TipESM/carbon_cycle_reversibility/model_grids/areacello_Ofx_GFDL-ESM2M_faf-all_r1i1p1f1_gn.nc'
+            #area_file = '/home/ekoehn/jobs/jupyter/TipESM/carbon_cycle_reversibility/model_grids/areacello_Ofx_GFDL-ESM2M_faf-all_r1i1p1f1_gn.nc'
+            area_file = '/projets/TipESM/UBERN/TipESM/GFDL-ESM2M/esm-piControl/r1i1p1f1/Ofx/areacello/gn/v20250510/areacello_Ofx_GFDL-ESM2M_esm-piControl_r1i1p1f1_gn.nc'
             area_ds = xr.open_dataset(area_file)
             area = area_ds['areacello'].fillna(0).compute()
-            area = area.rename({'lat':'geolat_t','lon':'geolon_t'})
-            area = area.rename({'x':'longitude','y':'latitude'})
-
+            #area = area.rename({'lat':'geolat_t','lon':'geolon_t'})
+            #area = area.rename({'x':'longitude','y':'latitude'})
             area_ds.close()        
         else:
             raise Exception('Variable not in known domain.')
@@ -129,12 +130,22 @@ class UBERNgrabber:
             raise Exception('Variable not in known domain.')
         return dims
 
-    #def get_area_fraction(frac_type='land'):
-    #    if frac_type == 'land':
-    #        indir = '/bdd/CMIP6/CMIP/IPSL/IPSL-CM6A-LR/1pctCO2/r1i1p1f1/fx/sftlf/gr/latest'
-    #        land_area_fraction_ds = xr.open_dataset(f'{indir}/sftlf_fx_IPSL-CM6A-LR_1pctCO2_r1i1p1f1_gr.nc')
-    #        area_fraction = land_area_fraction_ds.sftlf/100. 
-    #    return area_fraction
+    def get_area_fraction(varia):
+        if varia in ['nbp','cLand']:
+            indir = '/projets/TipESM/UBERN/TipESM/GFDL-ESM2M/esm-piControl/r1i1p1f1/fx/sftlf/gn/v20250510'
+            land_area_fraction_ds = xr.open_dataset(f'{indir}/sftlf_fx_GFDL-ESM2M_esm-piControl_r1i1p1f1_gn.nc')
+            area_fraction = land_area_fraction_ds.sftlf/100. 
+        #elif varia in ['fgco2']:
+        #    indir = '/projets/TipESM/UBERN/TipESM/GFDL-ESM2M/esm-piControl/r1i1p1f1/Ofx/sftof/gn/v20250510'
+        #    ocean_area_fraction_ds = xr.open_dataset(f'{indir}/sftof_Ofx_GFDL-ESM2M_esm-piControl_r1i1p1f1_gn.nc')
+        #    area_fraction = ocean_area_fraction_ds.sftof/100. 
+        #elif varia in ['fgco2','dissic']: 
+        #    indir = '/projets/TipESM/UiB/NorESM2-LM/esm-up2p0/v20251010'
+        #    ocean_area_fraction_ds = xr.open_dataset(f'{indir}/sftof_Ofx_NorESM2-LM_esm-up2p0_r1i1p1f1_gn.nc')
+        #    area_fraction = ocean_area_fraction_ds.sftof/100.             
+        else:
+            area_fraction = None
+        return area_fraction
 
     def get_data(varia,run,freq_input='monthly',verbose_level=1):
         

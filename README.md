@@ -20,7 +20,7 @@
 
 * so far, the global average/integral time series calculation does not take the land or ocean area fraction (sftlf, sftof) into account. Need to implement for the relevant models.
 * when plotting the time series color coded with the run color, i go backwards so that each run color appears. Overlaying obscures the colors somewhat.
-* check why for IPSL, global carbon pool changes don't add to total emitted carbon (mismatch even bigger when using integrated fluxes, than when using ocean and land stocks). Due to not using sftlf and sftof when horizontally integrating fluxes?
+* NorESM2-LM co2mass in atmosphere is not well constructed. Need to update using good co2 or co2mass field. Also piControl fields don't show same start year as rampup. Shifted by one year? - Need to backcheck.
   
 ## Double check:
 
@@ -31,3 +31,4 @@
 * in general, I use a fixed areacelloa/areacella
 * in ECEarth, there are 6 extra latitudes for example in tas, that do not appear in areacella. What to do with those? I subsample for now to match areacella. This seems to be the case only for tas (so far?).
 * for NorESM2-LM, I used a temporally fixed thkcello for vertical integration (in IPSL it is temporally varying)
+* in IPSL, the global carbon pool budget closes much better (using co2mass, fgco2, nbp, fco2antt), when using sftlf for the computation of the nbp integral.  Still, during stabilization periods, the budget does not seem perfectly closed during stabilizations/rampdown. Fruther, according to my understanding, cLand should equally be taking sftlf into account. However, when doing this delta(cLand) and nbp diverge.

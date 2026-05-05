@@ -52,7 +52,7 @@ class Models:
                         marker_id='o',
                         institute='NCC',
                         emission_rate=16.807, # GtC yr-1
-                        rampup_start_year=1851,
+                        rampup_start_year=1850, # 1851
                         plotting_name='NorESM',
                         default_member='r1i1p1f1')   
 
