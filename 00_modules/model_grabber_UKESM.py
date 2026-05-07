@@ -127,24 +127,14 @@ class UKESMgrabber:
             raise Exception('Variable not in known domain.')
         return dims
 
-    #def get_thickness(varia,run,ds):
-    #    print('We have 4D dataset "ds". We need to get the vertical thickness of the grid cells.')
-    #    thickness_list = UKESMgrabber.get_filelist('thkcello',run)
-    #    thkcello_ds = xr.open_mfdataset(thickness_list,use_cftime=True)
-    #    thkcello = thkcello_ds['thkcello']
-    #    # Make sure thkcello has the same temporal dimension as the dataset to be analyzed
-    #    tsel = ds[varia].time.shape[0]
-    #    thkcello = thkcello.sel(time=slice(ds.time.min(), ds.time.max()))
-    #    # Fill the nans with 0 for weighting
-    #    thickness = thkcello.fillna(0)        
-    #    return thickness
-
-    #def get_area_fraction(frac_type='land'):
-    #    if frac_type == 'land':
-    #        indir = '/bdd/CMIP6/CMIP/IPSL/IPSL-CM6A-LR/1pctCO2/r1i1p1f1/fx/sftlf/gr/latest'
-    #        land_area_fraction_ds = xr.open_dataset(f'{indir}/sftlf_fx_IPSL-CM6A-LR_1pctCO2_r1i1p1f1_gr.nc')
-    #        area_fraction = land_area_fraction_ds.sftlf/100. 
-    #    return area_fraction
+    def get_area_fraction(varia):
+        if varia in ['nbp','npp']:
+            indir = '/g100/home/userexternal/ekoehn00/jobs/TIPMIP_carbon_cycle/00_modules/support_data'  #'/bdd/CMIP6/CMIP/IPSL/IPSL-CM6A-LR/1pctCO2/r1i1p1f1/fx/sftlf/gr/latest'
+            land_area_fraction_ds = xr.open_dataset(f'{indir}/sftlf_fx_UKESM1-0-LL_piControl_r1i1p1f2_gn.nc')
+            area_fraction = land_area_fraction_ds.sftlf/100. 
+        else:
+            area_fraction = None
+        return area_fraction
 
     def get_data(varia,run,freq_input='monthly',verbose_level=1):
         

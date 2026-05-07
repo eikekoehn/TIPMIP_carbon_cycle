@@ -218,24 +218,14 @@ class ECEARTHgrabber:
             raise Exception('Variable not in known domain.')
         return dims
 
-    #def get_thickness(varia,run,ds):
-    #    print('We have 4D dataset "ds". We need to get the vertical thickness of the grid cells.')
-    #    thickness_list = ECEARTHgrabber.get_filelist('thkcello',run)
-    #    thkcello_ds = xr.open_mfdataset(thickness_list,use_cftime=True)
-    #    thkcello = thkcello_ds['thkcello']
-    #    # Make sure thkcello has the same temporal dimension as the dataset to be analyzed
-    #    tsel = ds[varia].time.shape[0]
-    #    thkcello = thkcello.sel(time=slice(ds.time.min(), ds.time.max()))
-    #    # Fill the nans with 0 for weighting
-    #    thickness = thkcello.fillna(0)        
-    #    return thickness
-
-    #def get_area_fraction(frac_type='land'):
-    #    if frac_type == 'land':
-    #        indir = '/bdd/CMIP6/CMIP/IPSL/IPSL-CM6A-LR/1pctCO2/r1i1p1f1/fx/sftlf/gr/latest'
-    #        land_area_fraction_ds = xr.open_dataset(f'{indir}/sftlf_fx_IPSL-CM6A-LR_1pctCO2_r1i1p1f1_gr.nc')
-    #        area_fraction = land_area_fraction_ds.sftlf/100. 
-    #    return area_fraction
+    def get_area_fraction(varia):
+        if varia in ['nbp','npp']:
+            indir = '/g100_store/DRES_OptimESM/ESGF/prepub/smhi/CMIP6Plus/TIPMIP/EC-Earth-Consortium/EC-Earth3-ESM-1/esm-up2p0/r1i1p1f1/APfx/sftlf/gr/v20250429'
+            land_area_fraction_ds = xr.open_dataset(f'{indir}/sftlf_APfx_EC-Earth3-ESM-1_esm-up2p0_r1i1p1f1_gr.nc')
+            area_fraction = land_area_fraction_ds.sftlf/100. 
+        else:
+            area_fraction = None
+        return area_fraction
 
     def verify_coords(da,varia,freq_input,verbosity=0):
 
@@ -323,7 +313,7 @@ class ECEARTHgrabber:
 
         # verify lon and lats
         domain = ECEARTHgrabber.get_domain(varia,freq_input)
-        if domain in ['AP','LP','LI']:
+        if domain in ['AP','LP','LI'] and varia != 'co2mass':
             da = ECEARTHgrabber.verify_coords(da,varia,freq_input,verbosity=verbose_level)
 
         return da
