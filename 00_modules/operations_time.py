@@ -204,7 +204,7 @@ class TimeOperator:
             new_time_axis = np.array([
                 cftime.DatetimeProlepticGregorian(
                     dt.year + n,  # move microsecond → year
-                    1, #dt.month,
+                    dt.month,
                     1, #dt.day,
                     0, #dt.hour,
                     0, #dt.minute,
@@ -233,22 +233,68 @@ class TimeOperator:
         
         return ds
 
+    def set_calendar(ds,model):
+        model_dict = pmods.get_model_dict('all')
+        calendar = model_dict[model].calendar
+        if calendar == 'noleap':
+            ds = ds.convert_calendar("noleap")
+        return ds
+
+    def integrate_in_time(da, model, freq_input='monthly',overwrite_leap_years=False):
+        
+        da = TimeOperator.set_calendar(da,model)
     
-    def integrate_in_time(da):
         units = da.attrs.get("units", "")
     
-        # time differences (length N-1)
-        dt = da.time.diff("time")
+        # get number of days in each month (calendar-aware)
+        if freq_input == 'monthly':
+            days = da.time.dt.days_in_month
+            if overwrite_leap_years == True:
+                days = xr.where(days==29,28,days) # overwrite leap year
+        elif freq_input == 'yearly':
+            if da.indexes["time"].calendar == 'noleap':# model_dict[model].calendar == 'noleap':
+                days = 365
+            else:
+                days = da.time.dt.is_leap_year.astype(int) + 365
+        else:
+            raise Exception('Not known time step.')
     
         # convert to seconds
-        seconds = dt / np.timedelta64(1, "s")
-    
-        # pad to match original length (assume first step same as second)
-        seconds = seconds.reindex(time=da.time, method="bfill")
+        seconds = days * 24 * 3600
     
         # integrate
         integrated_da = (da * seconds).cumsum(dim="time")
     
         integrated_da.attrs["units"] = f"{units} x s"
+        if np.any(days==29) and overwrite_leap_years == False:
+            integrated_da.attrs["comment"] = f"integrated with leap years"
+        elif np.all(days!=29) or overwrite_leap_years == True:
+            integrated_da.attrs["comment"] = f"integrated without leap years"
         return integrated_da
+        
+    
+    #def integrate_in_time(da,model):
+    #
+    #    model_dict = pmods.get_model_dict('all')
+    #    calendar = model_dict[model].calendar
+    #    if calendar == 'noleap':
+    #        da = da.convert_calendar("noleap")
+    #
+    #    units = da.attrs.get("units", "")
+    # 
+    #    # time differences (length N-1)
+    #    dt = da.time.diff("time")
+    #
+    #    # convert to seconds
+    #    seconds = dt / np.timedelta64(1, "s")
+    #
+    #    # pad to match original length (assume first step same as second)
+    #    seconds = seconds.reindex(time=da.time, method="bfill")
+    #    print(seconds/3600/24)
+    #
+    #    # integrate
+    #    integrated_da = (da * seconds).cumsum(dim="time")
+    #
+    #    integrated_da.attrs["units"] = f"{units} x s"
+    #    return integrated_da
 

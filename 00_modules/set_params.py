@@ -10,7 +10,7 @@ class Models:
     I.e., which models there are, what their emission rate is for the rampup, and also, what their color_id, marker_id, and linestyle_id are
     """
     
-    def __init__(self, name=None, color_id=None, linestyle_id=None, marker_id=None, institute=None, emission_rate=None, rampup_start_year=None, plotting_name=None, default_member=None):
+    def __init__(self, name=None, color_id=None, linestyle_id=None, marker_id=None, institute=None, emission_rate=None, rampup_start_year=None, plotting_name=None, default_member=None, calendar=None):
         self.name = name
         self.color_id = color_id
         self.linestyle_id = linestyle_id
@@ -20,6 +20,7 @@ class Models:
         self.rampup_start_year = rampup_start_year
         self.plotting_name = plotting_name
         self.default_member = default_member
+        self.calendar = calendar
 
     def display_attributes(self):
         print(f"name: {self.name}")
@@ -31,6 +32,7 @@ class Models:
         print(f"rampup_start_year: {self.rampup_start_year}")
         print(f"plotting_name: {self.plotting_name}")
         print(f"default_member: {self.default_member}")
+        print(f"calendar: {self.calendar}")
         
     @classmethod
     def get_IPSL(cls):
@@ -63,10 +65,11 @@ class Models:
                         linestyle_id=':',
                         marker_id='*',
                         institute='UBern',
-                        emission_rate=18.491, # GtC yr-1
+                        emission_rate=18.49099902, # 18.496406, # GtC yr-1 # 18.491
                         rampup_start_year=1861,
                         plotting_name='GFDL-ESM2M',
-                        default_member='r1i1p1f1')      
+                        default_member='r1i1p1f1',
+                        calendar='noleap')      
 
     @classmethod
     def get_ECEarth(cls):
@@ -114,7 +117,8 @@ class Models:
                         emission_rate=11.4, # GtC yr-1
                         rampup_start_year=1850,
                         plotting_name='NASA-GISS',
-                        default_member=None)  
+                        default_member=None,
+                        calendar='noleap')      
 
 # colors remaining (for 12 total colors): #1B9E77, #D95F02, #666666, #B2DF8A, #FDBF6F
     

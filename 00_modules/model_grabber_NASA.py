@@ -134,25 +134,21 @@ class NASAgrabber:
             raise Exception('Variable not in known domain.')
         return dims
 
-    #def get_thickness(varia,run,ds):
-    #    print('We have 4D dataset "ds". We need to get the vertical thickness of the grid cells.')
-    #    thickness_list = IPSLgrabber.get_filelist('thkcello',run)
-    #    thkcello_ds = xr.open_mfdataset(thickness_list,use_cftime=True)
-    #    thkcello = thkcello_ds['thkcello']
-    #    # Make sure thkcello has the same temporal dimension as the dataset to be analyzed
-    #    tsel = ds[varia].time.shape[0]
-    #    thkcello = thkcello.sel(time=slice(ds.time.min(), ds.time.max()))
-    #    # Fill the nans with 0 for weighting
-    #    thickness = thkcello.fillna(0)        
-    #    return thickness
-
-    #def get_area_fraction(frac_type='land'):
-    #    if frac_type == 'land':
-    #        indir = '/bdd/CMIP6/CMIP/IPSL/IPSL-CM6A-LR/1pctCO2/r1i1p1f1/fx/sftlf/gr/latest'
-    #        land_area_fraction_ds = xr.open_dataset(f'{indir}/sftlf_fx_IPSL-CM6A-LR_1pctCO2_r1i1p1f1_gr.nc')
-    #        area_fraction = land_area_fraction_ds.sftlf/100. 
-    #    return area_fraction
-
+    def get_area_fraction(varia):
+        if varia in []:#'nbp','cLand']:
+            indir = '/data/ekoehn/TIPMIP/NASA-GISS/GISSE2.1-G-CC2/area_arrays'
+            land_area_fraction_ds = xr.open_dataset(f'{indir}/sftlf_fx_GISS-E2-1-G-CC_piControl_r1i1p1f1_gn.nc')
+            area_fraction = land_area_fraction_ds.sftlf/100. 
+            area_fraction = area_fraction.assign_coords(
+                lon=(((area_fraction.lon + 180) % 360) - 180)
+            )
+            area_fraction = area_fraction.sortby('lon')
+            area_fraction = area_fraction.assign_coords(lat=xr.where(area_fraction.lat == -89, -90,xr.where(area_fraction.lat == 89, 90, area_fraction.lat)))
+        else:
+            print('... no area fractions used')
+            area_fraction = None
+        return area_fraction
+    
     def get_data(varia,run,freq_input='monthly',verbose_level=1):
         
         # get the list of files
