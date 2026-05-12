@@ -25,7 +25,7 @@ class IPSLgrabber:
             else:
                 rootdir = '/projets/TipESM/IPSL/IPSL-CM6-ESMCO2'
         elif server == 'levante':
-            rootdir = '/work/bm1448/upload/tipesm/IPSL-CM6-ESMCO2'
+            rootdir = '/work/bm1448/upload/abemnb/CMIP6Plus'
         elif rootdir == 'cineca':
             raise Exception('No data for IPSL-CM6-ESMCO2 on CINECA.') 
         return rootdir
@@ -105,10 +105,10 @@ class IPSLgrabber:
 
         data_path = f'{rootdir}/{run}/{member}/{domain}{freq}/{varia}/{grid}/v*' 
         pattern = f"/{varia}*_{grid}_*.nc" 
-        #print(data_path+pattern)
+        print(data_path+pattern)
         file_list = sorted(glob.glob(data_path+pattern,recursive=True))
         file_list_filtered = MISCgrabber.filter_longest_period_files(file_list)
-        
+        print(file_list_filtered)
         return file_list_filtered
 
     def get_horizontal_dimensions(varia):
@@ -122,7 +122,7 @@ class IPSLgrabber:
         return dims
 
     def get_area_fraction(varia):
-        if varia in ['nbp','cLand']:
+        if varia in ['nbp','npp']:
             indir = '/bdd/CMIP6/CMIP/IPSL/IPSL-CM6A-LR/1pctCO2/r1i1p1f1/fx/sftlf/gr/latest'
             land_area_fraction_ds = xr.open_dataset(f'{indir}/sftlf_fx_IPSL-CM6A-LR_1pctCO2_r1i1p1f1_gr.nc')
             area_fraction = land_area_fraction_ds.sftlf/100. 

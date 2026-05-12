@@ -44,7 +44,8 @@ class Models:
                    emission_rate=9.38824139, # PgC/yr
                    rampup_start_year=1850,
                    plotting_name='IPSL',
-                   default_member='r1i2p3f1')
+                   default_member='r1i2p3f1',
+                   calendar='leap')
 
     @classmethod
     def get_NorESM(cls):
@@ -87,7 +88,7 @@ class Models:
     def get_UKESM(cls):
         return cls(name='UKESM1-2', 
                         color_id='#7570B3',
-                        linestyle_id='--',
+                        linestyle_id='-.',
                         marker_id='v',
                         institute='MOHC',
                         emission_rate=8, # GtC yr-1
@@ -99,7 +100,7 @@ class Models:
     def get_CNRM(cls):
         return cls(name='CNRM-ESM2-1', 
                         color_id='#A6761D',
-                        linestyle_id='-.',
+                        linestyle_id=':',
                         marker_id='^',
                         institute='CNRM',
                         emission_rate=11.378, # GtC yr-1
@@ -111,7 +112,7 @@ class Models:
     def get_NASA(cls):
         return cls(name='GISSE2.1-G-CC2',#'NASA-GISS-E2-1-G', 
                         color_id='#E7298A',
-                        linestyle_id=':',
+                        linestyle_id='--',
                         marker_id='x',
                         institute='NASA',
                         emission_rate=11.4, # GtC yr-1
@@ -119,6 +120,19 @@ class Models:
                         plotting_name='NASA-GISS',
                         default_member=None,
                         calendar='noleap')      
+
+    @classmethod
+    def get_MIROC(cls):
+        return cls(name='MIROC-ES2L',#'NASA-GISS-E2-1-G', 
+                        color_id='#888888',
+                        linestyle_id='-.',
+                        marker_id='h',
+                        institute='MIROC',
+                        emission_rate=15.385, # GtC yr-1
+                        rampup_start_year=2001,
+                        plotting_name='MIROC-ES2L',
+                        default_member=None,
+                        calendar='leap') 
 
 # colors remaining (for 12 total colors): #1B9E77, #D95F02, #666666, #B2DF8A, #FDBF6F
     
@@ -130,11 +144,11 @@ class Models:
             model_list = [cls.get_IPSL(), cls.get_NorESM(), cls.get_GFDL(), 
                           cls.get_ECEarth(), cls.get_UKESM(), cls.get_CNRM()]            
         elif selector == 'TIPMIP':
-            model_list = [cls.get_NASA()]
+            model_list = [cls.get_NASA(), cls.get_MIROC()]
         elif selector == 'all':
             model_list = [cls.get_IPSL(), cls.get_NorESM(), cls.get_GFDL(), 
                           cls.get_ECEarth(), cls.get_UKESM(), cls.get_CNRM(), 
-                          cls.get_NASA()]
+                          cls.get_NASA(), cls.get_MIROC()]
         return model_list        
 
     @classmethod
@@ -390,6 +404,15 @@ class ModelRuns:
                                    'esm-up2p0-gwl2p0-50y-dn2p0',
                                    'esm-up2p0-gwl4p0-50y-dn2p0']              
 
+        elif model == 'MIROC-ES2L':
+            list_of_simulations = ['esm-piControl',
+                                   'esm-up2p0',
+                                   'esm-up2p0-gwl2p0',
+                                   'esm-up2p0-gwl4p0',  
+                                   'esm-up2p0-gwl2p0-50y-dn2p0',
+                                   'esm-up2p0-gwl4p0-50y-dn2p0',
+                                   'esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0']    
+        
         return list_of_simulations
 
 

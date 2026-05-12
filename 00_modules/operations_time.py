@@ -240,7 +240,7 @@ class TimeOperator:
             ds = ds.convert_calendar("noleap")
         return ds
 
-    def integrate_in_time(da, model, freq_input='monthly',overwrite_leap_years=False):
+    def integrate_in_time(da, model, freq_input='monthly',overwrite_leap_years=False,take_half_months_into_account=True):
         
         da = TimeOperator.set_calendar(da,model)
     
@@ -263,7 +263,19 @@ class TimeOperator:
         seconds = days * 24 * 3600
     
         # integrate
-        integrated_da = (da * seconds).cumsum(dim="time")
+        da_times_time = da*seconds
+        
+        if take_half_months_into_account:
+            da_times_time_shifted = da_times_time.shift(time=1, fill_value=0)
+            # now take the half of each element
+            da_times_time_half = da_times_time/2.
+            da_times_time_shifted_half = da_times_time_shifted/2.
+            #print(da_times_time_half)
+            #print(da_times_time_shifted_half)
+            #
+            integrated_da = (da_times_time_half+da_times_time_shifted_half).cumsum(dim='time')
+        else:
+            integrated_da = (da_times_time).cumsum(dim="time")
     
         integrated_da.attrs["units"] = f"{units} x s"
         if np.any(days==29) and overwrite_leap_years == False:
