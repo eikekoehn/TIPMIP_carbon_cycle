@@ -20,7 +20,7 @@ class MIROCgrabber:
         if server == 'spirit':
             raise Exception('No data for MIROC-ES2L on spirit.') 
         elif server == 'levante':
-            rootdir = '/work/bm1448/upload/tipesm/IPSL-CM6-ESMCO2'
+            rootdir = '/work/bm1448/upload/abemnb/CMIP6Plus'
         elif rootdir == 'cineca':
             raise Exception('No data for MIROC-ES2L on CINECA.') 
         return rootdir
@@ -93,12 +93,12 @@ class MIROCgrabber:
     def get_area(varia,freq_input):
         domain = MIROCgrabber.get_domain(varia,freq_input)
         if domain in ['AE','AP','LI','LP']:
-            area_file = '/home/ekoehn/jobs/jupyter/TIPMIP_carbon_cycle/00_modules/support_data/areacella_fx_MIROC-ES2L_piControl_r1i1p1f2_gn.nc'
+            area_file = '/home/b/b384080/TIPMIP_carbon_cycle/00_modules/support_data/areacella_fx_MIROC-ES2L_piControl_r1i1p1f2_gn.nc'
             area_ds = xr.open_dataset(area_file)
             area = area_ds['areacella'].compute()
             area_ds.close()
         elif domain in ['OB','OP','SI']:
-            area_file = '/home/ekoehn/jobs/jupyter/TIPMIP_carbon_cycle/00_modules/support_data/areacello_Ofx_MIROC-ES2L_piControl_r1i1p1f2_gn.nc'
+            area_file = '/home/b/b384080/TIPMIP_carbon_cycle/00_modules/support_data/areacello_Ofx_MIROC-ES2L_piControl_r1i1p1f2_gn.nc'
             area_ds = xr.open_dataset(area_file)
             area = area_ds['areacello'].fillna(0).compute()
             #area = area.rename({'y':'lat','x':'lon'})

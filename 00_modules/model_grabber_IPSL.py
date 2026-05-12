@@ -25,7 +25,7 @@ class IPSLgrabber:
             else:
                 rootdir = '/projets/TipESM/IPSL/IPSL-CM6-ESMCO2'
         elif server == 'levante':
-            rootdir = '/work/bm1448/upload/abemnb/CMIP6Plus'
+            rootdir = '/work/bm1448/upload/tipesm/IPSL-CM6-ESMCO2'
         elif rootdir == 'cineca':
             raise Exception('No data for IPSL-CM6-ESMCO2 on CINECA.') 
         return rootdir

@@ -4,6 +4,8 @@ from model_grabber_NorESM import NorESMgrabber
 from model_grabber_NASA import NASAgrabber
 from model_grabber_UKESM import UKESMgrabber
 from model_grabber_ECEARTH import ECEARTHgrabber
+from model_grabber_MIROC import MIROCgrabber
+from model_grabber_CESM import CESMgrabber
 
 class MODELgrabber:
 
@@ -21,5 +23,9 @@ class MODELgrabber:
             grabber = UKESMgrabber
         elif model == 'EC-Earth3-ESM-1':
             grabber = ECEARTHgrabber
+        elif model == 'MIROC-ES2L':
+            grabber = MIROCgrabber
+        elif model == 'CESM2':
+            grabber = CESMgrabber
         return grabber
 

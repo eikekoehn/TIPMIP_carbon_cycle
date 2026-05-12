@@ -176,7 +176,7 @@ class CESMgrabber:
         varname_mapper['gpp']= 'GPP'
         varname_mapper['npp']= 'NPP'
         varname_mapper['landCoverFrac'] = 'PCT_LANDUNIT'
-        varname_mapper['lai'] 'TLAI'
+        varname_mapper['lai'] = 'TLAI'
         varname_mapper['cSoil']= 'TOTSOMC'
         varname_mapper['cVeg']= 'TOTVEGC'
         varname_mapper['cLand']= 'TOTECOSYSC'
