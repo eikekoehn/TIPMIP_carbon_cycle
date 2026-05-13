@@ -29,6 +29,7 @@
 * for which models do I need to use land or ocean area fraction (sftlf, sftof) to correctly scale coastal points for regional (flux) integrals/means?
 * for UKESM, I shifted esm-piControl backward by 250 years. Correct?
 * for UKESM, I used the areacello/areacella fields from UKESM1-0-LL. Ok?
+* for UKESM, I constructed emissions myself, despite the presence of fco2antt. However large emissions even appearing in piControl there.
 * in general, I use a fixed areacelloa/areacella
 * in ECEarth, there are 6 extra latitudes for example in tas, that do not appear in areacella. What to do with those? I subsample for now to match areacella. This seems to be the case only for tas (so far?).
 * for NorESM2-LM, I used a temporally fixed thkcello for vertical integration (in IPSL it is temporally varying)
