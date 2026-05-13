@@ -134,6 +134,19 @@ class Models:
                         default_member=None,
                         calendar='leap') 
 
+    @classmethod
+    def get_CESM(cls):
+        return cls(name='CESM2',#'NASA-GISS-E2-1-G', 
+                        color_id='#00F0FF',
+                        linestyle_id=':',
+                        marker_id='p',
+                        institute='NCAR',
+                        emission_rate=10.0, # GtC yr-1
+                        rampup_start_year=1,
+                        plotting_name='CESM2',
+                        default_member=None,
+                        calendar='noleap') 
+
 # colors remaining (for 12 total colors): #1B9E77, #D95F02, #666666, #B2DF8A, #FDBF6F
     
         
@@ -144,11 +157,11 @@ class Models:
             model_list = [cls.get_IPSL(), cls.get_NorESM(), cls.get_GFDL(), 
                           cls.get_ECEarth(), cls.get_UKESM(), cls.get_CNRM()]            
         elif selector == 'TIPMIP':
-            model_list = [cls.get_NASA(), cls.get_MIROC()]
+            model_list = [cls.get_NASA(), cls.get_MIROC(), cls.get_CESM()]
         elif selector == 'all':
             model_list = [cls.get_IPSL(), cls.get_NorESM(), cls.get_GFDL(), 
                           cls.get_ECEarth(), cls.get_UKESM(), cls.get_CNRM(), 
-                          cls.get_NASA(), cls.get_MIROC()]
+                          cls.get_NASA(), cls.get_MIROC(), cls.get_CESM()]
         return model_list        
 
     @classmethod

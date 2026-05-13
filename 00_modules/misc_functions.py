@@ -23,7 +23,7 @@ class DataFuncs:
     def open_dataset(files):
         if isinstance(files,list):
             if len(files) > 1:
-                ds = xr.open_mfdataset(files,use_cftime=True)
+                ds = xr.open_mfdataset(files,use_cftime=True, data_vars="minimal", coords="minimal", compat="override")
             elif len(files) == 1:
                 ds = xr.open_dataset(files[0],use_cftime=True)
             elif len(files) == 0:
