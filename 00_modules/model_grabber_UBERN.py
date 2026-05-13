@@ -131,7 +131,7 @@ class UBERNgrabber:
         return dims
 
     def get_area_fraction(varia):
-        if varia in ['nbp','cLand']:
+        if varia in ['nbp','npp']:
             indir = '/projets/TipESM/UBERN/TipESM/GFDL-ESM2M/esm-piControl/r1i1p1f1/fx/sftlf/gn/v20250510'
             land_area_fraction_ds = xr.open_dataset(f'{indir}/sftlf_fx_GFDL-ESM2M_esm-piControl_r1i1p1f1_gn.nc')
             area_fraction = land_area_fraction_ds.sftlf/100. 

@@ -159,11 +159,11 @@ class NorESMgrabber:
         return dims
 
     def get_area_fraction(varia):
-        if varia in ['nbp','cLand']:
+        if varia in ['nbp','npp']:
             indir = '/projets/TipESM/UiB/NorESM2-LM/esm-up2p0/v20251010'
             land_area_fraction_ds = xr.open_dataset(f'{indir}/sftlf_fx_NorESM2-LM_esm-up2p0_r1i1p1f1_gn.nc')
             area_fraction = land_area_fraction_ds.sftlf/100. 
-        elif varia in ['fgco2','dissic']: 
+        elif varia in []:#'fgco2','dissic']: 
             indir = '/projets/TipESM/UiB/NorESM2-LM/esm-up2p0/v20251010'
             ocean_area_fraction_ds = xr.open_dataset(f'{indir}/sftof_Ofx_NorESM2-LM_esm-up2p0_r1i1p1f1_gn.nc')
             area_fraction = ocean_area_fraction_ds.sftof/100.             
