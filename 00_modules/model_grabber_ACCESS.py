@@ -16,7 +16,7 @@ from misc_functions import MISCgrabber
 
 class ACCESSgrabber:
 
-    def get_rootdir(server='levante'):
+    def get_rootdir(server='spirit'):
         if server == 'spirit':
             rootdir = '/bdd/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5' 
         elif server == 'levante':
@@ -41,11 +41,11 @@ class ACCESSgrabber:
             domain = 'A'        
         elif freq_input == 'daily' and varia in ['pr', 'tas', 'tasmax', 'tasmin']:
             domain = ''
-        elif freq_input == 'monthly' and varia in ['cSoil']:
+        elif freq_input == 'monthly' and varia in ['cSoil','cLand']:
             domain = 'E'
         elif freq_input == 'monthly' and varia in ['sftgif']:
             domain = 'LI'
-        elif freq_input == 'monthly' and varia in ['baresoilFrac', 'cVeg', 'gpp', 'lai', 'mrro', 'mrros', 'npp', 'ra', 'rh', 'treeFrac']:
+        elif freq_input == 'monthly' and varia in ['baresoilFrac', 'cVeg', 'gpp', 'lai', 'mrro', 'mrros', 'npp', 'ra', 'rh', 'treeFrac','nbp','cSoilFast','cSoilMedium','cSoilSlow','cVeg']:
             domain = 'L'
         elif freq_input == 'fx' and varia in ['areacello']:
             domain = 'O'
@@ -94,7 +94,7 @@ class ACCESSgrabber:
         return area
 
     
-    def get_filelist(varia,run,freq_input):
+    def get_filelist(varia,run,freq_input,server='levante'):
      
         member = ACCESSgrabber.get_member()
         exercise = ACCESSgrabber.get_exercise(run)
@@ -103,7 +103,10 @@ class ACCESSgrabber:
         domain = ACCESSgrabber.get_domain(varia,freq_input)
         grid = ACCESSgrabber.get_grid()
 
-        data_path = f'{rootdir}/{run}/{member}/{domain}{freq}/{varia}/v*' 
+        if server == 'levante':
+            data_path = f'{rootdir}/{run}/{member}/{domain}{freq}/{varia}/v*' 
+        elif server == 'spirit':
+            data_path = f'{rootdir}/{run}/{member}/{domain}{freq}/{varia}/{grid}/latest' 
         pattern = f"/{varia}*_{grid}_*.nc" 
         print(data_path+pattern)
         file_list = sorted(glob.glob(data_path+pattern,recursive=True))
@@ -132,10 +135,10 @@ class ACCESSgrabber:
             area_fraction = None
         return area_fraction
 
-    def get_data(varia,run,freq_input='monthly',verbose_level=1):
+    def get_data(varia,run,freq_input='monthly',verbose_level=1,server='levante'):
         
         # get the list of files
-        files = ACCESSgrabber.get_filelist(varia,run,freq_input)
+        files = ACCESSgrabber.get_filelist(varia,run,freq_input,server=server)
         if verbose_level > 0:
             print(files)
 
