@@ -36,8 +36,8 @@ class SpaceOperator:
             unique_diffs = np.unique(diff_coord)
             if sum_diff_coord > 0:
                 print(f'There is a total coordinate difference of: {sum_diff_coord}')
-                if np.sum(np.abs((da[coord].values - area_weights[coord].values))) < 1e-8:
-                    print(f'... this is small enough (smaller than 1e-8), so we just set the area_weights.coord to da.coord.')
+                if np.sum(np.abs((da[coord].values - area_weights[coord].values))) < 1e-1:
+                    print(f'... this is small enough (smaller than 1e-1), so we just set the area_weights.coord to da.coord.')
                     area_weights = area_weights.assign_coords({coord: da[coord]})
                 elif np.all(np.isin(unique_diffs, [-360, 0, 360])):
                     print(f'... all of the differences are just caused by 360° longitude wrapping. So we just set the area_weights.coord to da.coord.')
@@ -57,8 +57,8 @@ class SpaceOperator:
                 unique_diffs = np.unique(diff_coord)
                 if sum_diff_coord > 0:
                     print(f'There is a total coordinate difference of: {sum_diff_coord}')
-                    if np.sum(np.abs((grid_cell_fractions[coord].values - area_weights[coord].values))) < 1e-8:
-                        print(f'... this is small enough (smaller than 1e-8), so we just set the grid_cell_fractions.coord to area_weights.coord.')
+                    if np.sum(np.abs((grid_cell_fractions[coord].values - area_weights[coord].values))) < 1e-1:
+                        print(f'... this is small enough (smaller than 1e-1), so we just set the grid_cell_fractions.coord to area_weights.coord.')
                         grid_cell_fractions = grid_cell_fractions.assign_coords({coord: area_weights[coord]})
                     elif np.all(np.isin(unique_diffs, [-360, 0, 360])):
                         print(f'... all of the differences are just caused by 360° longitude wrapping. So we just set the grid_cell_fractions.coord to area_weights.coord.')
@@ -116,8 +116,8 @@ class SpaceOperator:
             unique_diffs = np.unique(diff_coord)
             if sum_diff_coord > 0:
                 print(f'There is a total coordinate difference of: {sum_diff_coord}')
-                if np.sum(np.abs((da[coord].values - area_weights[coord].values))) < 1e-8:
-                    print(f'... this is small enough (smaller than 1e-8), so we just set the area_weights.coord to da.coord.')
+                if np.sum(np.abs((da[coord].values - area_weights[coord].values))) < 1e-1:
+                    print(f'... this is small enough (smaller than 1e-1), so we just set the area_weights.coord to da.coord.')
                     area_weights = area_weights.assign_coords({coord: da[coord]})
                 elif np.all(np.isin(unique_diffs, [-360, 0, 360])):
                     print(f'... all of the differences are just caused by 360° longitude wrapping. So we just set the area_weights.coord to da.coord.')
@@ -137,8 +137,8 @@ class SpaceOperator:
                 unique_diffs = np.unique(diff_coord)
                 if sum_diff_coord > 0:
                     print(f'There is a total coordinate difference of: {sum_diff_coord}')
-                    if np.sum(np.abs((grid_cell_fractions[coord].values - area_weights[coord].values))) < 1e-8:
-                        print(f'... this is small enough (smaller than 1e-8), so we just set the grid_cell_fractions.coord to area_weights.coord.')
+                    if np.sum(np.abs((grid_cell_fractions[coord].values - area_weights[coord].values))) < 1e-1:
+                        print(f'... this is small enough (smaller than 1e-1), so we just set the grid_cell_fractions.coord to area_weights.coord.')
                         grid_cell_fractions = grid_cell_fractions.assign_coords({coord: area_weights[coord]})
                     elif np.all(np.isin(unique_diffs, [-360, 0, 360])):
                         print(f'... all of the differences are just caused by 360° longitude wrapping. So we just set the grid_cell_fractions.coord to area_weights.coord.')

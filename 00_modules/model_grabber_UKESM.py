@@ -21,7 +21,7 @@ class UKESMgrabber:
         if server == 'spirit':
             raise Exception('No data for UKESM1-2 on SPIRIT.') 
         elif server == 'levante':
-            rootdir = '/work/bm1448/upload/tipesm/UKESM1-2'
+            rootdir = '/work/bm1448/upload/optimesm/UKESM1-2'
         elif server == 'cineca':
             rootdir = '/g100_store/DRES_OptimESM/ESGF/prepub/mohc'
         return rootdir
@@ -44,7 +44,7 @@ class UKESMgrabber:
             domain = 'E'
         elif freq_input == 'daily' and varia in ['siconca','sitemptop']:
             domain = 'SI'
-        elif freq_input == 'monthly' and varia in ['clivi', 'fco2antt', 'hurs', 'prc', 'psl', 'rlut', 'rsdt', 'rsutcs', 'tasmax', 'ts', 'vas', 'clt', 'hfls', 'hus', 'prsn', 'rlds', 'rlutcs', 'rsus', 'sfcWind', 'tasmin', 'ua', 'wap', 'clwvi', 'hfss', 'huss', 'prw', 'rldscs', 'rsds', 'rsuscs', 'ta', 'tauu', 'uas', 'zg', 'evspsbl', 'hur', 'pr', 'ps', 'rlus', 'rsdscs', 'rsut', 'tas', 'tauv', 'va']:
+        elif freq_input == 'monthly' and varia in ['clivi', 'fco2antt', 'hurs', 'prc', 'psl', 'rlut', 'rsdt', 'rsutcs', 'tasmax', 'ts', 'vas', 'clt', 'hfls', 'hus', 'prsn', 'rlds', 'rlutcs', 'rsus', 'sfcWind', 'tasmin', 'ua', 'wap', 'clwvi', 'hfss', 'huss', 'prw', 'rldscs', 'rsds', 'rsuscs', 'ta', 'tauu', 'uas', 'zg', 'evspsbl', 'hur', 'pr', 'ps', 'rlus', 'rsdscs', 'rsut', 'tas', 'tauv', 'va', 'co2mass']:
             domain = 'A'
         elif freq_input == 'monthly' and varia in ['sbl', 'snc', 'snd', 'snm', 'snw']:
             domain = 'LI'
@@ -75,6 +75,8 @@ class UKESMgrabber:
             grid = 'gnz'
         elif domain == 'O' and varia in ['masso','soga','sosga','thetaoga','tosga','volo','zostoga']:
             grid = 'gm'
+        elif domain == 'A' and varia in ['co2mass']:
+            grid = 'gm'
         else:
             grid = 'gn' 
         #else:
@@ -100,18 +102,22 @@ class UKESMgrabber:
             raise Exception('Variable not in known domain.')
         return area
 
-    def get_filelist(varia,run,freq_input):
+    def get_filelist(varia,run,freq_input,server='cineca'):
      
         member = UKESMgrabber.get_member()
         exercise = UKESMgrabber.get_exercise(run)
-        rootdir = UKESMgrabber.get_rootdir(run)
+        rootdir = UKESMgrabber.get_rootdir(run,server=server)
         freq = UKESMgrabber.get_frequency(freq_input) 
         domain = UKESMgrabber.get_domain(varia,freq_input)
         grid = UKESMgrabber.get_grid(varia,freq_input)
 
-        data_path = f'{rootdir}/2*/CMIP6/CMIP/MOHC/UKESM1-2/{run}/{member}/{domain}{freq}/{varia}/{grid}/v*' 
+        if server == 'cineca':
+            data_path = f'{rootdir}/2*/CMIP6/CMIP/MOHC/UKESM1-2/{run}/{member}/{domain}{freq}/{varia}/{grid}/v*' 
+        elif server == 'levante':
+            data_path = f'{rootdir}/{run}/{member}/{domain}{freq}/{varia}/{grid}/v*' 
+
         pattern = f"/{varia}*_{grid}_*.nc" 
-        #print(data_path+pattern)
+        print(data_path+pattern)
         file_list = sorted(glob.glob(data_path+pattern,recursive=True))
         file_list_filtered = MISCgrabber.filter_longest_period_files(file_list)
         
@@ -136,10 +142,10 @@ class UKESMgrabber:
             area_fraction = None
         return area_fraction
 
-    def get_data(varia,run,freq_input='monthly',verbose_level=1):
+    def get_data(varia,run,freq_input='monthly',verbose_level=1,server='cineca'):
         
         # get the list of files
-        files = UKESMgrabber.get_filelist(varia,run,freq_input)
+        files = UKESMgrabber.get_filelist(varia,run,freq_input,server=server)
         if verbose_level > 0:
             print(files)
 

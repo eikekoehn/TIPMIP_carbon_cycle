@@ -260,6 +260,7 @@ class CESMgrabber:
         varname_mapper['sio3']= 'SiO3'
         varname_mapper['zos']= 'SSH'
         varname_mapper['thetao']= 'TEMP'
+        varname_mapper['tos']= 'TEMP'
         # atm
         varname_mapper['co2']= 'CO2'
         varname_mapper['ps']= 'PS'
@@ -301,8 +302,8 @@ class CESMgrabber:
         varname_mapper['SALT'] = 'so'
         varname_mapper['SiO3'] = 'sio3'
         varname_mapper['SSH'] = 'zos'
-        varname_mapper['TEMP'] = 'thetao'
-    
+        varname_mapper['TEMP'] = 'thetao' # careful, this is overwritten here for now...
+        varname_mapper['TEMP'] = 'tos'
         # atm
         varname_mapper['CO2'] = 'co2'
         varname_mapper['PS'] = 'ps'

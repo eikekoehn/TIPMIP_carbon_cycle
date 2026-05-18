@@ -39,28 +39,47 @@ class DataFuncs:
 
 class MISCgrabber:
 
+    @staticmethod
     def parse_dates(filename):
-        """Extract start and end dates (YYYYMM) from filename."""
-        match = re.search(r'(\d{6})-(\d{6})\.nc$', filename)
+        """
+        Extract start and end dates from filename.
+
+        Supports:
+            YYYYMM-YYYYMM.nc
+            YYYYMMDD-YYYYMMDD.nc
+        """
+        match = re.search(r'(\d{6}|\d{8})-(\d{6}|\d{8})\.nc$', filename)
         if not match:
             return None, None
+
         start_str, end_str = match.groups()
-        start = datetime.strptime(start_str, "%y%m" if len(start_str) == 4 else "%Y%m")
-        end = datetime.strptime(end_str, "%y%m" if len(end_str) == 4 else "%Y%m")
-        return start, end
-    
+
+        def parse_date(s):
+            if len(s) == 6:
+                return datetime.strptime(s, "%Y%m")
+            elif len(s) == 8:
+                return datetime.strptime(s, "%Y%m%d")
+            else:
+                raise ValueError(f"Unsupported date format: {s}")
+
+        return parse_date(start_str), parse_date(end_str)
+
+    @staticmethod
     def months_between(start, end):
-        """Calculate number of months between two datetime objects."""
+        """Calculate approximate number of months between two datetime objects."""
         return (end.year - start.year) * 12 + (end.month - start.month) + 1
-    
+
+    @staticmethod
     def filter_longest_period_files(files):
         """
         Given a list of .nc filenames, return a list with overlapping or redundant
         files removed — keeping the one that covers the largest time period.
         """
         parsed = []
+
         for f in files:
             start, end = MISCgrabber.parse_dates(f)
+
             if start and end:
                 parsed.append({
                     'file': f,
@@ -68,28 +87,33 @@ class MISCgrabber:
                     'end': end,
                     'months': MISCgrabber.months_between(start, end)
                 })
-    
-        # Sort by start ascending, then by duration descending (longest first)
+
+        # Sort by start ascending, then by duration descending
         parsed.sort(key=lambda x: (x['start'], -x['months']))
-    
+
         keep = []
+
         for p in parsed:
-            # Check overlap with already kept files
-            overlap = any(
-                not (p['end'] < k['start'] or p['start'] > k['end'])
-                for k in keep
-            )
-            if not overlap:
+
+            overlaps = [
+                k for k in keep
+                if not (p['end'] < k['start'] or p['start'] > k['end'])
+            ]
+
+            if not overlaps:
                 keep.append(p)
-            else:
-                # Only keep if this file covers a larger period
-                for k in keep:
-                    if not (p['end'] < k['start'] or p['start'] > k['end']):
-                        if p['months'] > k['months']:
-                            keep.remove(k)
-                            keep.append(p)
-                        break
-    
+                continue
+
+            replaced = False
+
+            for k in overlaps:
+                if p['months'] > k['months']:
+                    keep.remove(k)
+                    replaced = True
+
+            if replaced:
+                keep.append(p)
+
         return [p['file'] for p in keep]
 
 

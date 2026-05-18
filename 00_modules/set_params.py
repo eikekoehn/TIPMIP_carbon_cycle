@@ -10,7 +10,7 @@ class Models:
     I.e., which models there are, what their emission rate is for the rampup, and also, what their color_id, marker_id, and linestyle_id are
     """
     
-    def __init__(self, name=None, color_id=None, linestyle_id=None, marker_id=None, institute=None, emission_rate=None, rampup_start_year=None, plotting_name=None, default_member=None, calendar=None):
+    def __init__(self, name=None, color_id=None, linestyle_id=None, marker_id=None, institute=None, emission_rate=None, rampup_start_year=None, stab2K_start_year=None, stab4K_start_year=None, restab2K_start_year=None, plotting_name=None, default_member=None, calendar=None):
         self.name = name
         self.color_id = color_id
         self.linestyle_id = linestyle_id
@@ -18,6 +18,9 @@ class Models:
         self.institute = institute
         self.emission_rate = emission_rate # in PgC/yr
         self.rampup_start_year = rampup_start_year
+        self.stab2K_start_year = stab2K_start_year
+        self.stab4K_start_year = stab4K_start_year
+        self.restab2K_start_year = restab2K_start_year
         self.plotting_name = plotting_name
         self.default_member = default_member
         self.calendar = calendar
@@ -30,6 +33,9 @@ class Models:
         print(f"institute: {self.institute}")
         print(f"emission_rate (PgC/yr): {self.emission_rate}")
         print(f"rampup_start_year: {self.rampup_start_year}")
+        print(f"stab2K_start_year: {self.stab2K_start_year}")
+        print(f"stab4K_start_year: {self.stab4K_start_year}")
+        print(f"restab2K_start_year: {self.restab2K_start_year}")
         print(f"plotting_name: {self.plotting_name}")
         print(f"default_member: {self.default_member}")
         print(f"calendar: {self.calendar}")
@@ -43,6 +49,9 @@ class Models:
                    institute='IPSL',
                    emission_rate=9.38824139, # PgC/yr
                    rampup_start_year=1850,
+                   stab2K_start_year=1959,
+                   stab4K_start_year=2082,
+                   restab2K_start_year= 2232,
                    plotting_name='IPSL',
                    default_member='r1i2p3f1',
                    calendar='leap')
@@ -56,6 +65,9 @@ class Models:
                         institute='NCC',
                         emission_rate=16.807, # GtC yr-1
                         rampup_start_year=1850, # 1851
+                        stab2K_start_year=1951,
+                        stab4K_start_year=2057,
+                        restab2K_start_year=2185,
                         plotting_name='NorESM',
                         default_member='r1i1p1f1')   
 
@@ -68,6 +80,9 @@ class Models:
                         institute='UBern',
                         emission_rate=18.49099902, # 18.496406, # GtC yr-1 # 18.491
                         rampup_start_year=1861,
+                        stab2K_start_year=1958,
+                        stab4K_start_year=2064,
+                        restab2K_start_year=2240,
                         plotting_name='GFDL-ESM2M',
                         default_member='r1i1p1f1',
                         calendar='noleap')      
@@ -81,6 +96,9 @@ class Models:
                         institute='EC-Earth-Consortium',
                         emission_rate=12.4, # GtC yr-1
                         rampup_start_year=1850,
+                        stab2K_start_year=1951,
+                        stab4K_start_year=2051,
+                        restab2K_start_year=2201,
                         plotting_name='EC-Earth',
                         default_member='r1i1p1f1')     
 
@@ -93,6 +111,9 @@ class Models:
                         institute='MOHC',
                         emission_rate=8, # GtC yr-1
                         rampup_start_year=1850, #2100,#1850,
+                        stab2K_start_year=1944, #2100,#1850,
+                        stab4K_start_year=2044, #2100,#1850,
+                        restab2K_start_year=2233,
                         plotting_name='UKESM',
                         default_member='r1i1p1f1')  
 
@@ -117,6 +138,9 @@ class Models:
                         institute='NASA',
                         emission_rate=11.4, # GtC yr-1
                         rampup_start_year=1850,
+                        stab2K_start_year=1944,
+                        stab4K_start_year=2127,
+                        restab2K_start_year=None,
                         plotting_name='NASA-GISS',
                         default_member=None,
                         calendar='noleap')      
@@ -130,7 +154,10 @@ class Models:
                         institute='MIROC',
                         emission_rate=15.385, # GtC yr-1
                         rampup_start_year=2001,
-                        plotting_name='MIROC-ES2L',
+                        stab2K_start_year=2100,
+                        stab4K_start_year=2215,
+                        restab2K_start_year=2370,
+                        plotting_name='MIROC',
                         default_member=None,
                         calendar='leap') 
 
@@ -143,9 +170,28 @@ class Models:
                         institute='NCAR',
                         emission_rate=10.0, # GtC yr-1
                         rampup_start_year=1,
+                        stab2K_start_year=116,
+                        stab4K_start_year=231,
+                        restab2K_start_year=406,
                         plotting_name='CESM2',
                         default_member=None,
                         calendar='noleap') 
+
+    @classmethod
+    def get_ACCESS(cls):
+        return cls(name='ACCESS-ESM1-5',
+                        color_id='#DC143C', # crimson red
+                        linestyle_id='--',
+                        marker_id='>',
+                        institute='CSIRO',
+                        emission_rate=12.0, # GtC yr-1
+                        rampup_start_year=101,
+                        stab2K_start_year=194,
+                        stab4K_start_year=282,
+                        restab2K_start_year=451,
+                        plotting_name='ACCESS',
+                        default_member=None,
+                        calendar='leap') 
 
 # colors remaining (for 12 total colors): #1B9E77, #D95F02, #666666, #B2DF8A, #FDBF6F
     
@@ -157,11 +203,11 @@ class Models:
             model_list = [cls.get_IPSL(), cls.get_NorESM(), cls.get_GFDL(), 
                           cls.get_ECEarth(), cls.get_UKESM(), cls.get_CNRM()]            
         elif selector == 'TIPMIP':
-            model_list = [cls.get_NASA(), cls.get_MIROC(), cls.get_CESM()]
+            model_list = [cls.get_NASA(), cls.get_MIROC(), cls.get_CESM(), cls.get_ACCESS()]
         elif selector == 'all':
             model_list = [cls.get_IPSL(), cls.get_NorESM(), cls.get_GFDL(), 
                           cls.get_ECEarth(), cls.get_UKESM(), cls.get_CNRM(), 
-                          cls.get_NASA(), cls.get_MIROC(), cls.get_CESM()]
+                          cls.get_NASA(), cls.get_MIROC(), cls.get_CESM(), cls.get_ACCESS()]
         return model_list        
 
     @classmethod

@@ -6,6 +6,7 @@ from model_grabber_UKESM import UKESMgrabber
 from model_grabber_ECEARTH import ECEARTHgrabber
 from model_grabber_MIROC import MIROCgrabber
 from model_grabber_CESM import CESMgrabber
+from model_grabber_ACCESS import ACCESSgrabber
 
 class MODELgrabber:
 
@@ -27,5 +28,7 @@ class MODELgrabber:
             grabber = MIROCgrabber
         elif model == 'CESM2':
             grabber = CESMgrabber
+        elif model == 'ACCESS-ESM1-5':
+            grabber = ACCESSgrabber
         return grabber
 
