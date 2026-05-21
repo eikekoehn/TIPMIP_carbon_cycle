@@ -284,7 +284,58 @@ class TimeOperator:
             integrated_da.attrs["comment"] = f"integrated without leap years"
         return integrated_da
         
+
+    def get_time_start_and_end(model, run, model_dict, ref_year=None):
     
+        if ref_year is None:
+            shift_correction = 0
+        else:
+            shift_correction =ref_year - model_dict[model].rampup_start_year
+        
+        if run == 'esm-up2p0':
+            time_end = cftime.DatetimeProlepticGregorian(
+                int(model_dict[model].stab4K_start_year) + 16 + shift_correction,
+                12,
+                31
+            )
+    
+        elif run == 'esm-up2p0-gwl2p0':
+            time_end = cftime.DatetimeProlepticGregorian(
+                int(model_dict[model].stab2K_start_year) + 66 + shift_correction,
+                12,
+                31
+            )
+    
+        elif run == 'esm-up2p0-gwl4p0':
+            time_end = cftime.DatetimeProlepticGregorian(
+                int(model_dict[model].stab4K_start_year) + 66 + shift_correction,
+                12,
+                31
+            )
+    
+        else:
+            time_end = None
+    
+    
+    
+        # manually update time_end for CESM2 model
+        if model == 'CESM2' and run == 'esm-piControl':
+            time_end = cftime.DatetimeProlepticGregorian(
+                int(model_dict[model].rampup_start_year) + 440 + shift_correction,
+                12,
+                31
+            )
+        elif model == 'CESM2' and run == 'esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0':
+            time_end = cftime.DatetimeProlepticGregorian(
+                int(model_dict[model].restab2K_start_year) + 80 + shift_correction,
+                12,
+                31
+            )
+        
+        print(time_end)
+    
+        return slice(None, time_end)
+
     #def integrate_in_time(da,model):
     #
     #    model_dict = pmods.get_model_dict('all')
