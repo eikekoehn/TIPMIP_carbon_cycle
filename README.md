@@ -24,7 +24,8 @@
 * for MIROC, atmospheric CO2mass is poorly constructed (based on co2s)
 * for CESM2, AMOC is constructed from Eulerian mean + mesoscale bolus (not submesoscale...)
 * for ECEarth I have been using r1i1p1f1. But no restab at 2K is no longer available. Rather use r4i1p1f1? But that one is not on DKRZ. So not the right one? Use r3i1p1f1?
-
+* for ACCESS the piC values in the time slice maps are from time window starting in year 271 and not in 101 (need to add data to spirit)
+  
 ## Double check:
 
 * The reference values so far are taken to be the piControl at the start year of the rampup. Should rather use the 31yr centered mean, but data is not provided by models (i.e., the 15yr leading up to 1850).
