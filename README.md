@@ -23,6 +23,7 @@
 * NorESM2-LM co2mass in atmosphere is not well constructed. Need to update using good co2 or co2mass field. Also piControl fields don't show same start year as rampup. Shifted by one year? - Need to backcheck. piControl co2 (AERmon) on spirit also seems off (mixing ratio of aroun 430ppm instead of around 285...).
 * for MIROC, atmospheric CO2mass is poorly constructed (based on co2s)
 * for CESM2, AMOC is constructed from Eulerian mean + mesoscale bolus (not submesoscale...)
+* for ECEarth I have been using r1i1p1f1. But no restab at 2K is no longer available. Rather use r4i1p1f1? But that one is not on DKRZ. So not the right one? Use r3i1p1f1?
 
 ## Double check:
 
