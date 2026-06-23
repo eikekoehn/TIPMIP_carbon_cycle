@@ -317,9 +317,9 @@ class Runs:
         run_dict['esm-up2p0-gwl4p0-50y-dn1p0']  = cls(color_id='c', linestyle_id='--')
 
         # TIPMIP restabilizations
-        run_dict['esm-up2p0-gwl2p0-50y-dn2p0-gwl0p0'] = cls(color_id='C4', linestyle_id=':')
-        run_dict['esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0'] = cls(color_id='#E15759', linestyle_id=':')
-        run_dict['esm-up2p0-gwl4p0-50y-dn2p0-gwl0p0'] = cls(color_id='C4', linestyle_id=':')
+        run_dict['esm-up2p0-gwl2p0-50y-dn2p0-gwl0p0'] = cls(color_id='C4', linestyle_id='-')
+        run_dict['esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0'] = cls(color_id='#E15759', linestyle_id='-')
+        run_dict['esm-up2p0-gwl4p0-50y-dn2p0-gwl0p0'] = cls(color_id='C4', linestyle_id='-')
         
         return run_dict
 

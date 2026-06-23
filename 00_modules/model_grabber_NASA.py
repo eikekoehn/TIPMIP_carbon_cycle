@@ -135,7 +135,7 @@ class NASAgrabber:
         return dims
 
     def get_area_fraction(varia):
-        if varia in []:#'nbp','cLand']:
+        if varia in []: #if varia in ['nbp','npp','cLand','cVeg','cSoil','cLitter','cCwd','cProduct','cLeaf','cStem','cRoot','cWood','cSoilFast','cSoilMedium','cSoilSlow','cSoilAbove1m']:
             indir = '/data/ekoehn/TIPMIP/NASA-GISS/GISSE2.1-G-CC2/area_arrays'
             land_area_fraction_ds = xr.open_dataset(f'{indir}/sftlf_fx_GISS-E2-1-G-CC_piControl_r1i1p1f1_gn.nc')
             area_fraction = land_area_fraction_ds.sftlf/100. 

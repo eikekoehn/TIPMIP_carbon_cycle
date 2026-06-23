@@ -167,7 +167,7 @@ class SpaceOperator:
         # detect vertical dims
         # --------------------------------------------------
         if dims is None:
-            vertical_candidates = {"lev", "level", "levelo", "depth", "deptho"}
+            vertical_candidates = {"lev", "level", "olevel", "levelo", "depth", "deptho"}
             dims = [d for d in da.dims if d.lower() in vertical_candidates]
     
             if len(dims) == 0:
@@ -197,7 +197,25 @@ class SpaceOperator:
         # vertical integral (lazy, no big temp array)
         # --------------------------------------------------
         #integral = xr.dot(da, thickness_weights, dims=dims)
-        integral = (da * thickness_weights).sum(dim=dims)
+        for coord in set(da.coords) & set(thickness_weights.coords):
+        #    #try:
+            assert da[coord].equals(thickness_weights[coord])
+        #for coord in set(da.coords) & set(thickness_weights.coords):
+        #    if not da[coord].equals(thickness_weights[coord]):
+        #        print(f"Mismatch in {coord}")
+        #        print("da:")
+        #        print(da[coord])
+        #        print("thickness_weights:")
+        #        print(thickness_weights[coord])
+        #    #except:
+            #    print('Coordinates are not the same...')
+            #    #print( da[coord] - thickness_weights[coord])
+        #print(da.olevel)
+        #print(thickness_weights.olevel)
+        #print(da.time)
+        #print(thickness_weights.time)
+            
+        integral = (da * thickness_weights).sum(dim=dims).compute()
     
         # --------------------------------------------------
         # metadata
@@ -207,4 +225,50 @@ class SpaceOperator:
     
         return integral
 
-
+    def calc_vertical_mean(da, thickness_weights, mask=None, dims=None):
+        import xarray as xr
+    
+        # --------------------------------------------------
+        # detect vertical dims
+        # --------------------------------------------------
+        if dims is None:
+            vertical_candidates = {"lev", "level", "levelo", "olevel", "depth", "deptho", "plev"}
+            dims = [d for d in da.dims if d.lower() in vertical_candidates]
+    
+            if len(dims) == 0:
+                raise ValueError(f"No vertical dimension found in {da.dims}")
+    
+        # --------------------------------------------------
+        # ensure dask (critical for big data)
+        # --------------------------------------------------
+        #if not da.chunks:
+        #    da = da.chunk({dims[0]: -1})  # chunk vertically (fast reduction)
+    
+        #if not thickness_weights.chunks:
+        #    thickness_weights = thickness_weights.chunk({dims[0]: -1})
+    
+        # --------------------------------------------------
+        # align WITHOUT copying data
+        # --------------------------------------------------
+        #da, thickness_weights = xr.align(da, thickness_weights, join="inner", copy=False)
+        #thickness_weights = thickness_weights.broadcast_like(da)
+        # --------------------------------------------------
+        # mask (lazy)
+        # --------------------------------------------------
+        if mask is not None:
+            da = da.where(mask)
+    
+        # --------------------------------------------------
+        # vertical integral (lazy, no big temp array)
+        # --------------------------------------------------
+        #integral = xr.dot(da, thickness_weights, dims=dims)
+        vertical_mean = (da * thickness_weights).sum(dim=dims) / thickness_weights.sum(dim=dims)
+    
+        # --------------------------------------------------
+        # metadata
+        # --------------------------------------------------
+        vertical_mean.attrs = da.attrs.copy()
+        vertical_mean.attrs["long_name"] = f"vertical mean of {da.name} (weighted)"
+        
+        return vertical_mean.compute()
+        

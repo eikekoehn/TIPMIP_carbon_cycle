@@ -159,7 +159,7 @@ class NorESMgrabber:
         return dims
 
     def get_area_fraction(varia):
-        if varia in ['nbp','npp']:
+        if varia in ['nbp','npp','cLand','cVeg','cSoil','cLitter','cCwd','cProduct','cLeaf','cStem','cRoot','cWood','cSoilFast','cSoilMedium','cSoilSlow','cSoilAbove1m']:
             indir = '/projets/TipESM/UiB/NorESM2-LM/esm-up2p0/v20251010'
             land_area_fraction_ds = xr.open_dataset(f'{indir}/sftlf_fx_NorESM2-LM_esm-up2p0_r1i1p1f1_gn.nc')
             area_fraction = land_area_fraction_ds.sftlf/100. 

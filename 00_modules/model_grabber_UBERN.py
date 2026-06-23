@@ -18,7 +18,7 @@ class UBERNgrabber:
 
     def get_rootdir(server='spirit'):
         if server == 'spirit':
-            rootdir = '/projets/TipESM/UBERN/TipESM/GFDL-ESM2M'
+            rootdir = '/projets/TipESM/UBERN/CMIP6Plus/TIPMIP/UBERN/GFDL-ESM2M'
         elif server == 'levante':
             rootdir = '/work/bm1448/upload/urshe/GFDL-ESM2M'
         elif rootdir == 'cineca':
@@ -37,33 +37,78 @@ class UBERNgrabber:
         return exercise
 
     def get_domain(varia,freq_input):
-        if freq_input == 'fx' and varia in ['slthick','wilt']:
-            domain = 'E'        
-        elif freq_input == 'daily' and varia in ['clt', 'hus', 'huss', 'pr', 'prc', 'psl', 'rlds', 'rsds', 'sfcWind', 'tas', 'ua', 'va']:
-            domain = ''
-        elif freq_input == 'daily' and varia in ['ps']:
-            domain = 'CF'
-        elif freq_input == 'daily' and varia in ['ts']:
-            domain = 'E'
-        elif freq_input == 'daily' and varia in ['tos','tossq']:
-            domain = 'O'
-        elif freq_input == 'monthly' and varia in ['cl', 'cli', 'clivi', 'clt', 'clw', 'clwvi', 'co2', 'hfls', 'hfss', 'hur', 'hurs', 'hus', 'pr', 'prc', 'prw', 'psl', 'rlds', 'rldscs', 'rlus', 'rluscs', 'rlut', 'rlutcs', 'rsds', 'rsdscs', 'rsdt', 'rsus', 'rsuscs', 'rsut', 'rsutcs', 'ta', 'tas', 'tasmax', 'tasmin', 'tauu', 'tauv', 'ua', 'uas', 'va', 'vas', 'wap', 'zg']:
-            domain = 'A'
-        elif freq_input == 'monthly' and varia in ['sftgif', 'sftgrf', 'snd', 'snm', 'snw']:
+        if freq_input == 'daily' and varia in ['ua8', 'hus8', 'rlds', 'tas', 'prc', 'clt', 'ts', 'pr', 'ps', 'rsds', 'psl', 'sfcWind', 'va8', 'prra']:
+            domain = 'AP'
+        elif freq_input == 'fx' and varia in ['areacella', 'sftlf']:
+            domain = 'AP'
+        elif freq_input == 'monthly' and varia in ['tauu', 'co2mass', 'hfls', 'co2', 'evspsbl', 'rlds', 'zg', 'vas', 'rsutcs', 'hus19', 'tas', 'co2s', 'prc', 'rsus', 'rsuscs', 'clt', 'hur', 'rluscs', 'tasmin', 'prw', 'pr', 'ps', 'rlutcs', 'va19', 'tasmax', 'prsn', 'rsds', 'rsut', 'psl', 'ta', 'clwvi', 'rsdscs', 'rlut', 'ua19', 'hurs', 'tauv', 'rldscs', 'wap', 'clivi', 'rsdt', 'uas', 'hfss', 'rlus']:
+            domain = 'AP'
+        elif freq_input == 'monthly' and varia in ['cl', 'cli', 'clw']:
+            domain = 'AP'
+        elif freq_input == 'monthly' and varia in ['sbl', 'sftgrf', 'snw', 'snm', 'snd']:
             domain = 'LI'
-        elif freq_input == 'monthly' and varia in ['burntFractionAll', 'cLeaf', 'cRoot', 'cropFrac', 'cVeg', 'evspsblsoi', 'evspsblveg', 'gpp', 'grassFrac', 'lai', 'landCoverFrac', 'mrfso', 'mrro', 'mrso', 'nbp', 'npp', 'pastureFrac', 'ra', 'residualFrac', 'rh', 'tran', 'treeFrac', 'tsl']:
-            domain = 'L'
-        elif freq_input == 'monthly' and varia in ['cLand', 'cSoil', 'cSoilLevels', 'cWood', 'fFireAll', 'fracLut', 'grassFracC3', 'grassFracC4', 'mrsfl', 'mrsll', 'mrsol', 'nep', 'nwdFracLut', 'orog', 'rhSoil', 'vegFrac']:
-            domain = 'E'
-        elif freq_input == 'monthly' and varia in ['chlos', 'epcalc100', 'fgco2', 'friver', 'hfbasinpmadv', 'hfx', 'intpp', 'masso', 'mlotstmax', 'msftbarot', 'msftyz', 'o2os', 'pbo', 'po4os', 'sob', 'sos', 'talk', 'tauvo', 'thetaoga', 'tob', 'tosga', 'uo', 'vo', 'wfo', 'wo', 'zostoga', 'epc100', 'evs', 'fgo2', 'hfbasin', 'hfds', 'hfy', 'masscello', 'mlotst', 'mlotstmin', 'msftmz', 'no3os', 'obvfsq', 'ph', 'so', 'soga', 'sosga', 'tauuo', 'thetao', 'thkcello', 'tos', 'umo', 'vmo', 'volo', 'wmo', 'zos','dissic']:
-            domain = 'O'
-        elif freq_input == 'monthly' and varia in ['siconc', 'siconca', 'simass', 'sisnconc', 'sisnmass', 'sisnthick', 'sispeed', 'sitemptop', 'sithick', 'siu', 'siv', 'sivol']:
+        elif freq_input == 'fx' and varia in ['slthick', 'wilt', 'orog']:
+            domain = 'LP'
+        elif freq_input == 'monthly' and varia in ['tsl', 'residualFrac', 'evspsblsoi', 'cVeg', 'evspsblveg', 'cSoil', 'lai', 'fFireAll', 'cropFrac', 'npp', 'rhSoil', 'cLand', 'mrsol', 'burntFractionAll', 'cWood', 'sftgif', 'mrsll', 'landCoverFrac', 'mrro', 'gpp', 'nbp', 'ra', 'vegFrac', 'mrfso', 'treeFrac', 'grassFrac', 'grassFracC3', 'rh', 'mrsos', 'mrtws', 'fracLut', 'pastureFrac', 'cRoot', 'grassFracC4', 'mrsfl', 'cLeaf', 'nep', 'tran', 'mrso']:
+            domain = 'LP'
+        elif freq_input == 'monthly' and varia in ['epc100', 'dissic', 'chldiatos', 'no3os', 'intpp', 'fgco2', 'epcalc100', 'fgo2', 'po4os', 'intppdiat', 'intdic', 'chlos', 'o2os']:
+            domain = 'OB'
+        elif freq_input == 'monthly' and varia in ['talk', 'ph', 'no3', 'o2']:
+            domain = 'OB'
+        elif freq_input == 'yearly' and varia in ['po4', 'no3', 'si', 'dfe', 'o2']:
+            domain = 'OB'
+        elif freq_input == 'daily' and varia in ['tossq', 'tos']:
+            domain = 'OP'
+        elif freq_input == 'fx' and varia in ['areacello']:
+            domain = 'OP'
+        elif freq_input == 'monthly' and varia in ['zostoga', 'hfx', 'tosga', 'sob', 'hfy', 'mlotst', 'evs', 'friver', 'sos', 'sosga', 'tob', 'soga', 'zos', 'wfo', 'thetaoga', 'tauvo', 'masso', 'pbo', 'volo', 'msftbarot', 'tos', 'hfds', 'tauuo', 'mlotstmin', 'mlotstmax']:
+            domain = 'OP'
+        elif freq_input == 'monthly' and varia in ['msftyz', 'wmo', 'thkcello', 'vo', 'so', 'vmo', 'uo', 'volcello', 'thetao', 'obvfsq', 'umo', 'masscello', 'wo', 'agessc']:
+            domain = 'OP'
+        elif freq_input == 'monthly' and varia in ['hfbasinpmadv', 'hfbasin']:
+            domain = 'OP'
+        elif freq_input == 'monthly' and varia in ['sitemptop', 'sisnmass', 'sisnconc', 'sithick', 'sispeed', 'siconc', 'siconca', 'siu', 'sivol', 'siv', 'simass', 'sisnthick']:
             domain = 'SI'
-        elif freq_input == 'yearly' and varia in ['dfe', 'no3', 'o2', 'po4', 'si']:
-            domain = 'O'
         else:
             raise Exception(f'No domain is known for the variable {varia}. At least not for the {freq_input} frequency.')
         return domain  
+
+    def get_domain_suffix(varia,freq_input):
+        if freq_input == 'daily' and varia in ['ua8', 'hus8', 'rlds', 'tas', 'prc', 'clt', 'ts', 'pr', 'ps', 'rsds', 'psl', 'sfcWind', 'va8', 'prra']:
+            domain_suffix = ''
+        elif freq_input == 'fx' and varia in ['areacella', 'sftlf']:
+            domain_suffix = ''
+        elif freq_input == 'monthly' and varia in ['tauu', 'co2mass', 'hfls', 'co2', 'evspsbl', 'rlds', 'zg', 'vas', 'rsutcs', 'hus19', 'tas', 'co2s', 'prc', 'rsus', 'rsuscs', 'clt', 'hur', 'rluscs', 'tasmin', 'prw', 'pr', 'ps', 'rlutcs', 'va19', 'tasmax', 'prsn', 'rsds', 'rsut', 'psl', 'ta', 'clwvi', 'rsdscs', 'rlut', 'ua19', 'hurs', 'tauv', 'rldscs', 'wap', 'clivi', 'rsdt', 'uas', 'hfss', 'rlus']:
+            domain_suffix = ''
+        elif freq_input == 'monthly' and varia in ['cl', 'cli', 'clw']:
+            domain_suffix = 'Lev'
+        elif freq_input == 'monthly' and varia in ['sbl', 'sftgrf', 'snw', 'snm', 'snd']:
+            domain_suffix = ''
+        elif freq_input == 'fx' and varia in ['slthick', 'wilt', 'orog']:
+            domain_suffix = ''
+        elif freq_input == 'monthly' and varia in ['tsl', 'residualFrac', 'evspsblsoi', 'cVeg', 'evspsblveg', 'cSoil', 'lai', 'fFireAll', 'cropFrac', 'npp', 'rhSoil', 'cLand', 'mrsol', 'burntFractionAll', 'cWood', 'sftgif', 'mrsll', 'landCoverFrac', 'mrro', 'gpp', 'nbp', 'ra', 'vegFrac', 'mrfso', 'treeFrac', 'grassFrac', 'grassFracC3', 'rh', 'mrsos', 'mrtws', 'fracLut', 'pastureFrac', 'cRoot', 'grassFracC4', 'mrsfl', 'cLeaf', 'nep', 'tran', 'mrso']:
+            domain_suffix = ''
+        elif freq_input == 'monthly' and varia in ['epc100', 'dissic', 'chldiatos', 'no3os', 'intpp', 'fgco2', 'epcalc100', 'fgo2', 'po4os', 'intppdiat', 'intdic', 'chlos', 'o2os']:
+            domain_suffix = ''
+        elif freq_input == 'monthly' and varia in ['talk', 'ph', 'no3', 'o2']:
+            domain_suffix = 'Lev'
+        elif freq_input == 'yearly' and varia in ['po4', 'no3', 'si', 'dfe', 'o2']:
+            domain_suffix = 'Lev'
+        elif freq_input == 'daily' and varia in ['tossq', 'tos']:
+            domain_suffix = ''
+        elif freq_input == 'fx' and varia in ['areacello']:
+            domain_suffix = ''
+        elif freq_input == 'monthly' and varia in ['zostoga', 'hfx', 'tosga', 'sob', 'hfy', 'mlotst', 'evs', 'friver', 'sos', 'sosga', 'tob', 'soga', 'zos', 'wfo', 'thetaoga', 'tauvo', 'masso', 'pbo', 'volo', 'msftbarot', 'tos', 'hfds', 'tauuo', 'mlotstmin', 'mlotstmax']:
+            domain_suffix = ''
+        elif freq_input == 'monthly' and varia in ['msftyz', 'wmo', 'thkcello', 'vo', 'so', 'vmo', 'uo', 'volcello', 'thetao', 'obvfsq', 'umo', 'masscello', 'wo', 'agessc']:
+            domain_suffix = 'Lev'
+        elif freq_input == 'monthly' and varia in ['hfbasinpmadv', 'hfbasin']:
+            domain_suffix = 'Z'
+        elif freq_input == 'monthly' and varia in ['sitemptop', 'sisnmass', 'sisnconc', 'sithick', 'sispeed', 'siconc', 'siconca', 'siu', 'sivol', 'siv', 'simass', 'sisnthick']:
+            domain_suffix = ''
+        else:
+            raise Exception(f'No domain suffix is known for the variable {varia}. At least not for the {freq_input} frequency.')
+        return domain_suffix  
 
     def get_frequency(freq_input='monthly'):
         if freq_input == 'daily':
@@ -82,16 +127,16 @@ class UBERNgrabber:
 
     def get_area(varia,freq_input):
         domain = UBERNgrabber.get_domain(varia,freq_input)
-        if domain in ['L', 'E', 'A', '', 'CF', 'LI']:
+        if domain in ['AP','LI','LP']:
             #area_file = '/home/ekoehn/jobs/jupyter/TipESM/carbon_cycle_reversibility/model_grids/areacella_fx_GFDL-ESM2M_historical_r0i0p0.nc'
-            area_file = '/projets/TipESM/UBERN/TipESM/GFDL-ESM2M/esm-piControl/r1i1p1f1/fx/areacella/gn/v20250510/areacella_fx_GFDL-ESM2M_esm-piControl_r1i1p1f1_gn.nc'
+            area_file = '/projets/TipESM/UBERN/CMIP6Plus/TIPMIP/UBERN/GFDL-ESM2M/esm-piControl/r1i1p1f1/APfx/areacella/gn/v20250510/areacella_APfx_GFDL-ESM2M_esm-piControl_r1i1p1f1_gn.nc'
             area_ds = xr.open_dataset(area_file)
             area = area_ds['areacella'].compute()
             #area = area.rename({'lat':'latitude','lon':'longitude'})
             area_ds.close()
-        elif domain in ['Si','O']:
+        elif domain in ['OB','OP','SI']:
             #area_file = '/home/ekoehn/jobs/jupyter/TipESM/carbon_cycle_reversibility/model_grids/areacello_Ofx_GFDL-ESM2M_faf-all_r1i1p1f1_gn.nc'
-            area_file = '/projets/TipESM/UBERN/TipESM/GFDL-ESM2M/esm-piControl/r1i1p1f1/Ofx/areacello/gn/v20250510/areacello_Ofx_GFDL-ESM2M_esm-piControl_r1i1p1f1_gn.nc'
+            area_file = '/projets/TipESM/UBERN/CMIP6Plus/TIPMIP/UBERN/GFDL-ESM2M/esm-piControl/r1i1p1f1/OPfx/areacello/gn/v20250510/areacello_OPfx_GFDL-ESM2M_esm-piControl_r1i1p1f1_gn.nc'
             area_ds = xr.open_dataset(area_file)
             area = area_ds['areacello'].fillna(0).compute()
             #area = area.rename({'lat':'geolat_t','lon':'geolon_t'})
@@ -110,8 +155,9 @@ class UBERNgrabber:
         freq = UBERNgrabber.get_frequency(freq_input) 
         domain = UBERNgrabber.get_domain(varia,freq_input)
         grid = UBERNgrabber.get_grid()
+        domain_suffix = UBERNgrabber.get_domain_suffix(varia,freq_input)
 
-        data_path = f'{rootdir}/{run}/{member}/{domain}{freq}/{varia}/{grid}/v*' 
+        data_path = f'{rootdir}/{run}/{member}/{domain}{freq}{domain_suffix}/{varia}/{grid}/v*' 
         pattern = f"/{varia}*_{grid}_*.nc" 
         #print(data_path+pattern)
         file_list = sorted(glob.glob(data_path+pattern,recursive=True))
@@ -122,18 +168,18 @@ class UBERNgrabber:
 
     def get_horizontal_dimensions(vspecs):
         domain = UBERNgrabber.get_domain(varia)
-        if domain in ['O','SI']:
+        if domain in ['OB','OP','SI']:
             dims = ('latitude','longitude')
-        elif domain in ['L', 'E', 'A', '', 'CF', 'LI']:
+        elif domain in ['AP','LI','LP']:
             dims = ('latitude','longitude')
         else:
             raise Exception('Variable not in known domain.')
         return dims
 
     def get_area_fraction(varia):
-        if varia in ['nbp','npp']:
-            indir = '/projets/TipESM/UBERN/TipESM/GFDL-ESM2M/esm-piControl/r1i1p1f1/fx/sftlf/gn/v20250510'
-            land_area_fraction_ds = xr.open_dataset(f'{indir}/sftlf_fx_GFDL-ESM2M_esm-piControl_r1i1p1f1_gn.nc')
+        if varia in ['nbp','npp','cLand','cVeg','cSoil','cLitter','cCwd','cProduct','cLeaf','cStem','cRoot','cWood','cSoilFast','cSoilMedium','cSoilSlow','cSoilAbove1m']:
+            indir = '/projets/TipESM/UBERN/CMIP6Plus/TIPMIP/UBERN/GFDL-ESM2M/esm-piControl/r1i1p1f1/APfx/sftlf/gn/v20250510'
+            land_area_fraction_ds = xr.open_dataset(f'{indir}/sftlf_APfx_GFDL-ESM2M_esm-piControl_r1i1p1f1_gn.nc')
             area_fraction = land_area_fraction_ds.sftlf/100. 
         #elif varia in ['fgco2']:
         #    indir = '/projets/TipESM/UBERN/TipESM/GFDL-ESM2M/esm-piControl/r1i1p1f1/Ofx/sftof/gn/v20250510'
