@@ -218,7 +218,7 @@ class CESMgrabber:
         return area_fraction
 
     def get_data(varia,run,freq_input='monthly',verbose_level=1):
-        
+
         # get the list of files
         files = CESMgrabber.get_filelist(varia,run,freq_input)
         if verbose_level > 0:
@@ -230,6 +230,20 @@ class CESMgrabber:
         if verbose_level > 0:
             print(da) 
         
+        return da
+
+    def get_dz(run,freq_input='monthly',verbose_level=1):
+        # get the list of files
+        files = CESMgrabber.get_filelist('DIC',run,freq_input)
+        if verbose_level > 0:
+            print(files)
+        # open the dataset and choose data array
+        ds = DataFuncs.open_dataset(files)
+        da = ds['dz'] / 100. # convert from centimeters to meters
+        da.attrs = ds['dz'].attrs.copy()
+        da.attrs["units"] = "m"
+        if verbose_level > 0:
+            print(da) 
         return da
 
 

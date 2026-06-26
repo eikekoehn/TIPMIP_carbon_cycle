@@ -17,7 +17,8 @@ from operations_time import TimeOperator
 
 class UKESMgrabber:
 
-    def get_rootdir(run,server='cineca'):
+    def get_rootdir(): #,server='cineca'):
+        server = MISCgrabber.get_server()
         if server == 'spirit':
             raise Exception('No data for UKESM1-2 on SPIRIT.') 
         elif server == 'levante':
@@ -85,7 +86,7 @@ class UKESMgrabber:
 
     def get_area(varia,freq_input):
         domain = UKESMgrabber.get_domain(varia,freq_input)
-        area_path = '/g100/home/userexternal/ekoehn00/jobs/TipESM/carbon_cycle_reversibility/model_grids'
+        area_path = './../00_modules/support_data'
         if domain in ['L','E','A']:
             area_file = f'{area_path}/areacella_fx_UKESM1-0-LL_piControl_r1i1p1f2_gn.nc'
             area_ds = xr.open_dataset(area_file)
@@ -102,15 +103,17 @@ class UKESMgrabber:
             raise Exception('Variable not in known domain.')
         return area
 
-    def get_filelist(varia,run,freq_input,server='cineca'):
+    def get_filelist(varia,run,freq_input): #,server='cineca'):
      
         member = UKESMgrabber.get_member()
         exercise = UKESMgrabber.get_exercise(run)
-        rootdir = UKESMgrabber.get_rootdir(run,server=server)
+        rootdir = UKESMgrabber.get_rootdir() #,server=server)
         freq = UKESMgrabber.get_frequency(freq_input) 
         domain = UKESMgrabber.get_domain(varia,freq_input)
         grid = UKESMgrabber.get_grid(varia,freq_input)
 
+        server = MISCgrabber.get_server()
+        
         if server == 'cineca':
             data_path = f'{rootdir}/2*/CMIP6/CMIP/MOHC/UKESM1-2/{run}/{member}/{domain}{freq}/{varia}/{grid}/v*' 
         elif server == 'levante':
@@ -134,18 +137,19 @@ class UKESMgrabber:
         return dims
 
     def get_area_fraction(varia):
-        if varia in ['nbp','npp']:
-            indir = '/g100/home/userexternal/ekoehn00/jobs/TIPMIP_carbon_cycle/00_modules/support_data'  #'/bdd/CMIP6/CMIP/IPSL/IPSL-CM6A-LR/1pctCO2/r1i1p1f1/fx/sftlf/gr/latest'
+        if varia in ['nbp','npp','cLand','cVeg','cSoil','cLitter','cCwd','cProduct','cLeaf','cStem','cRoot','cWood','cSoilFast','cSoilMedium','cSoilSlow','cSoilAbove1m']:
+            indir = './../00_modules/support_data'  #'/bdd/CMIP6/CMIP/IPSL/IPSL-CM6A-LR/1pctCO2/r1i1p1f1/fx/sftlf/gr/latest'
             land_area_fraction_ds = xr.open_dataset(f'{indir}/sftlf_fx_UKESM1-0-LL_piControl_r1i1p1f2_gn.nc')
             area_fraction = land_area_fraction_ds.sftlf/100. 
         else:
             area_fraction = None
         return area_fraction
 
-    def get_data(varia,run,freq_input='monthly',verbose_level=1,server='cineca'):
-        
+    def get_data(varia,run,freq_input='monthly',verbose_level=1): #,server='cineca'):
+
+
         # get the list of files
-        files = UKESMgrabber.get_filelist(varia,run,freq_input,server=server)
+        files = UKESMgrabber.get_filelist(varia,run,freq_input) #,server=server)
         if verbose_level > 0:
             print(files)
 

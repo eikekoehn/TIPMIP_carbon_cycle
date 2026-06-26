@@ -20,10 +20,29 @@ from pathlib import Path
 
 class DataFuncs:
 
+
+    
     def open_dataset(files):
         if isinstance(files,list):
             if len(files) > 1:
-                ds = xr.open_mfdataset(files,use_cftime=True, data_vars="minimal", coords="minimal", compat="override")
+                #ds = xr.open_mfdataset(files,use_cftime=True, data_vars="minimal", coords="minimal", compat="override")
+                try:
+                    time_coder = xr.coders.CFDatetimeCoder(use_cftime=True)
+                    ds = xr.open_mfdataset(
+                        files,
+                        decode_times=time_coder,
+                        data_vars="minimal",
+                        coords="minimal",
+                        compat="override"
+                    )
+                except AttributeError:
+                    ds = xr.open_mfdataset(
+                        files,
+                        use_cftime=True,
+                        data_vars="minimal",
+                        coords="minimal",
+                        compat="override"
+                    )
             elif len(files) == 1:
                 ds = xr.open_dataset(files[0],use_cftime=True)
             elif len(files) == 0:
@@ -39,6 +58,24 @@ class DataFuncs:
 
 class MISCgrabber:
 
+    @staticmethod
+    def get_server():
+        from pathlib import Path
+        pwd = Path.cwd()
+        #print(pwd.parts[1:4])  # inspect components
+        if "/"+"/".join(pwd.parts[1:3]) == '/home/ekoehn':
+            server = 'spirit'
+        elif "/"+"/".join(pwd.parts[1:4]) == '/home/b/b384080':
+            server = 'levante'
+        elif "/"+"/".join(pwd.parts[1:5]) == '/g100/home/userexternal/ekoehn00':
+            server = 'cineca'
+        else:
+            raise Exception('unknown server')
+
+        #print("/"+"/".join(pwd.parts[1:4]))
+        print(f'working on server {server}')
+        return server
+    
     @staticmethod
     def parse_dates(filename):
         """

@@ -84,6 +84,8 @@ class PackageGetter:
         # import the class for getting miscellaneous functions
         from misc_functions import DataFuncs as DFuncs
         from misc_functions import miniFuncs as miniFuncs
+        from misc_functions import MISCgrabber as MISCgrabber
+
 
         # import operators for calculations
         from operations_space import SpaceOperator 

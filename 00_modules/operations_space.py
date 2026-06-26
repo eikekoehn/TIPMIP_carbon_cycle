@@ -81,6 +81,11 @@ class SpaceOperator:
 
         spatial_mean = numerator / denominator
 
+        #print('-----------')
+        spatial_mean.attrs = da.attrs.copy()
+        #print(spatial_mean)
+        
+
         return spatial_mean
 
     
@@ -167,7 +172,7 @@ class SpaceOperator:
         # detect vertical dims
         # --------------------------------------------------
         if dims is None:
-            vertical_candidates = {"lev", "level", "olevel", "levelo", "depth", "deptho"}
+            vertical_candidates = {"lev", "level", "olevel", "levelo", "depth", "deptho", "z_t"}
             dims = [d for d in da.dims if d.lower() in vertical_candidates]
     
             if len(dims) == 0:
@@ -232,7 +237,7 @@ class SpaceOperator:
         # detect vertical dims
         # --------------------------------------------------
         if dims is None:
-            vertical_candidates = {"lev", "level", "levelo", "olevel", "depth", "deptho", "plev"}
+            vertical_candidates = {"lev", "level", "levelo", "olevel", "depth", "deptho", "plev", "z_t"}
             dims = [d for d in da.dims if d.lower() in vertical_candidates]
     
             if len(dims) == 0:

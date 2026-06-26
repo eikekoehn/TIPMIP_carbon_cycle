@@ -18,10 +18,11 @@ from operations_time import TimeOperator
 class ECEARTHgrabber:
 
     def get_rootdir(run,server='cineca'):
+        server = MISCgrabber.get_server()
         if server == 'spirit':
             raise Exception('No data for EC-Earth3-ESM-1 on SPIRIT.') 
         elif server == 'levante':
-            rootdir = '/work/bm1448/upload/tipesm/EC-Earth3-ESM-1'
+            rootdir = '/work/bm1448/upload/optimesm/EC-Earth3-ESM-1'
         elif server == 'cineca':
             rootdir = '/g100_store/DRES_OptimESM/ESGF/prepub/smhi/CMIP6Plus' #dmi'
         return rootdir
@@ -174,12 +175,12 @@ class ECEARTHgrabber:
     def get_area(varia,freq_input):
         domain = ECEARTHgrabber.get_domain(varia,freq_input)
         if domain in ['AP','LI','LP']:
-            area_file = f'/g100_store/DRES_OptimESM/ESGF/prepub/dmi/20250514/CMIP6Plus/TIPMIP/EC-Earth-Consortium/EC-Earth3-ESM-1/esm-up2p0/r1i1p1f1/APfx/areacella/gr/v20250429/areacella_APfx_EC-Earth3-ESM-1_esm-up2p0_r1i1p1f1_gr.nc'
+            area_file = './../00_modules/support_data/areacella_APfx_EC-Earth3-ESM-1_esm-up2p0_r1i1p1f1_gr.nc' #  f'/g100_store/DRES_OptimESM/ESGF/prepub/dmi/20250514/CMIP6Plus/TIPMIP/EC-Earth-Consortium/EC-Earth3-ESM-1/esm-up2p0/r1i1p1f1/APfx/areacella/gr/v20250429/areacella_APfx_EC-Earth3-ESM-1_esm-up2p0_r1i1p1f1_gr.nc'
             area_ds = xr.open_dataset(area_file)
             area = area_ds['areacella'].compute()
             area_ds.close()
         elif domain in ['SI','OB','OP']:
-            area_file = f'/g100_store/DRES_OptimESM/ESGF/prepub/dmi/20250514/CMIP6Plus/TIPMIP/EC-Earth-Consortium/EC-Earth3-ESM-1/esm-up2p0/r1i1p1f1/OPfx/areacello/gn/v20250429/areacello_OPfx_EC-Earth3-ESM-1_esm-up2p0_r1i1p1f1_gn.nc'
+            area_file = './../00_modules/support_data/areacello_OPfx_EC-Earth3-ESM-1_esm-up2p0_r1i1p1f1_gn.nc' # f'/g100_store/DRES_OptimESM/ESGF/prepub/dmi/20250514/CMIP6Plus/TIPMIP/EC-Earth-Consortium/EC-Earth3-ESM-1/esm-up2p0/r1i1p1f1/OPfx/areacello/gn/v20250429/areacello_OPfx_EC-Earth3-ESM-1_esm-up2p0_r1i1p1f1_gn.nc'
             area_ds = xr.open_dataset(area_file)
             area = area_ds['areacello'].fillna(0).compute()
             #area = area.rename({'y':'j','x':'i'})
@@ -200,9 +201,13 @@ class ECEARTHgrabber:
 
         grid = ECEARTHgrabber.get_grid(varia,freq_input)
 
-        data_path = f'{rootdir}/{exercise}/EC-Earth-Consortium/EC-Earth3-ESM-1/{run}/{member}/{domain}{freq}{domain_suffix}/{varia}/{grid}/v*' 
+        server = MISCgrabber.get_server()
+        if server == 'cineca':
+            data_path = f'{rootdir}/{exercise}/EC-Earth-Consortium/EC-Earth3-ESM-1/{run}/{member}/{domain}{freq}{domain_suffix}/{varia}/{grid}/v*' 
+        elif server == 'levante':
+            data_path = f'{rootdir}/{run}/{member}/{domain}{freq}{domain_suffix}/{varia}/{grid}/v*' 
         pattern = f"/{varia}*_{grid}_*.nc" 
-        #print(data_path+pattern)
+        print(data_path+pattern)
         file_list = sorted(glob.glob(data_path+pattern,recursive=True))
         file_list_filtered = MISCgrabber.filter_longest_period_files(file_list)
         
@@ -219,8 +224,8 @@ class ECEARTHgrabber:
         return dims
 
     def get_area_fraction(varia):
-        if varia in ['nbp','npp']:
-            indir = '/g100_store/DRES_OptimESM/ESGF/prepub/smhi/CMIP6Plus/TIPMIP/EC-Earth-Consortium/EC-Earth3-ESM-1/esm-up2p0/r1i1p1f1/APfx/sftlf/gr/v20250429'
+        if varia in ['nbp','npp','cLand','cVeg','cSoil','cLitter','cCwd','cProduct','cLeaf','cStem','cRoot','cWood','cSoilFast','cSoilMedium','cSoilSlow','cSoilAbove1m']:
+            indir = './../00_modules/support_data' #'/g100_store/DRES_OptimESM/ESGF/prepub/smhi/CMIP6Plus/TIPMIP/EC-Earth-Consortium/EC-Earth3-ESM-1/esm-up2p0/r1i1p1f1/APfx/sftlf/gr/v20250429'
             land_area_fraction_ds = xr.open_dataset(f'{indir}/sftlf_APfx_EC-Earth3-ESM-1_esm-up2p0_r1i1p1f1_gr.nc')
             area_fraction = land_area_fraction_ds.sftlf/100. 
         else:
