@@ -20,10 +20,10 @@ class IPSLgrabber:
         if server == 'spirit':
             #if run == 'esm-piControl':
             #    rootdir = '/thredds/tgcc/work/kohneike/TipESM_CMIP6Plus_RUNS/CMIP6Plus/CMIP/IPSL/IPSL-CM6-ESMCO2'
-            if run in ['esm-up2p0-gwl4p0-50y-dn2p0','esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0']:
-                rootdir = '/thredds/tgcc/work/kohneike/TipESM_CMIP6Plus_RUNS/CMIP6Plus/TIPMIP/IPSL/IPSL-CM6-ESMCO2'
-            else:
-                rootdir = '/projets/TipESM/IPSL/IPSL-CM6-ESMCO2'
+            #if run in ['esm-up2p0-gwl4p0-50y-dn2p0','esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0']:
+            #    rootdir = '/thredds/tgcc/work/kohneike/TipESM_CMIP6Plus_RUNS/CMIP6Plus/TIPMIP/IPSL/IPSL-CM6-ESMCO2'
+            #else:
+            rootdir = '/projets/TipESM/IPSL/IPSL-CM6-ESMCO2'
         elif server == 'levante':
             rootdir = '/work/bm1448/upload/tipesm/IPSL-CM6-ESMCO2'
         elif rootdir == 'cineca':
@@ -78,12 +78,12 @@ class IPSLgrabber:
     def get_area(varia,freq_input):
         domain = IPSLgrabber.get_domain(varia,freq_input)
         if domain in ['L','E','A']:
-            area_file = '/home/ekoehn/jobs/jupyter/TipESM/carbon_cycle_reversibility/model_grids/areacella_fx_IPSL-CM6A-LR_piControl_r1i1p1f1_gr.nc'
+            area_file = '/home/ekoehn/jobs/jupyter/TIPMIP_carbon_cycle/00_modules/support_data/areacella_fx_IPSL-CM6A-LR_piControl_r1i1p1f1_gr.nc'
             area_ds = xr.open_dataset(area_file)
             area = area_ds['areacella'].compute()
             area_ds.close()
         elif domain in ['Si','O']:
-            area_file = '/home/ekoehn/jobs/jupyter/TipESM/carbon_cycle_reversibility/model_grids/areacello_Ofx_IPSL-CM6A-LR_1pctCO2_r1i1p1f1_gn.nc'
+            area_file = '/home/ekoehn/jobs/jupyter/TIPMIP_carbon_cycle/00_modules/support_data/areacello_Ofx_IPSL-CM6A-LR_1pctCO2_r1i1p1f1_gn.nc' #'/home/ekoehn/jobs/jupyter/TipESM/carbon_cycle_reversibility/model_grids/areacello_Ofx_IPSL-CM6A-LR_1pctCO2_r1i1p1f1_gn.nc'
             area_ds = xr.open_dataset(area_file)
             area = area_ds['areacello'].fillna(0).compute()
             area = area.rename({'y':'j','x':'i'})
