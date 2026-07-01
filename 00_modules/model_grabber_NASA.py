@@ -154,7 +154,7 @@ class NASAgrabber:
                 area = area_ds['oxyp'].fillna(0).compute()
             elif 'areacello' in area_ds.variables:
                 area = area_ds['areacello'].fillna(0).compute()
-                area = area.assign_coords(lat=xr.where(area.lat == -89.5, -90,xr.where(area.lat == 89.5, 90, area.lat)))
+                #area = area.assign_coords(lat=xr.where(area.lat == -89.5, -90,xr.where(area.lat == 89.5, 90, area.lat)))
                 print(area)
             else:
                 raise Exception('no area found')
@@ -286,6 +286,9 @@ class NASAgrabber:
         da = ds[varia]
         if verbose_level > 0:
             print(da) 
+
+        if varia == 'dissic':
+            da = xr.where(da==0,np.nan,da)
 
         server = MISCgrabber.get_server()
         if server == 'spirit':
