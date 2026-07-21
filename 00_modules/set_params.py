@@ -227,9 +227,11 @@ class Runs:
     I.e., which runs there are, how they depend on one another, and how the experiment cycles are defined.
     """
 
-    def __init__(self,color_id=None, linestyle_id=None):
+    def __init__(self,color_id=None, linestyle_id=None, marker_id=None):
         self.color_id = color_id
         self.linestyle_id = linestyle_id
+        self.marker_id = marker_id
+
 
     def get_run_list(selector='tipmip_tier1'):
         if selector == 'tipmip_tier1':
@@ -291,35 +293,35 @@ class Runs:
         run_dict = dict()
 
         # CMIP type runs
-        run_dict['esm-piControl']    = cls(color_id='#555555',linestyle_id=':')
-        run_dict['esm-hist']         = cls(color_id='C3',     linestyle_id='-')
+        run_dict['esm-piControl']    = cls(color_id='#555555',linestyle_id=':',marker_id='s')
+        run_dict['esm-hist']         = cls(color_id='C3',     linestyle_id='-',marker_id='X')
 
         # TIPMIP rampup
-        run_dict['esm-up2p0']        = cls(color_id='#F28E2B',     linestyle_id='-')
+        run_dict['esm-up2p0']        = cls(color_id='#F28E2B',     linestyle_id='-',marker_id='o')
 
         # TIPMIP stabilizations
-        run_dict['esm-up2p0-gwl1p1'] = cls(color_id='C2',     linestyle_id=':')
-        run_dict['esm-up2p0-gwl1p5'] = cls(color_id='C2',     linestyle_id=':')
-        run_dict['esm-up2p0-gwl2p0'] = cls(color_id='#66A61E',     linestyle_id=':')
-        run_dict['esm-up2p0-gwl3p0'] = cls(color_id='C2',     linestyle_id=':')
-        run_dict['esm-up2p0-gwl4p0'] = cls(color_id='#2E7D32',     linestyle_id=':')
-        run_dict['esm-up2p0-gwl5p0'] = cls(color_id='C2',     linestyle_id=':')
-        run_dict['esm-up2p0-gwl6p0'] = cls(color_id='C2',     linestyle_id=':')
+        run_dict['esm-up2p0-gwl1p1'] = cls(color_id='C2',     linestyle_id=':',marker_id='>')
+        run_dict['esm-up2p0-gwl1p5'] = cls(color_id='C2',     linestyle_id=':',marker_id='<')
+        run_dict['esm-up2p0-gwl2p0'] = cls(color_id='#66A61E',     linestyle_id=':',marker_id='v')
+        run_dict['esm-up2p0-gwl3p0'] = cls(color_id='C2',     linestyle_id=':',marker_id='d')
+        run_dict['esm-up2p0-gwl4p0'] = cls(color_id='#2E7D32',     linestyle_id=':',marker_id='^')
+        run_dict['esm-up2p0-gwl5p0'] = cls(color_id='C2',     linestyle_id=':',marker_id='h')
+        run_dict['esm-up2p0-gwl6p0'] = cls(color_id='C2',     linestyle_id=':',marker_id='H')
 
         # TIPMIP rampdowns
-        run_dict['esm-up2p0-gwl1p5-50y-dn2p0']  = cls(color_id='C0', linestyle_id='--')
-        run_dict['esm-up2p0-gwl2p0-50y-dn2p0']  = cls(color_id='#3DAEFF', linestyle_id='--')
-        run_dict['esm-up2p0-gwl3p0-50y-dn2p0']  = cls(color_id='C0', linestyle_id='--')
-        run_dict['esm-up2p0-gwl4p0-50y-dn2p0']  = cls(color_id='#4F8FC1', linestyle_id='--')
-        run_dict['esm-up2p0-gwl2p0-200y-dn2p0'] = cls(color_id='C0', linestyle_id='--')
-        run_dict['esm-up2p0-gwl4p0-200y-dn2p0'] = cls(color_id='C0', linestyle_id='--')
-        run_dict['esm-up2p0-gwl2p0-50y-dn1p0']  = cls(color_id='c', linestyle_id='--')
-        run_dict['esm-up2p0-gwl4p0-50y-dn1p0']  = cls(color_id='c', linestyle_id='--')
+        run_dict['esm-up2p0-gwl1p5-50y-dn2p0']  = cls(color_id='C0', linestyle_id='--',marker_id='1')
+        run_dict['esm-up2p0-gwl2p0-50y-dn2p0']  = cls(color_id='#3DAEFF', linestyle_id='--',marker_id='2')
+        run_dict['esm-up2p0-gwl3p0-50y-dn2p0']  = cls(color_id='C0', linestyle_id='--',marker_id='3')
+        run_dict['esm-up2p0-gwl4p0-50y-dn2p0']  = cls(color_id='#4F8FC1', linestyle_id='--',marker_id='4')
+        run_dict['esm-up2p0-gwl2p0-200y-dn2p0'] = cls(color_id='C0', linestyle_id='--',marker_id='8')
+        run_dict['esm-up2p0-gwl4p0-200y-dn2p0'] = cls(color_id='C0', linestyle_id='--',marker_id='1')
+        run_dict['esm-up2p0-gwl2p0-50y-dn1p0']  = cls(color_id='c', linestyle_id='--',marker_id='.')
+        run_dict['esm-up2p0-gwl4p0-50y-dn1p0']  = cls(color_id='c', linestyle_id='--',marker_id=',')
 
         # TIPMIP restabilizations
-        run_dict['esm-up2p0-gwl2p0-50y-dn2p0-gwl0p0'] = cls(color_id='C4', linestyle_id='-')
-        run_dict['esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0'] = cls(color_id='#E15759', linestyle_id='-')
-        run_dict['esm-up2p0-gwl4p0-50y-dn2p0-gwl0p0'] = cls(color_id='C4', linestyle_id='-')
+        run_dict['esm-up2p0-gwl2p0-50y-dn2p0-gwl0p0'] = cls(color_id='C4', linestyle_id='-',marker_id='P')
+        run_dict['esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0'] = cls(color_id='#E15759', linestyle_id='-',marker_id='D')
+        run_dict['esm-up2p0-gwl4p0-50y-dn2p0-gwl0p0'] = cls(color_id='C4', linestyle_id='-',marker_id='+')
         
         return run_dict
 
