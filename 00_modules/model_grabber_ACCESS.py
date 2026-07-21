@@ -94,7 +94,7 @@ class ACCESSgrabber:
         return area
 
     
-    def get_filelist(varia,run,freq_input,server='levante'):
+    def get_filelist(varia,run,freq_input):#,server='levante'):
      
         member = ACCESSgrabber.get_member()
         exercise = ACCESSgrabber.get_exercise(run)
@@ -103,9 +103,11 @@ class ACCESSgrabber:
         domain = ACCESSgrabber.get_domain(varia,freq_input)
         grid = ACCESSgrabber.get_grid()
 
-        if server == 'levante':
+        #if server == 'levante':
+        if run != 'esm-piControl':
             data_path = f'{rootdir}/{run}/{member}/{domain}{freq}/{varia}/v*' 
-        elif server == 'spirit':
+        #elif server == 'spirit':
+        elif run == 'esm-piControl':
             data_path = f'{rootdir}/{run}/{member}/{domain}{freq}/{varia}/{grid}/latest' 
         pattern = f"/{varia}*_{grid}_*.nc" 
         print(data_path+pattern)
@@ -135,10 +137,10 @@ class ACCESSgrabber:
             area_fraction = None
         return area_fraction
 
-    def get_data(varia,run,freq_input='monthly',verbose_level=1,server='levante'):
+    def get_data(varia,run,freq_input='monthly',verbose_level=1):#server='levante'):
         
         # get the list of files
-        files = ACCESSgrabber.get_filelist(varia,run,freq_input,server=server)
+        files = ACCESSgrabber.get_filelist(varia,run,freq_input)#,server=server)
         if verbose_level > 0:
             print(files)
 
