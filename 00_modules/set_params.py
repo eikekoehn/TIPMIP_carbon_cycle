@@ -140,7 +140,7 @@ class Models:
                         rampup_start_year=1850,
                         stab2K_start_year=1944,
                         stab4K_start_year=2127,
-                        restab2K_start_year=None,
+                        restab2K_start_year=2299,
                         plotting_name='NASA-GISS',
                         default_member=None,
                         calendar='noleap')      

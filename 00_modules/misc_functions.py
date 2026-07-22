@@ -75,30 +75,33 @@ class MISCgrabber:
         #print("/"+"/".join(pwd.parts[1:4]))
         print(f'working on server {server}')
         return server
-    
+
     @staticmethod
     def parse_dates(filename):
         """
         Extract start and end dates from filename.
-
+    
         Supports:
+            YYYY_YYYY.nc
             YYYYMM-YYYYMM.nc
             YYYYMMDD-YYYYMMDD.nc
         """
-        match = re.search(r'(\d{6}|\d{8})-(\d{6}|\d{8})\.nc$', filename)
+        match = re.search(r'(\d{4}|\d{6}|\d{8})[-_](\d{4}|\d{6}|\d{8})\.nc$', filename)
         if not match:
             return None, None
-
+    
         start_str, end_str = match.groups()
-
+    
         def parse_date(s):
-            if len(s) == 6:
+            if len(s) == 4:
+                return datetime.strptime(s, "%Y")
+            elif len(s) == 6:
                 return datetime.strptime(s, "%Y%m")
             elif len(s) == 8:
                 return datetime.strptime(s, "%Y%m%d")
             else:
                 raise ValueError(f"Unsupported date format: {s}")
-
+    
         return parse_date(start_str), parse_date(end_str)
 
     @staticmethod

@@ -28,12 +28,15 @@ class NASAgrabber:
             raise Exception('No data for GISSE2.1-G-CC2 available.') 
         return rootdir
         
-    def get_member():
+    def get_member(run):
         server = MISCgrabber.get_server()
         if server == 'spirit':
             member = 'r0i0p0f0'
         elif server == 'levante':
-            member = 'r1i1p1f3'
+            if run in ['esm-up2p0-gwl4p0-50y-dn2p0','esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0']:
+                member = 'r1i1p1f1'
+            else:
+                member = 'r1i1p1f3'
         elif server == 'cineca':
             raise Exception('No data for GISSE2.1-G-CC2 available.') 
         return member
@@ -45,7 +48,7 @@ class NASAgrabber:
             exercise = 'TIPMIP'
         return exercise
 
-    def get_domain(varia,freq_input):
+    def get_domain(varia,freq_input,run):
         server = MISCgrabber.get_server()
         
         if server == 'spirit':
@@ -66,6 +69,24 @@ class NASAgrabber:
 
         #%%
         elif server == 'levante':
+            #if run in ['esm-up2p0-gwl4p0-50y-dn2p0','esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0']:
+            #    if freq_input == 'monthly' and varia in ["agesc","chldiatos","chlos","epc100","intppdiat","intpp","mlotst","msftmz","msftyz","no3","o2","ph","phos","si","so","sos","thetao","tos","uo","vo","wfo","zos"]:
+            #        domain = 'O'
+            #    elif freq_input == 'fx' and varia in ["areacello"]:
+            #        domain = 'O'
+            #    elif freq_input == 'fx' and varia in ["areacella"]:
+            #        domain = ''
+            #    elif freq_input == 'monthly' and varia in ["baresoilFrac","gpp","lai","mrro","mrros","npp","treeFrac"]:
+            #        domain = 'L'
+            #    elif freq_input == 'monthly' and varia in ["sftgif","snc","snd","snw"]:
+            #        domain = 'LI'
+            #    elif freq_input == 'monthly' and varia in ["co2mass","evspsbl","hfss","pr","prsn","psl","rlut","spco2","tas","tasmax","tasmin","tauu","tauv","ua","uas","va","vas","wap","zg"]:
+            #        domain = 'A'
+            #    elif freq_input == "monthly" and varia in ["co2s","cSoil"]:
+            #        domain = 'E'
+            #    elif freq_input == "monthly" and varia in ["siconc","simass","sithick","siu","sivol","siv"]:
+            #        domain = 'SI'
+            #else:
             if freq_input == 'monthly' and varia in ["hfls", "tas", "clwvi", "tauu", "evspsbl", "prw", "tasmin", "vas", "pr", "psl", "rsut", "tasmax", "hfss", "uas", "rsutcs", "clt", "rsdt", "prsn", "rlutcs", "tauv", "rlut"]:
                 domain = 'AP'
             elif freq_input == 'monthly' and varia in ["snc", "snd", "sbl", "snw"]:
@@ -81,34 +102,36 @@ class NASAgrabber:
             elif freq_input == 'monthly' and varia in ["so", "vo", "thetao", "uo", "agessc"]:
                 domain = 'OP'
             elif freq_input == 'monthly' and varia in ["simass", "siv", "sithick", "siu", "sivol"]:
-                domain = 'SI'    
-        
+                domain = 'SI'            
         return domain  
 
-    def get_domain_suffix(varia,freq_input):
+    def get_domain_suffix(varia,freq_input,run):
         
         server = MISCgrabber.get_server()
         
         if server == 'spirit':
             domain_suffix = ''
         elif server == 'levante':
-            if freq_input == 'monthly' and varia in ["hfls", "tas", "clwvi", "tauu", "evspsbl", "prw", "tasmin", "vas", "pr", "psl", "rsut", "tasmax", "hfss", "uas", "rsutcs", "clt", "rsdt", "prsn", "rlutcs", "tauv", "rlut"]:
+            if run in ['esm-up2p0-gwl4p0-50y-dn2p0','esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0']:
                 domain_suffix = ''
-            elif freq_input == 'monthly' and varia in ["snc", "snd", "sbl", "snw"]:
-                domain_suffix = ''
-            elif freq_input == 'monthly' and varia in ["cSoil", "lai", "mrros", "npp", "nbp", "ra", "baresoilFrac", "mrsol", "tsl", "gpp", "treeFrac", "mrro", "sftgif", "rh"]:
-                domain_suffix = ''
-            elif freq_input == 'monthly' and varia in ["intdic", "intpp", "chldiatos", "chlos", "epc100", "fgco2", "intppdiat"]:
-                domain_suffix = ''
-            elif freq_input == 'monthly' and varia in ["si", "no3", "dissic"]:
-                domain_suffix = 'Lev'
-            elif freq_input == 'monthly' and varia in ["sos", "wfo", "mlotst", "hfds", "zos", "tos", "zostoga"]:
-                domain_suffix = ''
-            elif freq_input == 'monthly' and varia in ["so", "vo", "thetao", "uo", "agessc"]:
-                domain_suffix = 'Lev'
-            elif freq_input == 'monthly' and varia in ["simass", "siv", "sithick", "siu", "sivol"]:
-                domain_suffix = ''   
-        
+            else:
+                if freq_input == 'monthly' and varia in ["hfls", "tas", "clwvi", "tauu", "evspsbl", "prw", "tasmin", "vas", "pr", "psl", "rsut", "tasmax", "hfss", "uas", "rsutcs", "clt", "rsdt", "prsn", "rlutcs", "tauv", "rlut"]:
+                    domain_suffix = ''
+                elif freq_input == 'monthly' and varia in ["snc", "snd", "sbl", "snw"]:
+                    domain_suffix = ''
+                elif freq_input == 'monthly' and varia in ["cSoil", "lai", "mrros", "npp", "nbp", "ra", "baresoilFrac", "mrsol", "tsl", "gpp", "treeFrac", "mrro", "sftgif", "rh"]:
+                    domain_suffix = ''
+                elif freq_input == 'monthly' and varia in ["intdic", "intpp", "chldiatos", "chlos", "epc100", "fgco2", "intppdiat"]:
+                    domain_suffix = ''
+                elif freq_input == 'monthly' and varia in ["si", "no3", "dissic"]:
+                    domain_suffix = 'Lev'
+                elif freq_input == 'monthly' and varia in ["sos", "wfo", "mlotst", "hfds", "zos", "tos", "zostoga"]:
+                    domain_suffix = ''
+                elif freq_input == 'monthly' and varia in ["so", "vo", "thetao", "uo", "agessc"]:
+                    domain_suffix = 'Lev'
+                elif freq_input == 'monthly' and varia in ["simass", "siv", "sithick", "siu", "sivol"]:
+                    domain_suffix = ''   
+                    
         return domain_suffix  
 
     def get_frequency(freq_input='monthly'):
@@ -128,33 +151,49 @@ class NASAgrabber:
     #        raise Exception('Variable not in known domain.')
     #    return grid
 
-    def get_area(varia,freq_input):
+    def get_area(varia,freq_input,run):
         server = MISCgrabber.get_server()
-        domain = NASAgrabber.get_domain(varia,freq_input)
+        domain = NASAgrabber.get_domain(varia,freq_input,run)
+        
         if domain in ['L','E','A','AP','LI','LP']:
             if server == 'spirit':
                 area_file = './../00_modules/support_data/axyp.nc' #'/data/ekoehn/TIPMIP/NASA-GISS/GISSE2.1-G-CC2/area_arrays/axyp.nc'
             elif server == 'levante':
+                #member = NASAgrabber.get_member(run)
+                #if run in ['esm-up2p0-gwl4p0-50y-dn2p0','esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0']:
+                #    area_file = glob.glob(f'/work/bm1448/upload/NASA-GISS/GISS-E2-1-G-CC2/{run}/{member}/areacella_fx_*.nc')[0]
+                #else:
                 area_file = './../00_modules/support_data/areacella_fx_GISS-E2-1-G_piControl_r1i1p1f1_gn.nc' #'/data/ekoehn/TIPMIP/NASA-GISS/GISSE2.1-G-CC2/area_arrays/axyp.nc'
             area_ds = xr.open_dataset(area_file)
             if 'axyp' in area_ds.variables:
                 area = area_ds['axyp'].fillna(0).compute()
+                if run in ['esm-up2p0-gwl4p0-50y-dn2p0','esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0']:
+                    area = area.isel(time=0).squeeze()
+                    area = area.drop_vars("time")
             elif 'areacella' in area_ds.variables:
                 area = area_ds['areacella'].fillna(0).compute()
             else:
                 raise Exception('no area found')
             area_ds.close()
+            
         elif domain in ['Si','O','OB','OP','SI']:
             if server == 'spirit':
                 area_file = './../00_modules/support_data/oxyp.nc' #'/data/ekoehn/TIPMIP/NASA-GISS/GISSE2.1-G-CC2/area_arrays/oxyp.nc'
             elif server == 'levante':
+                #member = NASAgrabber.get_member(run)
+                #if run in ['esm-up2p0-gwl4p0-50y-dn2p0','esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0']:
+                #    area_file = glob.glob(f'/work/bm1448/upload/NASA-GISS/GISS-E2-1-G-CC2/{run}/{member}/areacello_Ofx_*.nc')[0]
+                #else:
                 area_file = './../00_modules/support_data/areacello_Ofx_GISS-E2-1-G_piControl_r1i1p1f1_gn.nc' 
             area_ds = xr.open_dataset(area_file)
             if 'oxyp' in area_ds.variables:
                 area = area_ds['oxyp'].fillna(0).compute()
+                if run in ['esm-up2p0-gwl4p0-50y-dn2p0','esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0']:
+                    area = area.isel(time=0).squeeze()
+                    area = area.drop_vars("time")
             elif 'areacello' in area_ds.variables:
                 area = area_ds['areacello'].fillna(0).compute()
-                #area = area.assign_coords(lat=xr.where(area.lat == -89.5, -90,xr.where(area.lat == 89.5, 90, area.lat)))
+                area = area.assign_coords(lat=xr.where(area.lat == -89.5, -90,xr.where(area.lat == 89.5, 90, area.lat)))
                 print(area)
             else:
                 raise Exception('no area found')
@@ -189,12 +228,12 @@ class NASAgrabber:
     
     def get_filelist(varia,run,freq_input):
      
-        member = NASAgrabber.get_member()
+        member = NASAgrabber.get_member(run)
         exercise = NASAgrabber.get_exercise(run)
         rootdir = NASAgrabber.get_rootdir()
         freq = NASAgrabber.get_frequency(freq_input) 
-        domain = NASAgrabber.get_domain(varia,freq_input)
-        domain_suffix = NASAgrabber.get_domain_suffix(varia,freq_input)
+        domain = NASAgrabber.get_domain(varia,freq_input,run)
+        domain_suffix = NASAgrabber.get_domain_suffix(varia,freq_input,run)
         grid = NASAgrabber.get_grid(varia,freq_input)
 
         server = MISCgrabber.get_server()
@@ -209,17 +248,22 @@ class NASAgrabber:
             #print(file_list_filtered)
             
         elif server == 'levante':
+            #if run in ['esm-up2p0-gwl4p0-50y-dn2p0','esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0']:
+            #    data_path = f'{rootdir}/{run}/{member}/' #{domain}{freq}{domain_suffix}/{varia}/{grid}/' 
+            #    pattern = f"{varia}_*_{run.replace('dn2p0-gwl2p0','dn2p0-2p0')}_*.nc" 
+            #    print(data_path+pattern)
+            #    file_list = sorted(glob.glob(data_path+pattern,recursive=True))          
             if run in ['esm-up2p0-gwl4p0-50y-dn2p0','esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0']:
-                data_path = f'{rootdir}/{run}/{domain}{freq}{domain_suffix}/{varia}/{grid}/' 
+                data_path = f'{rootdir}/{run}/esgf/{member}/{domain}{freq}{domain_suffix}/{varia}/{grid}/' 
                 pattern = f"/v*/{varia}_*_{run}_*.nc" 
-                #print(data_path+pattern)
-                file_list = sorted(glob.glob(data_path+pattern,recursive=True))                
+                print(data_path+pattern)
+                file_list = sorted(glob.glob(data_path+pattern,recursive=True))
             else:
                 data_path = f'{rootdir}/{run}/{member}/{domain}{freq}{domain_suffix}/{varia}/{grid}/' 
                 pattern = f"/v*/{varia}_*_{run}_*.nc" 
                 #print(data_path+pattern)
                 file_list = sorted(glob.glob(data_path+pattern,recursive=True))
-            #print(file_list)
+            print(file_list)
             file_list_filtered = MISCgrabber.filter_longest_period_files(file_list)
             #print(file_list_filtered)
         elif server == 'cineca':
@@ -283,7 +327,17 @@ class NASAgrabber:
         #print(ds[varia].units)
         
         # now choose the data array
+        #if run in ['esm-up2p0-gwl4p0-50y-dn2p0','esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0']:
+        #    if varia == 'tas':
+        #        da = ds['tsurf']+273.15 # convert from C to K
+        #        varia2 = 'tsurf'
+        #    else:
+        #        da = ds[varia]
+        #        varia2 = varia
+        #else:
         da = ds[varia]
+        varia2 = varia
+            
         if verbose_level > 0:
             print(da) 
 
@@ -294,7 +348,7 @@ class NASAgrabber:
         if server == 'spirit':
             da.attrs['units'] = ds.attrs.get('units')
         elif server == 'levante':
-            da.attrs['units'] = ds[varia].attrs.get('units')
+            da.attrs['units'] = ds[varia2].attrs.get('units')
 
         
         return da

@@ -16,7 +16,7 @@ from misc_functions import MISCgrabber
 
 class ACCESSgrabber:
 
-    def get_rootdir(server='spirit'):
+    def get_rootdir(server='levante'):
         if server == 'spirit':
             rootdir = '/bdd/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5' 
         elif server == 'levante':
@@ -105,7 +105,7 @@ class ACCESSgrabber:
 
         #if server == 'levante':
         if run != 'esm-piControl':
-            data_path = f'{rootdir}/{run}/{member}/{domain}{freq}/{varia}/v*' 
+            data_path = f'{rootdir}/{run}/{member}/{domain}{freq}/{varia}/{grid}/v*' 
         #elif server == 'spirit':
         elif run == 'esm-piControl':
             data_path = f'{rootdir}/{run}/{member}/{domain}{freq}/{varia}/{grid}/latest' 
