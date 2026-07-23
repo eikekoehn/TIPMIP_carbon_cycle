@@ -16,7 +16,7 @@ from misc_functions import MISCgrabber
 
 class NorESMgrabber:
 
-    def get_rootdir(run,server='spirit'):
+    def get_rootdir(run,server='levante'):
         if server == 'spirit':
             if run == 'esm-piControl':
                 rootdir = '/data/ekoehn/TIPMIP/NCC/NorESM2-LM'
@@ -95,13 +95,15 @@ class NorESMgrabber:
     def get_area(varia,freq_input):
         domain = NorESMgrabber.get_domain(varia,freq_input)
         if domain in ['Si','O']:
-            area_file = '/projets/TipESM/UiB/NorESM2-LM/esm-up2p0/v20251010/areacello_Ofx_NorESM2-LM_esm-up2p0_r1i1p1f1_gn.nc'
+            #area_file = '/projets/TipESM/UiB/NorESM2-LM/esm-up2p0/v20251010/areacello_Ofx_NorESM2-LM_esm-up2p0_r1i1p1f1_gn.nc'
+            area_file = '/work/bm1448/upload/tipesm/NorESM2-LM/esm-piControl/areacello_Ofx_NorESM2-LM_esm-piControl_r1i1p1f1_gn.nc'
             area_ds = xr.open_dataset(area_file)
             area = area_ds['areacello'].fillna(0).compute()
             #area = area.rename({'y':'j','x':'i'})
             area_ds.close()
         elif domain in ['L', 'E', 'A', '', 'CF', 'LI']:
-            area_file = '/projets/TipESM/UiB/NorESM2-LM/esm-up2p0/v20251010/areacella_fx_NorESM2-LM_esm-up2p0_r1i1p1f1_gn.nc'
+            #area_file = '/projets/TipESM/UiB/NorESM2-LM/esm-up2p0/v20251010/areacella_fx_NorESM2-LM_esm-up2p0_r1i1p1f1_gn.nc'
+            area_file = '/work/bm1448/upload/tipesm/NorESM2-LM/esm-piControl/areacella_fx_NorESM2-LM_esm-piControl_r1i1p1f1_gn.nc'
             area_ds = xr.open_dataset(area_file)
             area = area_ds['areacella'].compute()
             area_ds.close()
