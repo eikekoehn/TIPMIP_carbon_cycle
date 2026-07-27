@@ -31,7 +31,11 @@ class NASAgrabber:
     def get_member(run):
         server = MISCgrabber.get_server()
         if server == 'spirit':
-            member = 'r0i0p0f0'
+            #member = 'r0i0p0f0'
+            if run in ['esm-up2p0-gwl4p0-50y-dn2p0','esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0']:
+                member = 'r1i1p1f1'
+            else:
+                member = 'r1i1p1f3'
         elif server == 'levante':
             if run in ['esm-up2p0-gwl4p0-50y-dn2p0','esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0']:
                 member = 'r1i1p1f1'

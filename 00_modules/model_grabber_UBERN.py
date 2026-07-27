@@ -207,4 +207,19 @@ class UBERNgrabber:
             print(da) 
         
         return da
+
+    def get_dz(varia,run,freq_input='monthly',verbose_level=1):
+        
+        # get the list of files
+        files = UBERNgrabber.get_filelist(varia,run,freq_input)
+        if verbose_level > 0:
+            print(files)
+
+        # open the dataset and choose data array
+        ds = DataFuncs.open_dataset(files)
+        dz = ds['olevel_bnds'].diff(dim='bnds')
+        if verbose_level > 0:
+            print(dz) 
+        
+        return dz
  

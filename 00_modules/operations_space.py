@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 class SpaceOperator:
 
-    def calc_spatial_mean(da, area_weights, mask=None, dims=None, grid_cell_fractions=None):
+    def calc_spatial_mean(da, area_weights, mask=None, dims=None, thickness_weights=None, grid_cell_fractions=None):
         """
         Compute area-weighted spatial mean of a DataArray.
         
@@ -67,6 +67,10 @@ class SpaceOperator:
                         raise Exception('Coordinates do not match')
             # now multiply them together
             area_weights = area_weights * grid_cell_fractions
+
+        # now take the thickness weights into account if there are some
+        if thickness_weights is not None:
+            area_weights = area_weights*thickness_weights
             
         # Apply mask if provided
         if mask is not None:
@@ -89,7 +93,7 @@ class SpaceOperator:
         return spatial_mean
 
     
-    def calc_spatial_integral(da, area_weights, mask=None, dims=None, grid_cell_fractions=None):
+    def calc_spatial_integral(da, area_weights, mask=None, dims=None, thickness_weights=None, grid_cell_fractions=None):
         """
         Compute area-weighted spatial integral of a DataArray.
 
@@ -152,6 +156,32 @@ class SpaceOperator:
                         raise Exception('Coordinates do not match')
             # now multiply them together
             area_weights = area_weights * grid_cell_fractions
+
+        # now take the thickness weights into account if there are some
+        if thickness_weights is not None:
+            # make sure that the coordinates area the same
+            for coord in thickness_weights.coords:
+                if coord in ['time','olevel','lev','plev']:
+                    continue
+                diff_coord = thickness_weights[coord].values - area_weights[coord].values
+                sum_diff_coord = np.sum(np.abs(diff_coord))
+                unique_diffs = np.unique(diff_coord)
+                if sum_diff_coord > 0:
+                    print(f'There is a total coordinate difference of: {sum_diff_coord}')
+                    if np.sum(np.abs((thickness_weights[coord].values - area_weights[coord].values))) < 1e-1:
+                        print(f'... this is small enough (smaller than 1e-1), so we just set the grid_cell_fractions.coord to area_weights.coord.')
+                        grid_cell_fractions = thickness_weights.assign_coords({coord: area_weights[coord]})
+                    elif np.all(np.isin(unique_diffs, [-360, 0, 360])):
+                        print(f'... all of the differences are just caused by 360° longitude wrapping. So we just set the grid_cell_fractions.coord to area_weights.coord.')
+                        grid_cell_fractions = thickness_weights.assign_coords({coord: area_weights[coord]})        
+                    else:
+                        raise Exception('Coordinates do not match')
+            # now multiply them together
+            area_weights = thickness_weights*area_weights
+            if 'time' in area_weights.coords:
+                area_weights = area_weights.convert_calendar(da.time.dt.calendar)
+            #print('area_weights')
+            #print(area_weights)
             
         # Apply mask if provided
         if mask is not None:
@@ -159,7 +189,19 @@ class SpaceOperator:
             area_weights = area_weights.where(mask)
             
         # Integral = sum(x * dA)
+        #print('da')
+        #print(da)
+        #print(da.time.equals(area_weights.time))
+        #print(da.time)
+        #print(area_weights.time)
+        
+        #print(da.time.dtype)
+        #print(area_weights.time.dtype)
+        
+        #print(da.time.values[:5])
+        #print(area_weights.time.values[:5])
         weighted_da = da * area_weights
+        #print(weighted_da)
         integral = weighted_da.sum(dim=dims)
        
         return integral

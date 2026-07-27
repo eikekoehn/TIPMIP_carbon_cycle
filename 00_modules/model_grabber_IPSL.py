@@ -45,7 +45,7 @@ class IPSLgrabber:
         if varia in ['chldiatos', 'dfe', 'dissic', 'dissocos', 'epc100', 'epsi100', 'fgo2', 'hfds', 'limfediat', 'limirrdiat', 'limndiat', 'masso', 'msftyz', 'no3os', 'o2os', 'phydiatos', 'po4', 'si', 'so', 'talk', 'tauuo', 'thetao', 'tos', 'uo', 'vo', 'wmo', 'zmesoos', 'zos', 'chlmiscos', 'dfeos', 'dissicos', 'dpco2', 'epcalc100', 'fgco2', 'friver', 'intpp', 'limfemisc', 'limirrmisc', 'limnmisc', 'mlotst', 'no3', 'o2', 'ph', 'phymiscos', 'po4os', 'sios', 'sos', 'talkos', 'tauvo', 'thkcello', 'umo', 'vmo', 'wfo', 'wo', 'zmicroos', 'zostoga']: 
             domain = 'O'
         elif varia in ['siconc', 'sisnthick', 'sispeed', 'sitemptop', 'sithick', 'siu', 'siv', 'sivol']:
-            domain = 'Si'
+            domain = 'SI'
         elif varia in ['c3PftFrac', 'cLeaf', 'cProduct', 'cVeg', 'gpp', 'landCoverFrac', 'mrso', 'npp', 'rh', 'treeFracPrimEver', 'c4PftFrac', 'cLitter', 'cRoot', 'fVegLitter', 'lai', 'mrros', 'nbp', 'ra', 'treeFracPrimDec']:
             domain = 'L'
         elif varia in ['cLand', 'cOther', 'cSoil', 'cStem', 'cWood', 'fAnthDisturb', 'fDeforestToProduct', 'fLuc', 'fProductDecomp', 'nep']:
@@ -144,4 +144,19 @@ class IPSLgrabber:
             print(da) 
         
         return da
+
+    def get_dz(varia,run,freq_input='monthly',verbose_level=1):
+        
+        # get the list of files
+        files = IPSLgrabber.get_filelist(varia,run,freq_input)
+        if verbose_level > 0:
+            print(files)
+
+        # open the dataset and choose data array
+        ds = DataFuncs.open_dataset(files)
+        dz = ds['lev_bnds'].diff(dim='bnds')
+        if verbose_level > 0:
+            print(dz) 
+        
+        return dz
  
