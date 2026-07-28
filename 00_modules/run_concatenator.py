@@ -9,7 +9,8 @@ from operations_time import TimeOperator
 class RConcatenator:
     def __init__(self,model,member,varia="tas",freq="monthly",stat="mean",root_dir="./../01_postprocessed_data/global_time_series"):
         self.model = model
-        self.member = member
+        #self.member = member
+        self.members = [member] if isinstance(member, str) else list(member)
         self.varia = varia
         self.freq = freq
         self.stat = stat
@@ -18,12 +19,27 @@ class RConcatenator:
     # -------------------------
     # helpers
     # -------------------------
-    def _build_filepath(self, run):
+    #def _build_filepath(self, run):
+    #    return Path(
+    #        f"{self.root_dir}/{self.varia}/{self.model}/{run}/"
+    #        f"{self.member}/{self.freq}/global_{self.stat}/"
+    #        f"{self.varia}_{self.model}_{run}_{self.member}_global_{self.stat}.nc")
+
+    def _build_filepath(self, run, member):
         return Path(
             f"{self.root_dir}/{self.varia}/{self.model}/{run}/"
-            f"{self.member}/{self.freq}/global_{self.stat}/"
-            f"{self.varia}_{self.model}_{run}_{self.member}_global_{self.stat}.nc")
-
+            f"{member}/{self.freq}/global_{self.stat}/"
+            f"{self.varia}_{self.model}_{run}_{member}_global_{self.stat}.nc")
+    #    )
+    
+    def _find_filepath(self, run):
+        for member in self.members:
+            fp = self._build_filepath(run, member)
+            if fp.exists():
+                return fp, member
+        raise FileNotFoundError(...)
+        
+        
     @staticmethod
     def trim_years_for_concatenation(year_tuples):
         trimmed = []
@@ -48,8 +64,8 @@ class RConcatenator:
     # core functionality
     # -------------------------
     def get_model_run_years(self, run):
-        fp = self._build_filepath(run)
-
+        #fp = self._build_filepath(run)
+        fp, member = self._find_filepath(run)
         if not fp.is_file():
             raise FileNotFoundError(f"Missing file: {fp}")
 
@@ -77,8 +93,9 @@ class RConcatenator:
     def generate_list_of_das(self, run_names, run_years):
         das = []
 
-        for run_name, (y0, y1) in zip(run_names, run_years):
-            fp = self._build_filepath(run_name)
+        for run, (y0, y1) in zip(run_names, run_years):
+            #fp = self._build_filepath(run_name)
+            fp, member = self._find_filepath(run)
             if not fp.is_file():
                 print(f"Skipping missing file: {fp}")
                 continue

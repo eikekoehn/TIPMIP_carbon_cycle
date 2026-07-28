@@ -304,13 +304,13 @@ class Runs:
         run_dict['esm-up2p0-gwl1p5'] = cls(color_id='C2',     linestyle_id=':',marker_id='<')
         run_dict['esm-up2p0-gwl2p0'] = cls(color_id='#66A61E',     linestyle_id=':',marker_id='v')
         run_dict['esm-up2p0-gwl3p0'] = cls(color_id='C2',     linestyle_id=':',marker_id='d')
-        run_dict['esm-up2p0-gwl4p0'] = cls(color_id='#2E7D32',     linestyle_id=':',marker_id='^')
+        run_dict['esm-up2p0-gwl4p0'] = cls(color_id='#2E7D32',     linestyle_id='--',marker_id='^')
         run_dict['esm-up2p0-gwl5p0'] = cls(color_id='C2',     linestyle_id=':',marker_id='h')
         run_dict['esm-up2p0-gwl6p0'] = cls(color_id='C2',     linestyle_id=':',marker_id='H')
 
         # TIPMIP rampdowns
         run_dict['esm-up2p0-gwl1p5-50y-dn2p0']  = cls(color_id='C0', linestyle_id='--',marker_id='1')
-        run_dict['esm-up2p0-gwl2p0-50y-dn2p0']  = cls(color_id='#3DAEFF', linestyle_id='--',marker_id='2')
+        run_dict['esm-up2p0-gwl2p0-50y-dn2p0']  = cls(color_id='#3DAEFF', linestyle_id=':',marker_id='2')
         run_dict['esm-up2p0-gwl3p0-50y-dn2p0']  = cls(color_id='C0', linestyle_id='--',marker_id='3')
         run_dict['esm-up2p0-gwl4p0-50y-dn2p0']  = cls(color_id='#4F8FC1', linestyle_id='--',marker_id='4')
         run_dict['esm-up2p0-gwl2p0-200y-dn2p0'] = cls(color_id='C0', linestyle_id='--',marker_id='8')
