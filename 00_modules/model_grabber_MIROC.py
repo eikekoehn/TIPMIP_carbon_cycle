@@ -59,7 +59,7 @@ class MIROCgrabber:
             domain = 'OB'
         elif varia in ["talk"] and freq_input == 'monthly':
             domain = 'talk'
-        elif varia in ["evs","friver","mlotst","sos","tauuo","tauvo","tos","zos"] and freq_input == 'monthly':
+        elif varia in ["evs","friver","hfds","mlotst","sos","tauuo","tauvo","tos","wfo","zos"] and freq_input == 'monthly':
             domain = 'OP'
         elif varia in ["so","thetao","uo","vo","wo"] and freq_input == 'monthly':
             domain = 'OP'

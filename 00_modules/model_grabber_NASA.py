@@ -91,7 +91,7 @@ class NASAgrabber:
             #    elif freq_input == "monthly" and varia in ["siconc","simass","sithick","siu","sivol","siv"]:
             #        domain = 'SI'
             #else:
-            if freq_input == 'monthly' and varia in ["hfls", "tas", "clwvi", "tauu", "evspsbl", "prw", "tasmin", "vas", "pr", "psl", "rsut", "tasmax", "hfss", "uas", "rsutcs", "clt", "rsdt", "prsn", "rlutcs", "tauv", "rlut"]:
+            if freq_input == 'monthly' and varia in ["hfls", "tas", "clwvi", "tauu", "evspsbl", "prw", "tasmin", "vas", "pr", "psl", "rsut", "tasmax", "hfss", "uas", "rsutcs", "clt", "rsdt", "prsn", "rlutcs", "tauv", "rlut","co2mass"]:
                 domain = 'AP'
             elif freq_input == 'monthly' and varia in ["snc", "snd", "sbl", "snw"]:
                 domain = 'LI'
@@ -119,7 +119,7 @@ class NASAgrabber:
             if run in ['esm-up2p0-gwl4p0-50y-dn2p0','esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0']:
                 domain_suffix = ''
             else:
-                if freq_input == 'monthly' and varia in ["hfls", "tas", "clwvi", "tauu", "evspsbl", "prw", "tasmin", "vas", "pr", "psl", "rsut", "tasmax", "hfss", "uas", "rsutcs", "clt", "rsdt", "prsn", "rlutcs", "tauv", "rlut"]:
+                if freq_input == 'monthly' and varia in ["hfls", "tas", "clwvi", "tauu", "evspsbl", "prw", "tasmin", "vas", "pr", "psl", "rsut", "tasmax", "hfss", "uas", "rsutcs", "clt", "rsdt", "prsn", "rlutcs", "tauv", "rlut","co2mass"]:
                     domain_suffix = ''
                 elif freq_input == 'monthly' and varia in ["snc", "snd", "sbl", "snw"]:
                     domain_suffix = ''

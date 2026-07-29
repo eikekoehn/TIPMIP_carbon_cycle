@@ -16,7 +16,7 @@ from misc_functions import MISCgrabber
 
 class ACCESSgrabber:
 
-    def get_rootdir(server='spirit'):
+    def get_rootdir(server='levante'):
         if server == 'spirit':
             rootdir = '/bdd/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5' 
         elif server == 'levante':

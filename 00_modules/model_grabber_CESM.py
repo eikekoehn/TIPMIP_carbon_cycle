@@ -229,17 +229,92 @@ class CESMgrabber:
         da = ds[varia]
         if verbose_level > 0:
             print(da) 
+
+        #for file in files:
+        #    with xr.open_dataset(file,decode_times = xr.coders.CFDatetimeCoder(use_cftime=True)) as dds:
+        #        dds.NPP.isel(lon=10,lat=100).plot()
+        #        plt.show()
+        #        #print(dds.time.values)
+        #        #print(np.sum(dds.lat.values - ref_lat))
         
         return da
 
-    def get_dz(run,freq_input='monthly',verbose_level=1):
+    def compute_thkcello(ds, zdim="z_t"):
+        """
+        Compute POP2/CESM2 T-cell thickness from dz, HT, and KMT.
+    
+        Parameters
+        ----------
+        ds : xr.Dataset
+            CESM2 POP output containing dz, HT, KMT.
+        zdim : str
+            Vertical dimension name.
+    
+        Returns
+        -------
+        xr.DataArray
+            thkcello [m]
+        """
+    
+        dz = ds["dz"]
+        HT = ds["HT"]
+        KMT = ds["KMT"]
+    
+        # vertical index
+        k = xr.DataArray(
+            np.arange(dz.sizes[zdim]),
+            dims=zdim,
+            coords={zdim: dz[zdim]},
+        )
+    
+        # broadcast dz to horizontal grid
+        thkcello = dz * xr.ones_like(HT)
+    
+        # mask cells below ocean floor
+        thkcello = thkcello.where(k < KMT, 0.0)
+    
+        # full thickness above bottom cell
+        full_above = (
+            dz.where(k < KMT - 1)
+            .sum(zdim)
+        )
+    
+        # partial bottom cell thickness
+        bottom_thickness = HT - full_above
+    
+        # replace bottom cell
+        thkcello = xr.where(
+            k == KMT - 1,
+            bottom_thickness,
+            thkcello
+        )
+    
+        # land points
+        thkcello = thkcello.where(KMT > 0, 0.0)
+    
+        thkcello.name = "thkcello"
+        #thkcello.attrs["units"] = "m"
+
+        # asserting
+        xr.testing.assert_allclose(
+        thkcello.sum("z_t"),
+        ds.HT,
+        )
+        
+        return thkcello
+        
+
+    def get_dz(run,freq_input='monthly',method='precise',verbose_level=1):
         # get the list of files
         files = CESMgrabber.get_filelist('DIC',run,freq_input)
         if verbose_level > 0:
             print(files)
         # open the dataset and choose data array
         ds = DataFuncs.open_dataset(files)
-        da = ds['dz'] / 100. # convert from centimeters to meters
+        if method == 'precise':
+            da = CESMgrabber.compute_thkcello(ds) / 100.
+        elif method == 'rough':
+            da = ds['dz'] / 100. # convert from centimeters to meters
         da.attrs = ds['dz'].attrs.copy()
         da.attrs["units"] = "m"
         if verbose_level > 0:

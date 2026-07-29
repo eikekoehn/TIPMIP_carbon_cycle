@@ -161,7 +161,7 @@ class SpaceOperator:
         if thickness_weights is not None:
             # make sure that the coordinates area the same
             for coord in thickness_weights.coords:
-                if coord in ['time','olevel','lev','plev']:
+                if coord in ['time','olevel','lev','plev','z_t']:
                     continue
                 diff_coord = thickness_weights[coord].values - area_weights[coord].values
                 sum_diff_coord = np.sum(np.abs(diff_coord))

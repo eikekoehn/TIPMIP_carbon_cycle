@@ -20,7 +20,6 @@ from pathlib import Path
 
 class DataFuncs:
 
-
     
     def open_dataset(files):
         if isinstance(files,list):
@@ -33,7 +32,7 @@ class DataFuncs:
                         decode_times=time_coder,
                         data_vars="minimal",
                         coords="minimal",
-                        compat="override"
+                        compat="override"      # this needs to be commented out when treating CESM2 nbp/npp/cLand/cVeg/cSoil data
                     )
                 except AttributeError:
                     ds = xr.open_mfdataset(
@@ -41,7 +40,7 @@ class DataFuncs:
                         use_cftime=True,
                         data_vars="minimal",
                         coords="minimal",
-                        compat="override"
+                        compat="override"      # this needs to be commented out when treating CESM2 nbp/npp/cLand/cVeg/cSoil data
                     )
             elif len(files) == 1:
                 ds = xr.open_dataset(files[0],use_cftime=True)
