@@ -302,7 +302,6 @@ class CESMgrabber:
         )
         
         return thkcello
-        
 
     def get_dz(run,freq_input='monthly',method='precise',verbose_level=1):
         # get the list of files
@@ -320,7 +319,6 @@ class CESMgrabber:
         if verbose_level > 0:
             print(da) 
         return da
-
 
     def varia_mapper_cmor_to_model(CMOR_var_name):
         

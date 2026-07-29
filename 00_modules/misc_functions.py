@@ -31,20 +31,20 @@ class DataFuncs:
                         files,
                         decode_times=time_coder,
                         data_vars="minimal",
-                        #coords="minimal",
-                        #compat="override",      # this needs to be commented out when treating CESM2 nbp/npp/cLand/cVeg/cSoil data
-                        combine="nested",
-                        concat_dim="time",
+                        coords="minimal",
+                        compat="override",      # this needs to be commented out when treating CESM2 nbp/npp/cLand/cVeg/cSoil data
+                        #combine="nested",
+                        #concat_dim="time",
                     )
                 except AttributeError:
                     ds = xr.open_mfdataset(
                         files,
                         use_cftime=True,
                         data_vars="minimal",
-                        #coords="minimal",
-                        #compat="override",      # this needs to be commented out when treating CESM2 nbp/npp/cLand/cVeg/cSoil data
-                        combine="nested",
-                        concat_dim="time",
+                        coords="minimal",
+                        compat="override",      # this needs to be commented out when treating CESM2 nbp/npp/cLand/cVeg/cSoil data
+                        #combine="nested",
+                        #concat_dim="time",
                     )
             elif len(files) == 1:
                 ds = xr.open_dataset(files[0],use_cftime=True)
