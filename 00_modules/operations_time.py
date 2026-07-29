@@ -319,18 +319,18 @@ class TimeOperator:
     
     
         # manually update time_end for CESM2 model
-        if model == 'CESM2' and run == 'esm-piControl':
-            time_end = cftime.DatetimeProlepticGregorian(
-                int(model_dict[model].rampup_start_year) + 440 + shift_correction,
-                12,
-                31
-            )
-        elif model == 'CESM2' and run == 'esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0':
-            time_end = cftime.DatetimeProlepticGregorian(
-                int(model_dict[model].restab2K_start_year) + 80 + shift_correction,
-                12,
-                31
-            )
+        #if model == 'CESM2' and run == 'esm-piControl':
+        #    time_end = cftime.DatetimeProlepticGregorian(
+        #        int(model_dict[model].rampup_start_year) + 440 + shift_correction,
+        #        12,
+        #        31
+        #    )
+        #elif model == 'CESM2' and run == 'esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0':
+        #    time_end = cftime.DatetimeProlepticGregorian(
+        #        int(model_dict[model].restab2K_start_year) + 80 + shift_correction,
+        #        12,
+        #        31
+        #    )
         
         print(time_end)
     
