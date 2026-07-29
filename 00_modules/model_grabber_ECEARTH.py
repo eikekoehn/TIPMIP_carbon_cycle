@@ -23,8 +23,10 @@ class ECEARTHgrabber:
             raise Exception('No data for EC-Earth3-ESM-1 on SPIRIT.') 
         elif server == 'levante':
             rootdir = '/work/bm1448/upload/optimesm/EC-Earth3-ESM-1'
-        elif server == 'cineca':
-            rootdir = '/g100_store/DRES_OptimESM/ESGF/prepub/smhi/CMIP6Plus' #dmi'
+        elif server == 'cineca' and run =='esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0':
+            rootdir = '/g100_store/DRES_OptimESM/ESGF/prepub/dmi/20251228/CMIP6Plus'  #dmi'
+        else:
+            rootdir = '/g100_store/DRES_OptimESM/ESGF/prepub/smhi/CMIP6Plus'  #dmi'
         return rootdir
 
     def get_member():
@@ -320,6 +322,21 @@ class ECEARTHgrabber:
         domain = ECEARTHgrabber.get_domain(varia,freq_input)
         if domain in ['AP','LP','LI'] and varia != 'co2mass':
             da = ECEARTHgrabber.verify_coords(da,varia,freq_input,verbosity=verbose_level)
+
+        return da
+
+    def get_lev_bnds(varia,run,freq_input='monthly',verbose_level=1):
+        
+        # get the list of files
+        files = ECEARTHgrabber.get_filelist(varia,run,freq_input)
+        if verbose_level > 0:
+            print(files)
+
+        # open the dataset and choose data array
+        ds = DataFuncs.open_dataset(files)
+        da = ds['lev_bnds']
+        if verbose_level > 0:
+            print(da) 
 
         return da
  
