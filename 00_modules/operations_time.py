@@ -232,27 +232,54 @@ class TimeOperator:
         
         return ds
 
-    def set_calendar(ds,model):
-        model_dict = pmods.get_model_dict('all')
+    #def set_calendar(ds,model):
+    #    model_dict = pmods.get_model_dict('all')
+    #    calendar = model_dict[model].calendar
+    #    if calendar == 'noleap':
+    #        ds = ds.convert_calendar("noleap")
+    #    elif calendar == '360day':
+    #        print(calendar)
+    #        print('setting calendar from ... to 360day')
+    #        ds = ds.convert_calendar("360_day", align_on="date")
+    #    return ds
+        
+    def set_calendar(ds, model):
+        model_dict = pmods.get_model_dict("all")
         calendar = model_dict[model].calendar
-        if calendar == 'noleap':
-            ds = ds.convert_calendar("noleap")
+        #print(calendar)
+        if calendar == "noleap":
+            return ds.convert_calendar("noleap")
+        #elif calendar == "leap":
+        #    return ds.convert_calendar("proleptic_gregorian")
+        elif calendar == "360day":
+            print("Setting calendar to 360_day")
+            return ds.convert_calendar("360_day", align_on="date")
+        #else:
+        #    raise ValueError(
+        #        f"Unknown calendar '{calendar}' for model '{model}'"
+        #    )
         return ds
 
     def integrate_in_time(da, model, freq_input='monthly',overwrite_leap_years=False,take_half_months_into_account=True):
+
+        print('time axis of da before integration')
+        print(da.time.dt.calendar)
         
-        da = TimeOperator.set_calendar(da,model)
+        # da = TimeOperator.set_calendar(da,model) # commented out on Sep 7, 2026
     
         units = da.attrs.get("units", "")
     
         # get number of days in each month (calendar-aware)
         if freq_input == 'monthly':
             days = da.time.dt.days_in_month
+            print(days.values[:60])
             if overwrite_leap_years == True:
                 days = xr.where(days==29,28,days) # overwrite leap year
         elif freq_input == 'yearly':
             if da.indexes["time"].calendar == 'noleap':# model_dict[model].calendar == 'noleap':
                 days = 365
+            elif da.indexes["time"].calendar == '360_day':# model_dict[model].calendar == 'noleap':
+                days = 360
             else:
                 days = da.time.dt.is_leap_year.astype(int) + 365
         else:

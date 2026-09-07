@@ -77,7 +77,7 @@ class Models:
                         institute='NCC',
                         emission_rate=16.807, # GtC yr-1
                         branch_year_from_piC = 1851,
-                        rampup_start_year=1850, # 1851, # 1851 is in line with Harteg et al. (GMD)
+                        rampup_start_year=1850, 
                         stab2K_start_year=1951,
                         down2K_start_year=2001, #stab2K_start_year+50,
                         stab4K_start_year=2057,
