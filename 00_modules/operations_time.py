@@ -46,7 +46,6 @@ class TimeOperator:
     
         return "unknown"
 
-
     def calc_temporal_mean_weighted(
         da,
         dim="time",

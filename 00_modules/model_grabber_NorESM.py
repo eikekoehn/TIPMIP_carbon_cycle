@@ -19,7 +19,8 @@ class NorESMgrabber:
     def get_rootdir(run,server='spirit'):
         if server == 'spirit':
             if run == 'esm-piControl':
-                rootdir = '/data/ekoehn/TIPMIP/NCC/NorESM2-LM'
+                #rootdir = '/data/ekoehn/TIPMIP/NCC/NorESM2-LM'
+                rootdir = '/projets/TipESM/CMIP6-data/NorESM2-LM'
             else:
                 rootdir = '/projets/TipESM/UiB/NorESM2-LM'
         elif server == 'levante':

@@ -10,20 +10,24 @@ class Models:
     I.e., which models there are, what their emission rate is for the rampup, and also, what their color_id, marker_id, and linestyle_id are
     """
     
-    def __init__(self, name=None, color_id=None, linestyle_id=None, marker_id=None, institute=None, emission_rate=None, rampup_start_year=None, stab2K_start_year=None, stab4K_start_year=None, restab2K_start_year=None, plotting_name=None, default_member=None, calendar=None):
+    def __init__(self, name=None, color_id=None, linestyle_id=None, marker_id=None, institute=None, emission_rate=None, branch_year_from_piC=None,rampup_start_year=None, stab2K_start_year=None, down2K_start_year=None, stab4K_start_year=None, down4K_start_year=None, restab2K_start_year=None, plotting_name=None, default_member=None, calendar=None, days_per_year=None):
         self.name = name
         self.color_id = color_id
         self.linestyle_id = linestyle_id
         self.marker_id = marker_id
         self.institute = institute
         self.emission_rate = emission_rate # in PgC/yr
+        self.branch_year_from_piC = branch_year_from_piC
         self.rampup_start_year = rampup_start_year
         self.stab2K_start_year = stab2K_start_year
+        self.down2K_start_year = down2K_start_year
         self.stab4K_start_year = stab4K_start_year
+        self.down4K_start_year = down4K_start_year
         self.restab2K_start_year = restab2K_start_year
         self.plotting_name = plotting_name
         self.default_member = default_member
         self.calendar = calendar
+        self.days_per_year = days_per_year
 
     def display_attributes(self):
         print(f"name: {self.name}")
@@ -32,13 +36,17 @@ class Models:
         print(f"marker_id: {self.marker_id}")
         print(f"institute: {self.institute}")
         print(f"emission_rate (PgC/yr): {self.emission_rate}")
+        print(f"branch_year_from_piC: {self.branch_year_from_piC}")
         print(f"rampup_start_year: {self.rampup_start_year}")
         print(f"stab2K_start_year: {self.stab2K_start_year}")
+        print(f"down2K_start_year: {self.down2K_start_year}")
         print(f"stab4K_start_year: {self.stab4K_start_year}")
+        print(f"down4K_start_year: {self.down4K_start_year}")
         print(f"restab2K_start_year: {self.restab2K_start_year}")
         print(f"plotting_name: {self.plotting_name}")
         print(f"default_member: {self.default_member}")
         print(f"calendar: {self.calendar}")
+        print(f"days_per_year: {self.days_per_year}")
         
     @classmethod
     def get_IPSL(cls):
@@ -48,13 +56,17 @@ class Models:
                    marker_id='s',
                    institute='IPSL',
                    emission_rate=9.38824139, # PgC/yr
+                   branch_year_from_piC = 1850,
                    rampup_start_year=1850,
                    stab2K_start_year=1959,
+                   down2K_start_year=stab2K_start_year+50,
                    stab4K_start_year=2082,
+                   down4K_start_year=stab4K_start_year+50,
                    restab2K_start_year= 2232,
                    plotting_name='IPSL',
                    default_member='r1i2p3f1',
-                   calendar='leap')
+                   calendar='leap',
+                   days_per_year=365.25)
 
     @classmethod
     def get_NorESM(cls):
@@ -64,12 +76,17 @@ class Models:
                         marker_id='o',
                         institute='NCC',
                         emission_rate=16.807, # GtC yr-1
-                        rampup_start_year=1850, # 1851
+                        branch_year_from_piC = 1851,
+                        rampup_start_year=1850, # 1851, # 1851 is in line with Harteg et al. (GMD)
                         stab2K_start_year=1951,
+                        down2K_start_year=stab2K_start_year+50,
                         stab4K_start_year=2057,
+                        down4K_start_year=stab4K_start_year+50,
                         restab2K_start_year=2185,
                         plotting_name='NorESM',
-                        default_member='r1i1p1f1')   
+                        default_member='r1i1p1f1',
+                        calendar='noleap',
+                        days_per_year=365)   
 
     @classmethod
     def get_GFDL(cls):
@@ -79,13 +96,17 @@ class Models:
                         marker_id='*',
                         institute='UBern',
                         emission_rate=18.49099902, # 18.496406, # GtC yr-1 # 18.491
-                        rampup_start_year=1861,
+                        branch_year_from_piC = 1861, #1961,
+                        rampup_start_year=1861,   # corresponds to year 1961 in esm-piControl -> need to shift esm-piControl by 100yr
                         stab2K_start_year=1958,
+                        down2K_start_year=stab2K_start_year+50,
                         stab4K_start_year=2064,
+                        down4K_start_year=stab4K_start_year+50,
                         restab2K_start_year=2240,
                         plotting_name='GFDL-ESM2M',
                         default_member='r1i1p1f1',
-                        calendar='noleap')      
+                        calendar='noleap',
+                        days_per_year=365)
 
     @classmethod
     def get_ECEarth(cls):
@@ -95,12 +116,17 @@ class Models:
                         marker_id='+',
                         institute='EC-Earth-Consortium',
                         emission_rate=12.4, # GtC yr-1
+                        branch_year_from_piC = 1850,
                         rampup_start_year=1850,
                         stab2K_start_year=1951,
+                        down2K_start_year=stab2K_start_year+50,
                         stab4K_start_year=2051,
+                        down4K_start_year=stab4K_start_year+50,
                         restab2K_start_year=2201,
                         plotting_name='EC-Earth',
-                        default_member='r1i1p1f1')     
+                        default_member='r1i1p1f1',
+                        calendar='leap',
+                        days_per_year=365.25)    
 
     @classmethod
     def get_UKESM(cls):
@@ -110,12 +136,17 @@ class Models:
                         marker_id='v',
                         institute='MOHC',
                         emission_rate=8, # GtC yr-1
-                        rampup_start_year=1850, #2100,#1850,
+                        branch_year_from_piC = 2277,
+                        rampup_start_year=1850, # corresponds to year 2277 in esm-piControl -> need to shift esm-piControl by 427yr to be consistent with Harteg et al. (GMD)
                         stab2K_start_year=1944, #2100,#1850,
+                        down2K_start_year=stab2K_start_year+50,
                         stab4K_start_year=2044, #2100,#1850,
+                        down4K_start_year=stab4K_start_year+51, # starts in 2095 instead of 2094
                         restab2K_start_year=2233,
                         plotting_name='UKESM',
-                        default_member='r1i1p1f1')  
+                        default_member='r1i1p1f1',
+                        calendar='360day',
+                        days_per_year=360)    
 
     @classmethod
     def get_CNRM(cls):
@@ -125,9 +156,17 @@ class Models:
                         marker_id='^',
                         institute='CNRM',
                         emission_rate=11.378, # GtC yr-1
+                        branch_year_from_piC = 1950,
                         rampup_start_year=1850,
+                        stab2K_start_year=1949, #2100,#1850,
+                        down2K_start_year=1998,
+                        stab4K_start_year=2044, #2100,#1850,
+                        down4K_start_year=2093,
+                        restab2K_start_year=2185,
                         plotting_name='CNRM',
-                        default_member='r1i1p2f2')   
+                        default_member='r1i1p2f2',
+                        calendar='leap',
+                        days_per_year=365.25)  
 
     @classmethod
     def get_NASA(cls):
@@ -137,13 +176,17 @@ class Models:
                         marker_id='x',
                         institute='NASA',
                         emission_rate=11.4, # GtC yr-1
-                        rampup_start_year=1850,
-                        stab2K_start_year=1944,
+                        branch_year_from_piC = 2156,
+                        rampup_start_year=1850, # corresponds to year 2156 in esm-piControl -> need to shift esm-piControl by 306yr to be consistent with Harteg et al. (GMD)
+                        stab2K_start_year=1954, #1944,
+                        down2K_start_year=stab2K_start_year+50,
                         stab4K_start_year=2127,
-                        restab2K_start_year=2299,
+                        down4K_start_year=stab4K_start_year+50,
+                        restab2K_start_year=2305, # 2299
                         plotting_name='NASA-GISS',
                         default_member=None,
-                        calendar='noleap')      
+                        calendar='noleap',
+                        days_per_year=365.25)  
 
     @classmethod
     def get_MIROC(cls):
@@ -153,13 +196,17 @@ class Models:
                         marker_id='h',
                         institute='MIROC',
                         emission_rate=15.385, # GtC yr-1
+                        branch_year_from_piC = 2001,
                         rampup_start_year=2001,
                         stab2K_start_year=2100,
+                        down2K_start_year=stab2K_start_year+50,
                         stab4K_start_year=2215,
+                        down4K_start_year=stab4K_start_year+50,
                         restab2K_start_year=2370,
                         plotting_name='MIROC',
                         default_member=None,
-                        calendar='leap') 
+                        calendar='leap',
+                        days_per_year=365.25)  
 
     @classmethod
     def get_CESM(cls):
@@ -169,13 +216,17 @@ class Models:
                         marker_id='p',
                         institute='NCAR',
                         emission_rate=10.0, # GtC yr-1
-                        rampup_start_year=1,
+                        branch_year_from_piC = 81,
+                        rampup_start_year=1,    # corresponds to year 81 in esm-piControl -> need to shift esm-piControl by 80yr to be consistent with Harteg et al. (GMD)
                         stab2K_start_year=116,
+                        down2K_start_year=stab2K_start_year+50,
                         stab4K_start_year=231,
+                        down4K_start_year=stab4K_start_year+50,
                         restab2K_start_year=406,
                         plotting_name='CESM2',
                         default_member=None,
-                        calendar='noleap') 
+                        calendar='noleap',
+                        days_per_year=365)  
 
     @classmethod
     def get_ACCESS(cls):
@@ -185,13 +236,17 @@ class Models:
                         marker_id='>',
                         institute='CSIRO',
                         emission_rate=12.0, # GtC yr-1
-                        rampup_start_year=101,
+                        branch_year_from_piC = 271,
+                        rampup_start_year=101, # corresponds to year 271 in esm-piControl -> need to shift esm-piControl by 170yr to be consistent with Harteg et al. (GMD)
                         stab2K_start_year=194,
+                        down2K_start_year=stab2K_start_year+50,
                         stab4K_start_year=282,
+                        down4K_start_year=stab4K_start_year+50,
                         restab2K_start_year=451,
                         plotting_name='ACCESS',
                         default_member=None,
-                        calendar='leap') 
+                        calendar='leap',
+                        days_per_year=365.25)   
 
 # colors remaining (for 12 total colors): #1B9E77, #D95F02, #666666, #B2DF8A, #FDBF6F
     
