@@ -65,7 +65,7 @@ class Models:
                    restab2K_start_year= 2232,
                    plotting_name='IPSL',
                    default_member='r1i2p3f1',
-                   calendar='leap',
+                   calendar='proleptic_gregorian',
                    days_per_year=365.25)
 
     @classmethod
@@ -125,7 +125,7 @@ class Models:
                         restab2K_start_year=2201,
                         plotting_name='EC-Earth',
                         default_member='r1i1p1f1',
-                        calendar='leap',
+                        calendar='proleptic_gregorian',
                         days_per_year=365.25)    
 
     @classmethod
@@ -165,7 +165,7 @@ class Models:
                         restab2K_start_year=2185,
                         plotting_name='CNRM',
                         default_member='r1i1p2f2',
-                        calendar='leap',
+                        calendar='proleptic_gregorian',
                         days_per_year=365.25)  
 
     @classmethod
@@ -205,7 +205,7 @@ class Models:
                         restab2K_start_year=2370,
                         plotting_name='MIROC',
                         default_member=None,
-                        calendar='leap',
+                        calendar='proleptic_gregorian',
                         days_per_year=365.25)  
 
     @classmethod
@@ -245,7 +245,7 @@ class Models:
                         restab2K_start_year=451,
                         plotting_name='ACCESS',
                         default_member=None,
-                        calendar='leap',
+                        calendar='proleptic_gregorian',
                         days_per_year=365.25)   
 
 # colors remaining (for 12 total colors): #1B9E77, #D95F02, #666666, #B2DF8A, #FDBF6F

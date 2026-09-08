@@ -127,58 +127,179 @@ class TimeOperator:
         )
     
 
-    def adjust_time_axis(ds):
+    #def adjust_time_axis(ds):
+    #
+    #    if 'year' in ds.coords or 'year' in ds.dims:
+    #        time_axis = ds.year.values
+    #    elif 'time' in ds.coords or 'time' in ds.dims:
+    #        time_axis = ds.time.values
+    #        #print(time_axis)
+    #        #if np.all([np.isinstance(time_axis_id))
+    #
+    #    if TimeOperator.needs_time_fix(time_axis):
+    #
+    #        new_time_axis = np.array([
+    #            cftime.DatetimeProlepticGregorian(
+    #                dt.microsecond,  # move microsecond → year
+    #                dt.month,
+    #                dt.day,
+    #                dt.hour,
+    #                dt.minute,
+    #                dt.second,
+    #                0,               # reset microsecond
+    #                has_year_zero=True
+    #            )
+    #            for dt in time_axis], dtype=object)
+    #    else:
+    #        new_time_axis = np.array([
+    #            cftime.DatetimeProlepticGregorian(
+    #                dt.year,  # move microsecond → year
+    #                dt.month,
+    #                dt.day,
+    #                dt.hour,
+    #                dt.minute,
+    #                dt.second,
+    #                dt.microsecond,               # reset microsecond
+    #                has_year_zero=True
+    #            )
+    #            for dt in time_axis], dtype=object)
+    #
+    #    ds['time'] = new_time_axis
+    #
+    #    # Remove 'year' if it exists as a variable or coordinate
+    #    #if 'year' in ds.variables:
+    #    #    ds = ds.drop_vars('year')
+    #    if 'year' in ds.coords:
+    #        ds = ds.drop_vars('year')  # works for coords too
+    #
+    #    if 'year' in ds.coords or 'year' in ds.dims:
+    #        ds = ds.rename({'year': 'time'})
+    #
+    #    #print(ds)
+    #    
+    #    return ds
 
-        if 'year' in ds.coords or 'year' in ds.dims:
-            time_axis = ds.year.values
-        elif 'time' in ds.coords or 'time' in ds.dims:
-            time_axis = ds.time.values
-            #print(time_axis)
-            #if np.all([np.isinstance(time_axis_id))
-
-        if TimeOperator.needs_time_fix(time_axis):
-
-            new_time_axis = np.array([
-                cftime.DatetimeProlepticGregorian(
-                    dt.microsecond,  # move microsecond → year
-                    dt.month,
-                    dt.day,
-                    dt.hour,
-                    dt.minute,
-                    dt.second,
-                    0,               # reset microsecond
-                    has_year_zero=True
-                )
-                for dt in time_axis], dtype=object)
+    
+    def adjust_time_axis(ds, calendar="proleptic_gregorian"):
+        """
+        Adjust the time axis and convert it to the requested cftime calendar.
+    
+        Parameters
+        ----------
+        ds : xarray.Dataset or xarray.DataArray
+            Object containing a time or year coordinate.
+    
+        calendar : str, optional
+            Target CF calendar. Examples:
+                - "standard"
+                - "gregorian"
+                - "proleptic_gregorian"
+                - "noleap"
+                - "365_day"
+                - "all_leap"
+                - "366_day"
+                - "360_day"
+    
+        Returns
+        -------
+        ds : xarray.Dataset or xarray.DataArray
+            Object with a corrected "time" coordinate.
+        """
+    
+        # ---------------------------------------------------------
+        # Find the time coordinate
+        # ---------------------------------------------------------
+        if "year" in ds.coords or "year" in ds.dims:
+            time_axis = ds["year"].values
+    
+        elif "time" in ds.coords or "time" in ds.dims:
+            time_axis = ds["time"].values
+    
         else:
-            new_time_axis = np.array([
-                cftime.DatetimeProlepticGregorian(
-                    dt.year,  # move microsecond → year
-                    dt.month,
-                    dt.day,
-                    dt.hour,
-                    dt.minute,
-                    dt.second,
-                    dt.microsecond,               # reset microsecond
-                    has_year_zero=True
-                )
-                for dt in time_axis], dtype=object)
-
-        ds['time'] = new_time_axis
-
-        # Remove 'year' if it exists as a variable or coordinate
-        #if 'year' in ds.variables:
-        #    ds = ds.drop_vars('year')
-        if 'year' in ds.coords:
-            ds = ds.drop_vars('year')  # works for coords too
-
-        if 'year' in ds.coords or 'year' in ds.dims:
-            ds = ds.rename({'year': 'time'})
-
-        #print(ds)
-        
+            raise ValueError(
+                "Could not find a 'time' or 'year' coordinate/dimension."
+            )
+    
+        # ---------------------------------------------------------
+        # Get the appropriate cftime datetime class
+        # ---------------------------------------------------------
+        calendar_classes = {
+            "standard": cftime.DatetimeGregorian,
+            "gregorian": cftime.DatetimeGregorian,
+            "proleptic_gregorian": cftime.DatetimeProlepticGregorian,
+            "noleap": cftime.DatetimeNoLeap,
+            "365_day": cftime.DatetimeNoLeap,
+            "all_leap": cftime.DatetimeAllLeap,
+            "366_day": cftime.DatetimeAllLeap,
+            "360_day": cftime.Datetime360Day,
+            "julian": cftime.DatetimeJulian,
+        }
+    
+        try:
+            datetime_class = calendar_classes[calendar]
+        except KeyError:
+            raise ValueError(
+                f"Unknown calendar '{calendar}'. "
+                f"Supported calendars: {list(calendar_classes)}"
+            )
+    
+        # ---------------------------------------------------------
+        # Correct malformed time axis if necessary
+        # ---------------------------------------------------------
+        if TimeOperator.needs_time_fix(time_axis):
+            new_time_axis = np.array(
+                [
+                    datetime_class(
+                        dt.microsecond,   # existing special correction
+                        dt.month,
+                        dt.day,
+                        dt.hour,
+                        dt.minute,
+                        dt.second,
+                        0,
+                        has_year_zero=True,
+                    )
+                    for dt in time_axis
+                ],
+                dtype=object,
+            )
+    
+        else:
+            new_time_axis = np.array(
+                [
+                    datetime_class(
+                        dt.year,
+                        dt.month,
+                        dt.day,
+                        dt.hour,
+                        dt.minute,
+                        dt.second,
+                        dt.microsecond,
+                        has_year_zero=True,
+                    )
+                    for dt in time_axis
+                ],
+                dtype=object,
+            )
+    
+        # ---------------------------------------------------------
+        # Replace time coordinate
+        # ---------------------------------------------------------
+        ds = ds.assign_coords(time=new_time_axis)
+    
+        # ---------------------------------------------------------
+        # Remove old "year" coordinate if present
+        # ---------------------------------------------------------
+        if "year" in ds.coords:
+            ds = ds.drop_vars("year")
+    
+        # If "year" was a dimension rather than a coordinate,
+        # rename it to "time".
+        if "year" in ds.dims:
+            ds = ds.rename({"year": "time"})
+    
         return ds
-
+    
 
     def shift_time_axis_by_n_years(ds,n=0,set_to_start_of_months=False):
 
@@ -216,6 +337,110 @@ class TimeOperator:
         ds['time'] = new_time_axis
         
         return ds
+        
+
+    def shift_time_axis_by_n_years(
+        ds,
+        n=0,
+        set_to_start_of_months=False,
+        calendar="proleptic_gregorian",
+    ):
+        """
+        Shift a time axis by a number of years.
+    
+        Parameters
+        ----------
+        ds : xarray.Dataset or xarray.DataArray
+            Object containing a "time" coordinate.
+    
+        n : int, optional
+            Number of years to shift. Negative values shift backward.
+    
+        set_to_start_of_months : bool, optional
+            If True, reset all timestamps to the first day of their month
+            at 00:00:00.
+    
+        calendar : str, optional
+            Calendar to use for the resulting time axis.
+    
+            Supported:
+                - "standard"
+                - "gregorian"
+                - "proleptic_gregorian"
+                - "noleap"
+                - "365_day"
+                - "all_leap"
+                - "366_day"
+                - "360_day"
+                - "julian"
+    
+        Returns
+        -------
+        ds : xarray.Dataset or xarray.DataArray
+            Object with the shifted time axis.
+        """
+    
+        calendar_classes = {
+            "standard": cftime.DatetimeGregorian,
+            "gregorian": cftime.DatetimeGregorian,
+            "proleptic_gregorian": cftime.DatetimeProlepticGregorian,
+            "noleap": cftime.DatetimeNoLeap,
+            "365_day": cftime.DatetimeNoLeap,
+            "all_leap": cftime.DatetimeAllLeap,
+            "366_day": cftime.DatetimeAllLeap,
+            "360_day": cftime.Datetime360Day,
+            "julian": cftime.DatetimeJulian,
+        }
+    
+        try:
+            datetime_class = calendar_classes[calendar]
+        except KeyError:
+            raise ValueError(
+                f"Unknown calendar '{calendar}'. "
+                f"Supported calendars: {list(calendar_classes)}"
+            )
+    
+        time_axis = ds["time"].values
+    
+        if set_to_start_of_months:
+            new_time_axis = np.array(
+                [
+                    datetime_class(
+                        year=dt.year + n,
+                        month=dt.month,
+                        day=1,
+                        hour=0,
+                        minute=0,
+                        second=0,
+                        microsecond=0,
+                        has_year_zero=True,
+                    )
+                    for dt in time_axis
+                ],
+                dtype=object,
+            )
+    
+        else:
+            new_time_axis = np.array(
+                [
+                    datetime_class(
+                        year=dt.year + n,
+                        month=dt.month,
+                        day=dt.day,
+                        hour=dt.hour,
+                        minute=dt.minute,
+                        second=dt.second,
+                        microsecond=dt.microsecond,
+                        has_year_zero=True,
+                    )
+                    for dt in time_axis
+                ],
+                dtype=object,
+            )
+    
+        return ds.assign_coords(time=new_time_axis)
+
+    
 
 
     def shift_time_axis_to_ref_year(model,ds,ref_year=1850,set_to_start_of_months=False,verbosity=0):
