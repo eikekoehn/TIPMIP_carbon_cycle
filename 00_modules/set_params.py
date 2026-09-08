@@ -145,7 +145,7 @@ class Models:
                         restab2K_start_year=2233,
                         plotting_name='UKESM',
                         default_member='r1i1p1f1',
-                        calendar='360day',
+                        calendar='360_day',
                         days_per_year=360)    
 
     @classmethod
