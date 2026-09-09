@@ -456,7 +456,48 @@ class TimeOperator:
         ds = TimeOperator.shift_time_axis_by_n_years(ds,n,set_to_start_of_months=set_to_start_of_months)
         
         return ds
+        
 
+    def shift_months_to_previous_midpoint(da, calendar="noleap"):
+        """
+        Shift monthly timestamps to the 15th of the preceding month.
+    
+        Parameters
+        ----------
+        da : xarray.DataArray
+            DataArray with a 'time' coordinate containing cftime dates.
+        calendar : str, default "noleap"
+            CF calendar name, e.g. "noleap", "360_day", "all_leap",
+            "julian", or "standard".
+    
+        Returns
+        -------
+        xarray.DataArray
+            DataArray with shifted 'time' coordinate.
+        """
+        date_class = {
+            "noleap": cftime.DatetimeNoLeap,
+            "360_day": cftime.Datetime360Day,
+            "all_leap": cftime.DatetimeAllLeap,
+            "julian": cftime.DatetimeJulian,
+            "standard": cftime.DatetimeGregorian,
+            "gregorian": cftime.DatetimeGregorian,
+            "proleptic_gregorian": cftime.DatetimeProlepticGregorian,
+        }[calendar]
+    
+        new_time = [
+            date_class(
+                t.year if t.month > 1 else t.year - 1,
+                t.month - 1 if t.month > 1 else 12,
+                15,
+            )
+            for t in da.time.values
+        ]
+    
+        return da.assign_coords(time=new_time)
+
+
+    
     #def set_calendar(ds,model):
     #    model_dict = pmods.get_model_dict('all')
     #    calendar = model_dict[model].calendar

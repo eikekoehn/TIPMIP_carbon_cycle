@@ -12,7 +12,7 @@ import glob
 # custom mdoules
 from misc_functions import DataFuncs
 from misc_functions import MISCgrabber
-
+from operations_time import TimeOperator
 
 class CESMgrabber:
 
@@ -236,6 +236,8 @@ class CESMgrabber:
         #        plt.show()
         #        #print(dds.time.values)
         #        #print(np.sum(dds.lat.values - ref_lat))
+        if freq_input=='monthly':
+            da = TimeOperator.shift_months_to_previous_midpoint(da, calendar="noleap")
         
         return da
 

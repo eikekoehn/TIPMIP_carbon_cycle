@@ -118,11 +118,11 @@ class Models:
                         emission_rate=12.4, # GtC yr-1
                         branch_year_from_piC = 1850,
                         rampup_start_year=1850,
-                        stab2K_start_year=1951,
-                        down2K_start_year=2001, #stab2K_start_year+50,
-                        stab4K_start_year=2051,
-                        down4K_start_year=2101, #stab4K_start_year+50,
-                        restab2K_start_year=2201,
+                        stab2K_start_year=1953, #1952, #1951,
+                        down2K_start_year=2003, #2002, #2001, #stab2K_start_year+50,
+                        stab4K_start_year=2055, #2054, #2051,
+                        down4K_start_year=2105, #2104, #2101, #stab4K_start_year+50,
+                        restab2K_start_year=2204, #2202, #2201,
                         plotting_name='EC-Earth',
                         default_member='r1i1p1f1',
                         calendar='proleptic_gregorian',
@@ -176,7 +176,7 @@ class Models:
                         marker_id='x',
                         institute='NASA',
                         emission_rate=11.4, # GtC yr-1
-                        branch_year_from_piC = 2156,
+                        branch_year_from_piC = 1850, #2156,
                         rampup_start_year=1850, # corresponds to year 2156 in esm-piControl -> need to shift esm-piControl by 306yr to be consistent with Harteg et al. (GMD)
                         stab2K_start_year=1954, #1944,
                         down2K_start_year=2004, #stab2K_start_year+50,

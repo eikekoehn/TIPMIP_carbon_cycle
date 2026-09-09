@@ -258,7 +258,9 @@ class NASAgrabber:
             #    print(data_path+pattern)
             #    file_list = sorted(glob.glob(data_path+pattern,recursive=True))          
             if run in ['esm-up2p0-gwl4p0-50y-dn2p0','esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0']:
-                data_path = f'{rootdir}/{run}/esgf/{member}/{domain}{freq}{domain_suffix}/{varia}/{grid}/' 
+                #data_path = f'{rootdir}/{run}/esgf/{member}/{domain}{freq}{domain_suffix}/{varia}/{grid}/' 
+                data_path = f'{rootdir}/{run}/{member}/{domain}{freq}{domain_suffix}/{varia}/{grid}/' 
+
                 pattern = f"/v*/{varia}_*_{run}_*.nc" 
                 print(data_path+pattern)
                 file_list = sorted(glob.glob(data_path+pattern,recursive=True))

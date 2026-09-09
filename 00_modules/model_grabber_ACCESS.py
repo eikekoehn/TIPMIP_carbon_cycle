@@ -16,11 +16,15 @@ from misc_functions import MISCgrabber
 
 class ACCESSgrabber:
 
-    def get_rootdir(server='levante'):
+    def get_rootdir(run,server='levante'):
         if server == 'spirit':
             rootdir = '/bdd/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5' 
         elif server == 'levante':
-            rootdir = '/work/bm1448/upload/tipesm/ACCESS-ESM1-5'
+            if run == 'esm-piControl':
+                rootdir = '/pool/data/CMIP6/data/CMIP/CSIRO/ACCESS-ESM1-5'
+                #rootdir = '/work/bm1448/upload/tipesm/ACCESS-ESM1-5'
+            else:
+                rootdir = '/work/bm1448/upload/tipesm/ACCESS-ESM1-5'
         elif rootdir == 'cineca':
             raise Exception('No data for ACCESS on cineca.') 
         return rootdir
@@ -98,7 +102,7 @@ class ACCESSgrabber:
      
         member = ACCESSgrabber.get_member()
         exercise = ACCESSgrabber.get_exercise(run)
-        rootdir = ACCESSgrabber.get_rootdir()
+        rootdir = ACCESSgrabber.get_rootdir(run)
         freq = ACCESSgrabber.get_frequency(freq_input) 
         domain = ACCESSgrabber.get_domain(varia,freq_input)
         grid = ACCESSgrabber.get_grid()
@@ -108,7 +112,7 @@ class ACCESSgrabber:
             data_path = f'{rootdir}/{run}/{member}/{domain}{freq}/{varia}/{grid}/v*' 
         #elif server == 'spirit':
         elif run == 'esm-piControl':
-            data_path = f'{rootdir}/{run}/{member}/{domain}{freq}/{varia}/{grid}/latest' 
+            data_path = f'{rootdir}/{run}/{member}/{domain}{freq}/{varia}/{grid}/v*' #latest' 
         pattern = f"/{varia}*_{grid}_*.nc" 
         print(data_path+pattern)
         file_list = sorted(glob.glob(data_path+pattern,recursive=True))

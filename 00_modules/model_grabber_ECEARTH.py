@@ -316,15 +316,15 @@ class ECEARTHgrabber:
 
         # if run is esm-piControl, shift the time by n years
         if run == 'esm-up2p0-gwl2p0':
-            da = TimeOperator.shift_time_axis_by_n_years(da,n=1) # nominal year for 2K stabilization is 1951, but actually starts in 1952
+            da = TimeOperator.shift_time_axis_by_n_years(da,n=2) # nominal year for 2K stabilization is 1951, but actually starts in 1953 (metadata suggests 1952...)
         elif run == 'esm-up2p0-gwl2p0-50y-dn2p0':
-            da = TimeOperator.shift_time_axis_by_n_years(da,n=1) # nominal year for 2K stabilization is 2001, but actually starts in 2002
+            da = TimeOperator.shift_time_axis_by_n_years(da,n=2) # nominal year for 2K stabilization is 2001, but actually starts in 2003 (metadata suggests 2002...)
         elif run == 'esm-up2p0-gwl4p0':
-            da = TimeOperator.shift_time_axis_by_n_years(da,n=3) # nominal year for 4K stabilization is 2051, but actually starts in 2054
+            da = TimeOperator.shift_time_axis_by_n_years(da,n=4) # nominal year for 4K stabilization is 2051, but actually starts in 2055 (metadata suggests 2054...)
         elif run == 'esm-up2p0-gwl4p0-50y-dn2p0':
-            da = TimeOperator.shift_time_axis_by_n_years(da,n=3) # nominal year for 4K stabilization is 2101, but actually starts in 2104
+            da = TimeOperator.shift_time_axis_by_n_years(da,n=4) # nominal year for 4K stabilization is 2101, but actually starts in 2105 (metadata suggests 2104...)
         elif run == 'esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0':
-            da = TimeOperator.shift_time_axis_by_n_years(da,n=1) # nominal year for 4K stabilization is 2201, but actually starts in 2202
+            da = TimeOperator.shift_time_axis_by_n_years(da,n=3) # nominal year for 4K stabilization is 2201, but actually starts in 2204 (metadata suggests 2202...)
             
         # verify lon and lats
         domain = ECEARTHgrabber.get_domain(varia,freq_input)
