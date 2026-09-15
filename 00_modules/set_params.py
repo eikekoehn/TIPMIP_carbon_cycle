@@ -216,7 +216,7 @@ class Models:
                         marker_id='p',
                         institute='NCAR',
                         emission_rate=10.0, # GtC yr-1
-                        branch_year_from_piC = 81,
+                        branch_year_from_piC = 1, #81,
                         rampup_start_year=1,    # corresponds to year 81 in esm-piControl -> need to shift esm-piControl by 80yr to be consistent with Harteg et al. (GMD)
                         stab2K_start_year=116,
                         down2K_start_year=166, #stab2K_start_year+50,

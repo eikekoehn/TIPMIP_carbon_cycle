@@ -51,11 +51,11 @@ class ACCESSgrabber:
             domain = 'LI'
         elif freq_input == 'monthly' and varia in ['baresoilFrac', 'cVeg', 'gpp', 'lai', 'mrro', 'mrros', 'npp', 'ra', 'rh', 'treeFrac','nbp','cSoilFast','cSoilMedium','cSoilSlow','cVeg']:
             domain = 'L'
-        elif freq_input == 'fx' and varia in ['areacello']:
+        elif freq_input == 'fx' and varia in ['areacello','thkcello']:
             domain = 'O'
         elif freq_input == 'monthly' and varia in ['sftgif', 'sftgrf', 'snd', 'snm', 'snw']:
             domain = 'LI'
-        elif freq_input == 'monthly' and varia in ['epc100', 'fgco2', 'hfds', 'intpp', 'mlotst', 'msftmz', 'msftyz', 'o2', 'so', 'sos', 'thetao', 'tos', 'uo', 'vo', 'zos']:
+        elif freq_input == 'monthly' and varia in ['epc100', 'fgco2', 'hfds', 'intpp', 'mlotst', 'msftmz', 'msftyz', 'o2', 'so', 'sos', 'thetao', 'tos', 'uo', 'vo', 'zos','dissic']:
             domain = 'O'
         elif freq_input == 'monthly' and varia in ['siconc', 'simass', 'sisnmass']:
             domain = 'SI'
@@ -113,12 +113,15 @@ class ACCESSgrabber:
         #elif server == 'spirit':
         elif run == 'esm-piControl':
             data_path = f'{rootdir}/{run}/{member}/{domain}{freq}/{varia}/{grid}/v*' #latest' 
-        pattern = f"/{varia}*_{grid}_*.nc" 
+        pattern = f"/{varia}*_{grid}*.nc" 
         print(data_path+pattern)
         file_list = sorted(glob.glob(data_path+pattern,recursive=True))
         print(file_list)
-        file_list_filtered = MISCgrabber.filter_longest_period_files(file_list)
-        
+        if varia != 'thkcello':
+            file_list_filtered = MISCgrabber.filter_longest_period_files(file_list)
+        else:
+            file_list_filtered = file_list
+        print(file_list_filtered)
         return file_list_filtered
 
 
@@ -145,6 +148,7 @@ class ACCESSgrabber:
         
         # get the list of files
         files = ACCESSgrabber.get_filelist(varia,run,freq_input)#,server=server)
+        print('what we have')
         if verbose_level > 0:
             print(files)
 

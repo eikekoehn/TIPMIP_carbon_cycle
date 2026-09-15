@@ -259,17 +259,22 @@ class NASAgrabber:
             #    file_list = sorted(glob.glob(data_path+pattern,recursive=True))          
             if run in ['esm-up2p0-gwl4p0-50y-dn2p0','esm-up2p0-gwl4p0-50y-dn2p0-gwl2p0']:
                 #data_path = f'{rootdir}/{run}/esgf/{member}/{domain}{freq}{domain_suffix}/{varia}/{grid}/' 
-                data_path = f'{rootdir}/{run}/{member}/{domain}{freq}{domain_suffix}/{varia}/{grid}/' 
-
-                pattern = f"/v*/{varia}_*_{run}_*.nc" 
+                data_path = f'{rootdir}/{run}/{member}/{domain}{freq}{domain_suffix}/{varia}/' 
+                if varia == 'co2mass':
+                    pattern = f"/{varia}_*_{run}_*.nc" 
+                else:
+                    pattern = f"/{grid}/v*/{varia}_*_{run}_*.nc" 
                 print(data_path+pattern)
                 file_list = sorted(glob.glob(data_path+pattern,recursive=True))
             else:
-                data_path = f'{rootdir}/{run}/{member}/{domain}{freq}{domain_suffix}/{varia}/{grid}/' 
-                pattern = f"/v*/{varia}_*_{run}_*.nc" 
-                #print(data_path+pattern)
+                data_path = f'{rootdir}/{run}/{member}/{domain}{freq}{domain_suffix}/{varia}/' 
+                if varia == 'co2mass':
+                    pattern = f"/{varia}_*_{run}_*.nc" 
+                else:
+                    pattern = f"/{grid}/v*/{varia}_*_{run}_*.nc" 
+                print(data_path+pattern)
                 file_list = sorted(glob.glob(data_path+pattern,recursive=True))
-            print(file_list)
+            #print(file_list)
             file_list_filtered = MISCgrabber.filter_longest_period_files(file_list)
             #print(file_list_filtered)
         elif server == 'cineca':
@@ -341,9 +346,22 @@ class NASAgrabber:
         #        da = ds[varia]
         #        varia2 = varia
         #else:
-        da = ds[varia]
-        varia2 = varia
-            
+        if varia == 'co2mass':
+            varia2 = 'CO2n_Total_Mass'
+            da = ds[varia2]
+            # set the latitudes from -90 to -89 and from 90 to 89.
+            da = da.assign_coords(lat=da.lat.where(da.lat != -90, -89).where(da.lat != 90, 89))
+            # Convert longitude from [-180, 180) to [0, 360)
+            da = da.assign_coords(
+                lon=(da.lon % 360)
+            )
+            # Sort longitude in ascending order
+            da = da.sortby("lon")
+
+        else:
+            varia2 = varia
+            da = ds[varia2]
+                        
         if verbose_level > 0:
             print(da) 
 

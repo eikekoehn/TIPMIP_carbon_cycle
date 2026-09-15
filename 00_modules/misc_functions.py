@@ -32,7 +32,7 @@ class DataFuncs:
                         decode_times=time_coder,
                         data_vars="minimal",
                         coords="minimal",
-                        compat="override",      # this needs to be commented out when treating CESM2 nbp/npp/cLand/cVeg/cSoil data
+                        #compat="override",      # this needs to be commented out when treating CESM2 nbp/npp/cLand/cVeg/cSoil data
                         #combine="nested",
                         #concat_dim="time",
                     )
@@ -42,7 +42,7 @@ class DataFuncs:
                         use_cftime=True,
                         data_vars="minimal",
                         coords="minimal",
-                        compat="override",      # this needs to be commented out when treating CESM2 nbp/npp/cLand/cVeg/cSoil data
+                        #compat="override",      # this needs to be commented out when treating CESM2 nbp/npp/cLand/cVeg/cSoil data
                         #combine="nested",
                         #concat_dim="time",
                     )

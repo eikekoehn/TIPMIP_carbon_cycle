@@ -328,7 +328,7 @@ class ECEARTHgrabber:
             
         # verify lon and lats
         domain = ECEARTHgrabber.get_domain(varia,freq_input)
-        if domain in ['AP','LP','LI'] and varia != 'co2mass':
+        if domain in ['AP','LP','LI'] and varia not in ['co2mass','co2s']:
             da = ECEARTHgrabber.verify_coords(da,varia,freq_input,verbosity=verbose_level)
 
         return da

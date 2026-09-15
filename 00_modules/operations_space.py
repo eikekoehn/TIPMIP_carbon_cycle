@@ -245,8 +245,12 @@ class SpaceOperator:
         # --------------------------------------------------
         #integral = xr.dot(da, thickness_weights, dims=dims)
         for coord in set(da.coords) & set(thickness_weights.coords):
-        #    #try:
+            #print(coord)
+            print(np.max(np.abs(da[coord].values - thickness_weights[coord].values)))
+            if coord == "time" and "time" not in thickness_weights.dims:
+                continue
             assert da[coord].equals(thickness_weights[coord])
+            
         #for coord in set(da.coords) & set(thickness_weights.coords):
         #    if not da[coord].equals(thickness_weights[coord]):
         #        print(f"Mismatch in {coord}")
