@@ -283,7 +283,7 @@ class SpaceOperator:
         # detect vertical dims
         # --------------------------------------------------
         if dims is None:
-            vertical_candidates = {"lev", "level", "levelo", "olevel", "depth", "deptho", "plev", "z_t"}
+            vertical_candidates = {"lev", "level", "levelo", "olevel", "depth", "deptho", "plev", "z_t", "plev19"}
             dims = [d for d in da.dims if d.lower() in vertical_candidates]
     
             if len(dims) == 0:
