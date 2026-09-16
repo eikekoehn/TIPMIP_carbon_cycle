@@ -148,6 +148,10 @@ class ACCESSgrabber:
         
         # get the list of files
         files = ACCESSgrabber.get_filelist(varia,run,freq_input)#,server=server)
+
+        if '/work/bm1448/upload/tipesm/ACCESS-ESM1-5/esm-up2p0-gwl4p0/r1i1p1f1/Omon/o2/gn/v20250428/o2_Omon_ACCESS-ESM1-5_esm-up2p0-gwl4p0_r1i1p1f1_gn_074201-075112.nc' in files:
+            files = files[:-1]
+            
         print('what we have')
         if verbose_level > 0:
             print(files)

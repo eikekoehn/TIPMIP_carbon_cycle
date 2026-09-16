@@ -58,7 +58,7 @@ class NASAgrabber:
         if server == 'spirit':
 
             #%%
-            if varia in ['chldiatos', 'dfe', 'dissic', 'intdic', 'dissocos', 'epc100', 'epsi100', 'fgo2', 'hfds', 'limfediat', 'limirrdiat', 'limndiat', 'masso', 'msftyz', 'no3os', 'o2os', 'phydiatos', 'po4', 'si', 'so', 'talk', 'tauuo', 'thetao', 'tos', 'uo', 'vo', 'wmo', 'zmesoos', 'zos', 'chlmiscos', 'dfeos', 'dissicos', 'dpco2', 'epcalc100', 'fgco2', 'friver', 'intpp', 'limfemisc', 'limirrmisc', 'limnmisc', 'mlotst', 'no3', 'o2', 'ph', 'phymiscos', 'po4os', 'sios', 'sos', 'talkos', 'tauvo', 'thkcello', 'umo', 'vmo', 'wfo', 'wo', 'zmicroos', 'zostoga']: 
+            if varia in ['chldiatos', 'dfe', 'dissic', 'intdic', 'dissocos', 'epc100', 'epsi100', 'fgo2', 'hfds', 'limfediat', 'limirrdiat', 'limndiat', 'masso', 'msftyz', 'no3os', 'o2', 'o2os', 'phydiatos', 'po4', 'si', 'so', 'talk', 'tauuo', 'thetao', 'tos', 'uo', 'vo', 'wmo', 'zmesoos', 'zos', 'chlmiscos', 'dfeos', 'dissicos', 'dpco2', 'epcalc100', 'fgco2', 'friver', 'intpp', 'limfemisc', 'limirrmisc', 'limnmisc', 'mlotst', 'no3', 'o2', 'ph', 'phymiscos', 'po4os', 'sios', 'sos', 'talkos', 'tauvo', 'thkcello', 'umo', 'vmo', 'wfo', 'wo', 'zmicroos', 'zostoga']: 
                 domain = 'O'
             elif varia in ['siconc', 'sisnthick', 'sispeed', 'sitemptop', 'sithick', 'siu', 'siv', 'sivol']:
                 domain = 'Si'
@@ -99,7 +99,7 @@ class NASAgrabber:
                 domain = 'LP'
             elif freq_input == 'monthly' and varia in ["intdic", "intpp", "chldiatos", "chlos", "epc100", "fgco2", "intppdiat"]:
                 domain = 'OB'
-            elif freq_input == 'monthly' and varia in ["si", "no3", "dissic"]:
+            elif freq_input == 'monthly' and varia in ["si", "no3", "dissic", "o2"]:
                 domain = 'OB'
             elif freq_input == 'monthly' and varia in ["sos", "wfo", "mlotst", "hfds", "zos", "tos", "zostoga"]:
                 domain = 'OP'
@@ -127,7 +127,7 @@ class NASAgrabber:
                     domain_suffix = ''
                 elif freq_input == 'monthly' and varia in ["intdic", "intpp", "chldiatos", "chlos", "epc100", "fgco2", "intppdiat"]:
                     domain_suffix = ''
-                elif freq_input == 'monthly' and varia in ["si", "no3", "dissic"]:
+                elif freq_input == 'monthly' and varia in ["si", "no3", "dissic", "o2"]:
                     domain_suffix = 'Lev'
                 elif freq_input == 'monthly' and varia in ["sos", "wfo", "mlotst", "hfds", "zos", "tos", "zostoga"]:
                     domain_suffix = ''
