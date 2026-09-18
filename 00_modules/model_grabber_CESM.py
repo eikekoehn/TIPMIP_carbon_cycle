@@ -39,7 +39,7 @@ class CESMgrabber:
     def get_domain(varia,freq_input):
         if varia in ['AR','FSNO','GPP','H2OSNO','HR','NBP','NPP','PCT_LANDUNIT','QFLX_SUB_SNOW','QOVER','QRUNOFF','SNOTXMASS','SNOWDP','SNOWICE','SNOWLIQ','SOILICE','SOILLIQ','TLAI','TOPO_COL_ICE','TOTECOSYSC','TOTSOMC','TOTVEGC','TSOI']:
             domain = 'lnd'
-        elif varia in ['DIC','EVAP_F','FG_CO2','HMXL_DR','IAGE','IOFF_F','MELT_F','MOC','NO3','O2','POC_FLUX_100m','PREC_F','QFLUX','ROFF_F','SALT','SHF','SiO3','SSH','TEMP','UVEL','VVEL']:
+        elif varia in ['DIC','EVAP_F','FG_CO2','HMXL_DR','IAGE','IOFF_F','MELT_F','MOC','NO3','O2','POC_FLUX_100m','PREC_F','QFLUX','ROFF_F','SALT','SHF','SiO3','SSH','TEMP','UVEL','VVEL','o2sat']:
             domain = 'ocn'
         elif varia in ['aice','hi','sisnthick','sithick','siu','siv']:
             domain = 'ice'
